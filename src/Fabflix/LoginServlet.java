@@ -27,13 +27,13 @@ public class LoginServlet extends HttpServlet {
         PreparedStatement stmt;
         
         try {
+        	Class.forName("com.mysql.cj.jdbc.Driver");
         	conn = DriverManager.getConnection(dbConn.DB_URL, dbConn.DB_USERNAME, dbConn.DB_PASSWORD);
         	stmt = conn.prepareStatement("SELECT * FROM customers WHERE email = ? AND password = ?");
 			stmt.setString(1, username);
 			stmt.setString(2, password);
         	ResultSet rs = stmt.executeQuery();
-        	if (rs.isLast()) {
-        		rs.next();
+        	if (rs.next()) {
                 String message = "Sucess";
                 request.setAttribute("message", message);
                 request.getRequestDispatcher("index.jsp").forward(request,response);
@@ -42,7 +42,9 @@ public class LoginServlet extends HttpServlet {
         	}
         	
         } catch (SQLException se) { 
-        	
+        	se.printStackTrace();
+        } catch (Exception e) {
+        	e.printStackTrace();
         }
         //If login fails
 		String message = "Invalid login!";
