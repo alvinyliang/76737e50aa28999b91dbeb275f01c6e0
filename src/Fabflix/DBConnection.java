@@ -15,9 +15,9 @@ public class DBConnection {
 		Properties properties = new Properties();
     	try {
 	    	properties.load(input);
-	    	DB_URL = properties.getProperty("url");
-	    	DB_USERNAME = properties.getProperty("username");
-	    	DB_PASSWORD = properties.getProperty("password");
+	    	DB_URL = properties.getProperty("jdbc.url");
+	    	DB_USERNAME = properties.getProperty("jdbc.username");
+	    	DB_PASSWORD = properties.getProperty("jdbc.password");
     	} catch (IOException e) {
     		
     	}
