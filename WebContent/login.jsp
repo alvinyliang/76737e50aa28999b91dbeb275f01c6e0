@@ -1,4 +1,10 @@
-
+<%
+if (session.getAttribute("authenticated") == null) {
+     
+} else if(session.getAttribute("authenticated").equals("true")) {
+	request.getRequestDispatcher("/WEB-INF/main.jsp").forward(request,response);
+}
+%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 	<head>
@@ -23,6 +29,7 @@
 				    		<input type="password" class="form-control" id="password" name="password">
 				  		</div>
 				  		<p class="lead">${message}</p>
+				  		<c:remove var="message" scope="session" />
 				  		<input type="submit" class="btn btn-info" value="Login">
 					</form>
 				</div>
