@@ -6,7 +6,6 @@
   - Tomcat v8.5
   
 ## To do:
-  - Implement logout button (for session)
   - Implement search
     - Implement substring matching and partial matching (SQL queries with LIKE and ILIKE)
   - Implement browse
@@ -23,3 +22,4 @@
   - Implemented authenciate user in session
   - Implemented session checking
     - If user is logged in, login page redirects to home page
+  - Implement logout button (for session)
