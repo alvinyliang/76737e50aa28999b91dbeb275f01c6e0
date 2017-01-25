@@ -16,20 +16,19 @@ public class HomeServlet extends HttpServlet{
     	
     	try {
 	        HttpSession session = request.getSession(false);  
-	        if (session == null) {  
-	    		String message = "Please login first!";
-	    		request.setAttribute("message", message);
+	        if (session.getAttribute("authenticated") == null) {  
 	    		request.getRequestDispatcher("login.jsp").forward(request,response);
+	    		return;
 	        }
 	        else {
 	        	//String username = (String) session.getAttribute("username");
 	        	//request.setAttribute("username", username);
 	     		request.getRequestDispatcher("/WEB-INF/main.jsp").forward(request,response);
+	     		return;
 	        }  
     	} catch (Exception e) {
     		
     	}
-        
     }
     
     @Override

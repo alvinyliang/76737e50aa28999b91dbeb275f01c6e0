@@ -16,7 +16,7 @@ if (session.getAttribute("authenticated") == null) {
 		<div class="container">
 			<%@ include file="navbar.jsp" %>
 			<div class="jumbotron">
-				<h1 class="display-3">Welcome to Fabflix!</h1>
+				<h1 class="display-3">Welcome to Fabflix</h1>
 		     	<p class="lead">Please login to contiune.</p>
 		     	<div class="row">
 		     	<div class="col-3"></div> 
