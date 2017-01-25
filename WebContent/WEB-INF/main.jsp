@@ -12,7 +12,7 @@
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-12">
-					<div class="jumbotron">
+					<div class="jumbotron" style="background:transparent !important">
 						<h3 class="display-3">Welcome to Fabflix</h3>
 						<p>Hello, ${username}.</p>
 						<div class="row">
@@ -21,8 +21,25 @@
 						            <input type="search" placeholder="Search by title" class="form-control">
 		         				</div>
 		         				<div class="pt-2">
-			         				<button class="btn btn-info" type="button">Search</button>
-									<button class="btn btn-info" type="button">Browse Movies</button>
+			         				<div class="btn-group">
+										<button a href="Search" type="button" class="btn btn-info">Search</button>
+										<button type="button" class="btn btn-info dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											<span class="sr-only">Toggle Dropdown</span>
+										</button>
+										<div class="dropdown-menu">
+											<a a href="/Search/Advanced" class="dropdown-item" href="#">Advanced Search</a>
+										</div>
+									</div>
+			         				<div class="btn-group">
+										<button a href="Browse" type="button" class="btn btn-info">Browse</button>
+										<button type="button" class="btn btn-info dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											<span class="sr-only">Toggle Dropdown</span>
+										</button>
+										<div class="dropdown-menu">
+											<a a href="Browse/Title" class="dropdown-item" href="#">By Title</a>
+											<a a href="Browse/Genre" class="dropdown-item" href="#">By Genre</a>
+										</div>
+									</div>									
 								</div>
 							</div>
 						</div>
