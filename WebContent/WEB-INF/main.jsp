@@ -18,7 +18,7 @@
 						<div class="row">
 							<div class="mx-auto" style="width: 800px">
 						        <div class="input-group input-group-lg" style="vertical-align: middle;">
-						            <input type="search" placeholder="Search by title" class="form-control">
+						            <input type="search" placeholder="Search for movie" class="form-control">
 		         				</div>
 		         				<div class="pt-2">
 			         				<div class="btn-group">
@@ -27,7 +27,7 @@
 											<span class="sr-only">Toggle Dropdown</span>
 										</button>
 										<div class="dropdown-menu">
-											<a a href="/Search/Advanced" class="dropdown-item" href="#">Advanced Search</a>
+											<a a href="/Search/Advanced" class="dropdown-item" href="#">Advanced Search Options</a>
 										</div>
 									</div>
 			         				<div class="btn-group">
@@ -36,8 +36,9 @@
 											<span class="sr-only">Toggle Dropdown</span>
 										</button>
 										<div class="dropdown-menu">
-											<a a href="Browse/Title" class="dropdown-item" href="#">By Title</a>
-											<a a href="Browse/Genre" class="dropdown-item" href="#">By Genre</a>
+											<a a href="Browse/Title" class="dropdown-item" href="#">Browse by Title</a>
+											<div class="dropdown-divider"></div>
+											<a a href="Browse/Genre" class="dropdown-item" href="#">Browse by Genre</a>
 										</div>
 									</div>									
 								</div>
