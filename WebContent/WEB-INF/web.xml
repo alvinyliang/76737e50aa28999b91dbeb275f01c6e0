@@ -23,6 +23,11 @@
 		<servlet-name>LogoutServlet</servlet-name>
 		<servlet-class>Fabflix.LogoutServlet</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>SearchServlet</servlet-name>
+		<servlet-class>Fabflix.SearchServlet</servlet-class>
+	</servlet>
+	
 	
 	<servlet-mapping>
 		<servlet-name>LoginServlet</servlet-name>
@@ -32,6 +37,12 @@
 		<servlet-name>HomeServlet</servlet-name>
 		<url-pattern>/Home</url-pattern>
 	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>SearchServlet</servlet-name>
+		<url-pattern>/Search</url-pattern>
+	</servlet-mapping>
+	
 	<servlet-mapping>
 		<servlet-name>LogoutServlet</servlet-name>
 		<url-pattern>/Logout</url-pattern>

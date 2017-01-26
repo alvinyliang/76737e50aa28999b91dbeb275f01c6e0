@@ -18,7 +18,10 @@
 						<div class="row">
 							<div class="mx-auto" style="width: 800px">
 						        <div class="input-group input-group-lg" style="vertical-align: middle;">
-						            <input type="search" placeholder="Search for movie" class="form-control">
+						        
+					            <input type="text" placeholder="Search for movie" class="form-control" name="movie_title" id="search_movie">
+						            
+						            
 		         				</div>
 		         				<div class="pt-2">
 			         				<div class="btn-group">
@@ -44,13 +47,41 @@
 								</div>
 							</div>
 						</div>
-						<div id="content"></div>
+								<div id="content">Stuff to be replaced here</div>
+						
+						
+
+						
 			    	</div>
 				</div>
 			</div>
 		</div>
-		<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+		
+		
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
   		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+		
+		<script type="text/javascript">
+		$(document).ready(function () {
+			  var searchResult = function(){
+					$.ajax({
+		                type: "GET",
+						url:"./Search",
+		                data: {"movie_title" : $('input[name="movie_title"]').val()},
+						success:function(result){
+				    		$("#content").html(result);
+				    	}
+					});
+					
+			  };
+			  $("button").on("click", searchResult);
+			  $("#search_movie").on("keyup", searchResult);
+
+			  
+			});
+		
+		</script>
+		
 	</body>
 </html>
