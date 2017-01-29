@@ -35,6 +35,11 @@ public class BrowseGenreServlet extends HttpServlet {
         	//Fabflix/Browse/Genre?genreName=Family
             String genreName = request.getParameter("genreName");
             
+            String order = request.getParameter("order");  
+            	// ta: order by title asc	td: order by title desc
+            	// ya: order by year asc	yd: order by year desc
+            int pageNum = Integer.parseInt(request.getParameter("p"));
+            int numMovie = Integer.parseInt(request.getParameter("m"));
             
             
 	        if (genreName.equalsIgnoreCase("SciFi")){
@@ -44,14 +49,27 @@ public class BrowseGenreServlet extends HttpServlet {
             
             out.println(genreName);
 	        out.println("<br>");
+	        
+	        String orderBy = ""; 
+	        if (order.contains("y")){
+	        	orderBy += "year ";
+	        }else{
+	        	orderBy += "title ";
+	        }
+	        
+	        if (order.contains("d")){
+	        	orderBy += "desc";
+	        }else{
+	        	orderBy += "asc";
+	        }
             
             stmt = conn.prepareStatement("select * from movies "
             		+ "where movies.id in( "
             		+ "select genres_in_movies.movie_id "
             		+ "from genres_in_movies join genres on (genres.id = genres_in_movies.genre_id) "
             		+ "where genres.name like \"" + genreName + "\") "
-            		+ "order by movies.title " 					// change order
-            		+ "limit 10 offset " + (10 * 0) +" ;");     // pagination
+            		+ "order by movies."+ orderBy +" " 					// change order
+            		+ "limit 10 offset " + (numMovie * (pageNum-1)) +" ;");     // pagination
             
         	ResultSet rs = stmt.executeQuery();
 			

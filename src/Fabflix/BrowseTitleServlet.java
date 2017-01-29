@@ -35,11 +35,29 @@ public class BrowseTitleServlet extends HttpServlet {
         	// Fabflix/Browse/Title?firstChar=P
             String titleChar = request.getParameter("firstChar");
             
+            String order = request.getParameter("order");
+            int pageNum = Integer.parseInt(request.getParameter("p"));
+            int numMovie = Integer.parseInt(request.getParameter("m"));
+            
+            String orderBy = ""; 
+	        if (order.contains("y")){
+	        	orderBy += "year ";
+	        }else{
+	        	orderBy += "title ";
+	        }
+	        
+	        if (order.contains("d")){
+	        	orderBy += "desc";
+	        }else{
+	        	orderBy += "asc";
+	        }
+            
+            
     	    stmt = conn.prepareStatement("select * from movies "
     	    		+ "where substring(movies.title from 1 for 1) "
     	    		+ "= \""+ titleChar +"\" "
-    	    		+ "order by movies.title " 				//change order 
-    	    		+ "limit 10 offset " + (10 * 0) +" ;");	//pagination
+    	    		+ "order by movies."+ orderBy +" " 			//change order 
+    	    		+ "limit 10 offset " + ( numMovie * (pageNum-1)) +" ;");	//pagination
     	        
     	    
 

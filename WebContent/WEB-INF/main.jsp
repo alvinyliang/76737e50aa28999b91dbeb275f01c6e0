@@ -179,6 +179,9 @@
 				  $.ajax({
 		                type: "GET",
 						url: $ (this).attr('id'),
+						data: {"order": "yd",
+							   "p": 2, 
+							   "m": 10},
 						success: function(result){
 				    		$("#content").html(result);
 				    	}
