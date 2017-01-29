@@ -35,15 +35,23 @@ public class BrowseGenreServlet extends HttpServlet {
         	//Fabflix/Browse/Genre?genreName=Family
             String genreName = request.getParameter("genreName");
             
-	        
             
+            
+	        if (genreName.equalsIgnoreCase("SciFi")){
+	        	genreName = "Sci%Fi";
+	        }
+            genreName = "%" + genreName + "%";
+            
+            out.println(genreName);
+	        out.println("<br>");
             
             stmt = conn.prepareStatement("select * from movies "
-            		+ "where movies.id in("
-            		+ " select genres_in_movies.movie_id "
+            		+ "where movies.id in( "
+            		+ "select genres_in_movies.movie_id "
             		+ "from genres_in_movies join genres on (genres.id = genres_in_movies.genre_id) "
-            		+ "where genres.name = \"" + genreName + "\")"
-            		+ " order by movies.title;");
+            		+ "where genres.name like \"" + genreName + "\") "
+            		+ "order by movies.title " 					// change order
+            		+ "limit 10 offset " + (10 * 0) +" ;");     // pagination
             
         	ResultSet rs = stmt.executeQuery();
 			

@@ -33,24 +33,110 @@
 											<a a href="/Search/Advanced" class="dropdown-item" href="#">Advanced Search Options</a>
 										</div>
 									</div>
+			         				
 			         				<div class="btn-group">
-										<button type="button" class="btn btn-info" id="browse_movie">Browse</button>
+										<button type="button" class="btn btn-info" id="browse_movie_button">Browse</button>
+										<!-- 
+										
 										<button type="button" class="btn btn-info dropdown-toggle dropdown-toggle-split"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 											<span class="sr-only">Toggle Dropdown</span>
 										</button>
 										<div class="dropdown-menu" id="browse_dropdown">
-											<a href="Browse" class="dropdown-item" id="browse_movie_title">Browse by Title</a>
+											<a href="Browse?title=true&genre=false" class="dropdown-item" id="browse_movie_title">Browse by Title</a>
 											<div class="dropdown-divider"></div>
-											<a a href="Browse" class="dropdown-item" href="#" id="browse_movie_genre">Browse by Genre</a>
+											<a a href="Browse?title=false&genre=true" class="dropdown-item" href="#" id="browse_movie_genre">Browse by Genre</a>
 										</div>
-									</div>									
+										 -->
+									</div>
+									 
+																	
 								</div>
+								
+								
 							</div>
 						</div>
-								<div id="browse_index"> </div>
+								<div id = "browse_index" hidden = true>
+									<h5 align = "center">Browse by Title</h5> 
+									<div  id="browse_index_title">
+									
+										<a href='#' id='./Browse/Title?firstChar=0'>0</a>
+										<a href='#' id='./Browse/Title?firstChar=1'>1</a>
+										<a href='#' id='./Browse/Title?firstChar=2'>2</a>
+										<a href='#' id='./Browse/Title?firstChar=3'>3</a>
+										<a href='#' id='./Browse/Title?firstChar=4'>4</a>
+										<a href='#' id='./Browse/Title?firstChar=5'>5</a>
+										<a href='#' id='./Browse/Title?firstChar=6'>6</a>
+										<a href='#' id='./Browse/Title?firstChar=7'>7</a>
+										<a href='#' id='./Browse/Title?firstChar=8'>8</a>
+										<a href='#' id='./Browse/Title?firstChar=9'>9</a>
+										<a href='#' id='./Browse/Title?firstChar=a'>A</a>
+										<a href='#' id='./Browse/Title?firstChar=b'>B</a>
+										<a href='#' id='./Browse/Title?firstChar=c'>C</a>
+										<a href='#' id='./Browse/Title?firstChar=d'>D</a>
+										<a href='#' id='./Browse/Title?firstChar=e'>E</a>
+										<a href='#' id='./Browse/Title?firstChar=f'>F</a>
+										<a href='#' id='./Browse/Title?firstChar=g'>G</a>
+										<a href='#' id='./Browse/Title?firstChar=h'>H</a>
+										<a href='#' id='./Browse/Title?firstChar=i'>I</a>
+										<a href='#' id='./Browse/Title?firstChar=j'>J</a>
+										<a href='#' id='./Browse/Title?firstChar=k'>K</a>
+										<a href='#' id='./Browse/Title?firstChar=l'>L</a>
+										<a href='#' id='./Browse/Title?firstChar=m'>M</a>
+										<a href='#' id='./Browse/Title?firstChar=n'>N</a>
+										<a href='#' id='./Browse/Title?firstChar=o'>O</a>
+										<a href='#' id='./Browse/Title?firstChar=p'>P</a>
+										<a href='#' id='./Browse/Title?firstChar=q'>Q</a>
+										<a href='#' id='./Browse/Title?firstChar=r'>R</a>
+										<a href='#' id='./Browse/Title?firstChar=s'>S</a>
+										<a href='#' id='./Browse/Title?firstChar=t'>T</a>
+										<a href='#' id='./Browse/Title?firstChar=u'>U</a>
+										<a href='#' id='./Browse/Title?firstChar=v'>V</a>
+										<a href='#' id='./Browse/Title?firstChar=w'>W</a>
+										<a href='#' id='./Browse/Title?firstChar=x'>X</a>
+										<a href='#' id='./Browse/Title?firstChar=y'>Y</a>
+										<a href='#' id='./Browse/Title?firstChar=z'>Z</a>
+									</div>
+								
+									<h5 align = "center">Browse by Genre</h5>
+									<div > 
+									
+										<a href='#' id='./Browse/Genre?genreName=Adv'>Adventure</a>
+										<a href='#' id='./Browse/Genre?genreName=Animation'>Animation</a>
+										<a href='#' id='./Browse/Genre?genreName=Arts'>Arts</a>
+										<a href='#' id='./Browse/Genre?genreName=Classic'>Classic</a>
+										<a href='#' id='./Browse/Genre?genreName=Comedy'>Comedy</a>
+										<a href='#' id='./Browse/Genre?genreName=Crime'>Crime</a>
+										<a href='#' id='./Browse/Genre?genreName=Detective'>Detective</a>
+										<a href='#' id='./Browse/Genre?genreName=Documentary'>Documentary</a>
+										<a href='#' id='./Browse/Genre?genreName=Drama'>Drama</a>
+										<a href='#' id='./Browse/Genre?genreName=Epics'>Epics</a>
+										<a href='#' id='./Browse/Genre?genreName=Family'>Family</a>
+										<a href='#' id='./Browse/Genre?genreName=Fantasy'>Fantasy</a>
+										<a href='#' id='./Browse/Genre?genreName=Film-Noir'>Film-Noir</a>
+										<a href='#' id='./Browse/Genre?genreName=Foreign'>Foreign</a>
+										<a href='#' id='./Browse/Genre?genreName=Gangster'>Gangster</a>
+										<a href='#' id='./Browse/Genre?genreName=Horror'>Horror</a>
+										<a href='#' id='./Browse/Genre?genreName=Indie'>Indie</a>
+										<a href='#' id='./Browse/Genre?genreName=James'>James</a>
+										<a href='#' id='./Browse/Genre?genreName=Kid'>Kid</a>
+										<a href='#' id='./Browse/Genre?genreName=Love'>Love</a>
+										<a href='#' id='./Browse/Genre?genreName=Musi'>Musical</a>
+										<a href='#' id='./Browse/Genre?genreName=Mystery'>Mystery</a>
+										<a href='#' id='./Browse/Genre?genreName=Roman'>Roman</a>
+										<a href='#' id='./Browse/Genre?genreName=Romance'>Romance</a>
+										<a href='#' id='./Browse/Genre?genreName=SciFi'>SciFi</a>
+										<a href='#' id='./Browse/Genre?genreName=Short'>Short</a>
+										<a href='#' id='./Browse/Genre?genreName=Spy'>Spy</a>
+										<a href='#' id='./Browse/Genre?genreName=Suspense'>Suspense</a>
+										<a href='#' id='./Browse/Genre?genreName=Thriller'>Thriller</a>
+										<a href='#' id='./Browse/Genre?genreName=Tragedy'>Tragedy</a>
+										<a href='#' id='./Browse/Genre?genreName=War'>War</a>
+										<a href='#' id='./Browse/Genre?genreName=Western'>Western</a>
+									</div>
+								</div>
+								
 								<div id="content">Stuff to be replaced here</div>
-						
-						
+								
 
 						
 			    	</div>
@@ -82,18 +168,27 @@
 			  $("#search_movie_button").on("click", searchResult);
 			  $("#search_movie").on("keyup", searchResult);
 			  
-			  $("#browse_movie").on("click", function(){
+			  $("#browse_movie_button").click(function (){
+				  $("#content").html("<p></p>")
+				  $("#browse_index").attr("hidden", false);
+			  });
+			  
+			  
+			  $("[id^='./Browse']").click(function(){
+				  
 				  $.ajax({
-					  type: "GET",
-					  url: "./Browse?title=true&genre=false",
-					  data: {"title" : "true", 
-						  	"genre" : "false"},
-					  sucess:function(result){
-						  $("#browse_index").html(result);
-					  }
-				  });
-			  }
-			  );
+		                type: "GET",
+						url: $ (this).attr('id'),
+						success: function(result){
+				    		$("#content").html(result);
+				    	}
+					});
+				  
+				  
+			  });
+			  
+			  
+			  
 			  
 			 
 			  

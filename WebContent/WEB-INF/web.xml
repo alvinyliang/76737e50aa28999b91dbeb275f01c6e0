@@ -28,10 +28,6 @@
 		<servlet-class>Fabflix.SearchServlet</servlet-class>
 	</servlet>
 	<servlet>
-		<servlet-name>BrowseMenuServlet</servlet-name>
-		<servlet-class>Fabflix.BrowseMenuServlet</servlet-class>
-	</servlet>
-	<servlet>
 		<servlet-name>BrowseTitleServlet</servlet-name>
 		<servlet-class>Fabflix.BrowseTitleServlet</servlet-class>
 	</servlet>
@@ -57,11 +53,6 @@
 	<servlet-mapping>
 		<servlet-name>LogoutServlet</servlet-name>
 		<url-pattern>/Logout</url-pattern>
-	</servlet-mapping>
-	
-	<servlet-mapping>
-		<servlet-name>BrowseMenuServlet</servlet-name>
-		<url-pattern>/Browse</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>BrowseTitleServlet</servlet-name>
