@@ -25,7 +25,7 @@
 		         				</div>
 		         				<div class="pt-2">
 			         				<div class="btn-group">
-										<button a href="Search" type="button" class="btn btn-info">Search</button>
+										<button type="button" class="btn btn-info" id="search_movie_button">Search</button>
 										<button type="button" class="btn btn-info dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 											<span class="sr-only">Toggle Dropdown</span>
 										</button>
@@ -34,19 +34,20 @@
 										</div>
 									</div>
 			         				<div class="btn-group">
-										<button a href="Browse" type="button" class="btn btn-info">Browse</button>
-										<button type="button" class="btn btn-info dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										<button type="button" class="btn btn-info" id="browse_movie">Browse</button>
+										<button type="button" class="btn btn-info dropdown-toggle dropdown-toggle-split"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 											<span class="sr-only">Toggle Dropdown</span>
 										</button>
-										<div class="dropdown-menu">
-											<a a href="Browse/Title" class="dropdown-item" href="#">Browse by Title</a>
+										<div class="dropdown-menu" id="browse_dropdown">
+											<a href="Browse" class="dropdown-item" id="browse_movie_title">Browse by Title</a>
 											<div class="dropdown-divider"></div>
-											<a a href="Browse/Genre" class="dropdown-item" href="#">Browse by Genre</a>
+											<a a href="Browse" class="dropdown-item" href="#" id="browse_movie_genre">Browse by Genre</a>
 										</div>
 									</div>									
 								</div>
 							</div>
 						</div>
+								<div id="browse_index"> </div>
 								<div id="content">Stuff to be replaced here</div>
 						
 						
@@ -75,13 +76,31 @@
 					});
 					
 			  };
-			  $("button").on("click", searchResult);
+			  
+			  
+			  
+			  $("#search_movie_button").on("click", searchResult);
 			  $("#search_movie").on("keyup", searchResult);
-
+			  
+			  $("#browse_movie").on("click", function(){
+				  $.ajax({
+					  type: "GET",
+					  url: "./Browse?title=true&genre=false",
+					  data: {"title" : "true", 
+						  	"genre" : "false"},
+					  sucess:function(result){
+						  $("#browse_index").html(result);
+					  }
+				  });
+			  }
+			  );
+			  
+			 
 			  
 			});
 		
 		</script>
-		
+	
+ 	
 	</body>
 </html>
