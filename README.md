@@ -1,5 +1,15 @@
 # Fabflix
 
+## When cloning the project:
+  - Ensure MySQL Service is running on local machine.
+  - Configure WebContent/WEB-INF/db_config.properties
+  
+  - Add External Jar -> MySQL Connector/J 6.0.5 to project buid path
+  - Create /lib directory under /WEB-INF and include the following files
+    - mysql-connector-java-6.0.5
+    - jstl-1.2
+  - Under Eclipse "Problems" tab, change project JRE path to match current Java Version. Current JRE is set to version _111.
+  
 ## Project Dependencies
   - MySQL Connector/J 6.0.5
     - https://mvnrepository.com/artifact/mysql/mysql-connector-java/6.0.5
