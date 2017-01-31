@@ -1,4 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <html>
 	<head>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
@@ -18,9 +20,8 @@
 						<div class="row">
 							<div class="mx-auto" style="width: 800px">
 						        <div class="input-group input-group-lg" style="vertical-align: middle;">
-						        
+								
 					            <input type="text" placeholder="Search for movie" class="form-control" name="movie_title" id="search_movie">
-						            
 						            
 		         				</div>
 		         				<div class="pt-2">
@@ -135,8 +136,18 @@
 									</div>
 								</div>
 								
-								<div id="content">Stuff to be replaced here</div>
+								<div id="content">Stuff to be replaced here</div>	
 								
+								<ul class="list-group">
+									<c:forEach var="item" items="${results}">
+									
+										<li class="list-group-item">${item.value['title']}</li>
+																
+									</c:forEach>
+								</ul>								
+								
+								
+							
 
 						
 			    	</div>
@@ -156,17 +167,23 @@
 		                type: "GET",
 						url:"./Search",
 		                data: {"movie_title" : $('input[name="movie_title"]').val()},
-						success:function(result){
-				    		$("#content").html(result);
-				    	}
+		                success:function(result){
+				    		location.reload()
+				    	}        
 					});
-					
 			  };
 			  
-			  
-			  
+			  $(document).keypress(function(e) {
+				    if(e.which == 13) {
+				        searchResult();
+				    }
+				});			  
 			  $("#search_movie_button").on("click", searchResult);
-			  $("#search_movie").on("keyup", searchResult);
+			  
+			  
+			  
+			  
+			  
 			  
 			  $("#browse_movie_button").click(function (){
 				  $("#content").html("<p></p>")
