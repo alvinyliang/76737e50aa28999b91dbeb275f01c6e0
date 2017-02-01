@@ -34,23 +34,16 @@
 											<a a href="/Search/Advanced" class="dropdown-item" href="#">Advanced Search Options</a>
 										</div>
 									</div>
-			         				
 			         				<div class="btn-group">
-										<button type="button" class="btn btn-info" id="browse_movie_button">Browse</button>
-										<!-- 
-										
-										<button type="button" class="btn btn-info dropdown-toggle dropdown-toggle-split"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-											<span class="sr-only">Toggle Dropdown</span>
+	 									<button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											Browse
 										</button>
-										<div class="dropdown-menu" id="browse_dropdown">
-											<a href="Browse?title=true&genre=false" class="dropdown-item" id="browse_movie_title">Browse by Title</a>
-											<div class="dropdown-divider"></div>
-											<a a href="Browse?title=false&genre=true" class="dropdown-item" href="#" id="browse_movie_genre">Browse by Genre</a>
+										<div class="dropdown-menu">
+    										<a class="dropdown-item" href="#">Browse by Title</a>
+										    <div class="dropdown-divider"></div>
+										    <a class="dropdown-item" href="#">Browse by Genre</a>
 										</div>
-										 -->
-									</div>
-									 
-																	
+									</div>					
 								</div>
 								
 								
