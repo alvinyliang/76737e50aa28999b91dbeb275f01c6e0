@@ -12,11 +12,32 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import java.sql.*;
+import java.util.Hashtable;
 
 public class SearchServlet extends HttpServlet {
 
     static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
-
+    
+    protected boolean validURL(String url){
+    	try{
+            URL valid_url = new URL(url);
+            HttpURLConnection connection = (HttpURLConnection)valid_url.openConnection();
+            connection.setRequestMethod("HEAD");
+            connection.setConnectTimeout(10);
+            connection.connect();
+            
+            if (connection.getResponseCode() == HttpURLConnection.HTTP_OK){
+        		return true;
+            }
+            
+            return false;
+    	}
+    	catch (Exception e){
+    		return false;
+    	}
+    	
+    }
+    
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // Output stream to STDOUT
@@ -37,6 +58,8 @@ public class SearchServlet extends HttpServlet {
             String movie_title = request.getParameter("movie_title");
 	        out.println(movie_title);
 	        out.println("<br>");
+	        String pageId = request.getParameter("pageId");
+	        
 	        
 	        
 	        if (movie_title == null || movie_title.isEmpty()){
@@ -48,44 +71,37 @@ public class SearchServlet extends HttpServlet {
 	        
 	        
 			ResultSet rs = stmt.executeQuery();
-			out.println("<div class='card-columns'>");
-	        while (rs.next()){
+			Hashtable<Integer, Hashtable<String, String>> sql_results = new Hashtable<Integer, Hashtable<String, String>>();
+			
+			//key for hashtable
+			int countID = 0;
+			while (rs.next()){
+				
+				Hashtable<String, String> to_return = new Hashtable<String, String>();
+				
 	        	String title = rs.getString(2);
 	        	String director = rs.getString(4);
 	        	String banner = rs.getString(5);
 	        	
 	        	String no_profile = "http://www.solarimpulse.com/img/profile-no-photo.png";
 
-	        	try{
-		            URL url = new URL(banner);
-		            HttpURLConnection connection = (HttpURLConnection)url.openConnection();
-		            connection.setRequestMethod("HEAD");
-		            connection.setConnectTimeout(10);
-		            
-		            connection.connect();
-		            int code = connection.getResponseCode();
-		            if (code != HttpURLConnection.HTTP_OK){
-		        		banner = no_profile;
-		            }
-	        	}
-	        	catch (Exception e){
+	        	//check for valid banner link
+	        	if (!validURL(banner)){
 	        		banner = no_profile;
 	        	}
 	    		
-
-
-	        	out.format(""
-	        			+ "<div class='card'> "
-	        			+ "	<img class='card-img-top' src='%s' alt='Profile not found.'> "
-	        			+ "		<div class='card-block'> "
-	        			+ "			<h4 class='card-title'>%s</h4> "
-	        			+ "			<p class='card-text'>%s</p> "
-	        			+ "		</div>"
-	        			+ "</div>"
-	        			, banner, title, director);
+	        	to_return.put("title", title);
+	        	to_return.put("director", director);
+	        	to_return.put("banner", banner);
+	        	
+				sql_results.put(countID, to_return);
+				
+				countID++;
 	        } 
-	        out.println("</div>");
 	        
+			session.setAttribute("results", sql_results);
+	        session.setAttribute("beginPageResults", 0);
+	        session.setAttribute("endPageResults", 10);
         }
         catch (SQLException ex) {
             while (ex != null) {
