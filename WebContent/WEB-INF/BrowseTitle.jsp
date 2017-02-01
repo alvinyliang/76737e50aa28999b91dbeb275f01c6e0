@@ -20,45 +20,46 @@
 						</div>
 							<div id = "browse_index">
 								<div  id="browse_index_title">
-									<a href='#' onclick="browseTitle('Z', '1', 'year', 'desc')">0</a>
-									<a href='#' id='./Browse/Title?firstChar=1'>1</a>
-									<a href='#' id='./Browse/Title?firstChar=2'>2</a>
-									<a href='#' id='./Browse/Title?firstChar=3'>3</a>
-									<a href='#' id='./Browse/Title?firstChar=4'>4</a>
-									<a href='#' id='./Browse/Title?firstChar=5'>5</a>
-									<a href='#' id='./Browse/Title?firstChar=6'>6</a>
-									<a href='#' id='./Browse/Title?firstChar=7'>7</a>
-									<a href='#' id='./Browse/Title?firstChar=8'>8</a>
-									<a href='#' id='./Browse/Title?firstChar=9'>9</a>
-									<a href='#' id='./Browse/Title?firstChar=a'>A</a>
-									<a href='#' id='./Browse/Title?firstChar=b'>B</a>
-									<a href='#' id='./Browse/Title?firstChar=c'>C</a>
-									<a href='#' id='./Browse/Title?firstChar=d'>D</a>
-									<a href='#' id='./Browse/Title?firstChar=e'>E</a>
-									<a href='#' id='./Browse/Title?firstChar=f'>F</a>
-									<a href='#' id='./Browse/Title?firstChar=g'>G</a>
-									<a href='#' id='./Browse/Title?firstChar=h'>H</a>
-									<a href='#' id='./Browse/Title?firstChar=i'>I</a>
-									<a href='#' id='./Browse/Title?firstChar=j'>J</a>
-									<a href='#' id='./Browse/Title?firstChar=k'>K</a>
-									<a href='#' id='./Browse/Title?firstChar=l'>L</a>
-									<a href='#' id='./Browse/Title?firstChar=m'>M</a>
-									<a href='#' id='./Browse/Title?firstChar=n'>N</a>
-									<a href='#' id='./Browse/Title?firstChar=o'>O</a>
-									<a href='#' id='./Browse/Title?firstChar=p'>P</a>
-									<a href='#' id='./Browse/Title?firstChar=q'>Q</a>
-									<a href='#' id='./Browse/Title?firstChar=r'>R</a>
-									<a href='#' id='./Browse/Title?firstChar=s'>S</a>
-									<a href='#' id='./Browse/Title?firstChar=t'>T</a>
-									<a href='#' id='./Browse/Title?firstChar=u'>U</a>
-									<a href='#' id='./Browse/Title?firstChar=v'>V</a>
-									<a href='#' id='./Browse/Title?firstChar=w'>W</a>
-									<a href='#' id='./Browse/Title?firstChar=x'>X</a>
-									<a href='#' id='./Browse/Title?firstChar=y'>Y</a>
-									<a href='#' id='./Browse/Title?firstChar=z'>Z</a>
+									<a href='#' onclick="browseTitle('0', '1', 'year', 'desc')">0</a>
+									<a href='#' onclick="browseTitle('1', '1', 'year', 'desc')">1</a>
+									<a href='#' onclick="browseTitle('2', '1', 'year', 'desc')">2</a>
+									<a href='#' onclick="browseTitle('3', '1', 'year', 'desc')">3</a>
+									<a href='#' onclick="browseTitle('4', '1', 'year', 'desc')">4</a>
+									<a href='#' onclick="browseTitle('5', '1', 'year', 'desc')">5</a>
+									<a href='#' onclick="browseTitle('6', '1', 'year', 'desc')">6</a>
+									<a href='#' onclick="browseTitle('7', '1', 'year', 'desc')">7</a>
+									<a href='#' onclick="browseTitle('8', '1', 'year', 'desc')">8</a>
+									<a href='#' onclick="browseTitle('9', '1', 'year', 'desc')">9</a>
+									<a href='#' onclick="browseTitle('A', '1', 'year', 'desc')">A</a>
+									<a href='#' onclick="browseTitle('B', '1', 'year', 'desc')">B</a>
+									<a href='#' onclick="browseTitle('C', '1', 'year', 'desc')">C</a>
+									<a href='#' onclick="browseTitle('D', '1', 'year', 'desc')">D</a>
+									<a href='#' onclick="browseTitle('E', '1', 'year', 'desc')">E</a>
+									<a href='#' onclick="browseTitle('F', '1', 'year', 'desc')">F</a>
+									<a href='#' onclick="browseTitle('G', '1', 'year', 'desc')">G</a>
+									<a href='#' onclick="browseTitle('H', '1', 'year', 'desc')">H</a>
+									<a href='#' onclick="browseTitle('I', '1', 'year', 'desc')">I</a>
+									<a href='#' onclick="browseTitle('J', '1', 'year', 'desc')">J</a>
+									<a href='#' onclick="browseTitle('L', '1', 'year', 'desc')">L</a>
+									<a href='#' onclick="browseTitle('M', '1', 'year', 'desc')">M</a>
+									<a href='#' onclick="browseTitle('N', '1', 'year', 'desc')">N</a>
+									<a href='#' onclick="browseTitle('O', '1', 'year', 'desc')">O</a>
+									<a href='#' onclick="browseTitle('P', '1', 'year', 'desc')">P</a>
+									<a href='#' onclick="browseTitle('Q', '1', 'year', 'desc')">Q</a>
+									<a href='#' onclick="browseTitle('R', '1', 'year', 'desc')">R</a>
+									<a href='#' onclick="browseTitle('S', '1', 'year', 'desc')">S</a>
+									<a href='#' onclick="browseTitle('T', '1', 'year', 'desc')">T</a>
+									<a href='#' onclick="browseTitle('U', '1', 'year', 'desc')">U</a>
+									<a href='#' onclick="browseTitle('V', '1', 'year', 'desc')">V</a>
+									<a href='#' onclick="browseTitle('W', '1', 'year', 'desc')">W</a>
+									<a href='#' onclick="browseTitle('X', '1', 'year', 'desc')">X</a>
+									<a href='#' onclick="browseTitle('Y', '1', 'year', 'desc')">Y</a>
+									<a href='#' onclick="browseTitle('Z', '1', 'year', 'desc')">Z</a>
 								</div>
 							</div>
-						<div id="content">Stuff to be replaced here</div>
+							<div id="content">
+							
+							</div>
 						<ul class="list-group">
 							<c:forEach var="item" items="${movieList}">
 								<li class="list-group-item">${item.getTitle()}</li>
@@ -83,7 +84,14 @@
 		    	          data: { 'title': title,  'page': page, 'sort':sort, 'order':order},
 		    	          success: function (result)
 		    	          {
-		    	        	  location.reload();
+		    	        	  var nhtml = '';
+		    	        	  nhtml += "<ul class='list-group'>";
+		    	              jQuery.each(result.movies, function(index, item) {
+			    	              alert(item.title);
+		    	                  nhtml += "<li>" + item.title + "</li>";
+		    	              });
+		    	              nhtml += "</ul>";
+		    	              $('#content').replaceWith(nhtml);
 		    	          }
 		    	      });
 		}

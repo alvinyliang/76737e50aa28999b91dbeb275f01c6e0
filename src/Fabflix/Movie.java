@@ -13,4 +13,8 @@ public class Movie {
 	public String getTitle() {
 		return this.title;
 	}
+	
+	public int getYear() {
+		return this.year;
+	}
 }

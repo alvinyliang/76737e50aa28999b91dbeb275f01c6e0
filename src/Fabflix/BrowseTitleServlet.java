@@ -3,6 +3,7 @@ package Fabflix;
 import javax.servlet.http.HttpServlet;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import javax.servlet.ServletException;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import javax.json.*;
 
 import java.sql.*;
 
@@ -39,8 +41,29 @@ public class BrowseTitleServlet extends HttpServlet {
      		request.getRequestDispatcher("/WEB-INF/BrowseTitle.jsp").forward(request,response);
      		return;
         } else {
-        	session.setAttribute("movieList", queryMovies("title", page, sort, order)); 
-     		request.getRequestDispatcher("/WEB-INF/BrowseTitle.jsp").forward(request,response);
+        	ArrayList<Movie> movieList = queryMovies(titleChar, page, sort, order);
+            
+            JsonObjectBuilder builder = Json.createObjectBuilder();
+            JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
+            for (Movie movie : movieList) {
+            	JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
+            	objectBuilder.add("title", movie.title);
+            	objectBuilder.add("year", movie.year);
+            	objectBuilder.add("director", movie.director);
+            	objectBuilder.add("banner", movie.banner);
+            	arrayBuilder.add(objectBuilder);
+            }
+            builder.add("movies", arrayBuilder);
+            JsonObject jsonMovieList = builder.build();
+            
+            PrintWriter out = response.getWriter();
+            response.setContentType("application/json;charset=utf-8");
+            out.print(jsonMovieList);
+            out.flush();
+            
+
+        	//session.setAttribute("movieList", movieList); 
+     		//request.getRequestDispatcher("/WEB-INF/BrowseTitle.jsp").forward(request,response);
      		return;
         }
     }
