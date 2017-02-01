@@ -79,8 +79,8 @@ public class BrowseMenuServlet extends HttpServlet {
 	       
 	        
 	        
-	        System.out.println(html);
-	        System.out.println("8:01");
+//	        System.out.println(html);
+	        
 	        out.print(html);
 	        	
         }

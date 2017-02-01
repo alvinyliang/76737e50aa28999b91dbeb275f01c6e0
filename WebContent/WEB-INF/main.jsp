@@ -61,7 +61,16 @@
 								
 								</div>
 								
-								<div id="content">Stuff to be replaced here</div>	
+								
+								
+								<div id="content">Stuff to be replaced here</div>
+								
+								<!-- Sample Single Movie Page -->
+								<a href="#content" id='./Movie?mid=135001'>Sample Movie Page</a>
+								
+								
+								
+								
 								
 								<ul class="list-group">
 									<c:forEach var="item" begin="${beginPageResults}" end="${endPageResults}" items="${results}">
@@ -80,7 +89,7 @@
 								</nav>
 								
 							
-
+								
 						
 			    	</div>
 				</div>
@@ -131,7 +140,7 @@
 				  $("#browse_index").attr("hidden", false);
 			  });
 			  
-			  
+			  // to-do: pagination 
 			  $("[id^='./Browse']").click(function(){
 				  
 				  $.ajax({
@@ -147,6 +156,17 @@
 				  
 			  });
 			  
+			  $("[id^='./Movie']").click(function(){
+				 $.ajax({
+					 type: "GET",
+					 url: $ (this).attr('id'),
+					 success: function(result){
+				    		$("#content").html(result);
+				    	}
+					 
+				 });
+				 
+			  });
 			  
 			  
 			  
