@@ -32,12 +32,14 @@ public class BrowseTitleServlet extends HttpServlet {
 	        Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
         	conn = DriverManager.getConnection(dbConn.DB_URL, dbConn.DB_USERNAME, dbConn.DB_PASSWORD);
         	
-        	// Fabflix/Browse/Title?firstChar=P
-            String titleChar = request.getParameter("firstChar");
+        	// Fabflix/Browse/Title?fchar=P
+            String titleChar = request.getParameter("fchar");
             
             String order = request.getParameter("order");
             int pageNum = Integer.parseInt(request.getParameter("p"));
             int numMovie = Integer.parseInt(request.getParameter("m"));
+            
+            
             
             String orderBy = ""; 
 	        if (order.contains("y")){
@@ -51,13 +53,19 @@ public class BrowseTitleServlet extends HttpServlet {
 	        }else{
 	        	orderBy += "asc";
 	        }
+	        
+	        System.out.println( "FirstChar: " + titleChar + "; "+
+					"orderBy:   " + orderBy + "; "+
+					"PageNum:   " + pageNum + "; " +
+					"numMovie:  " + numMovie);
             
             
     	    stmt = conn.prepareStatement("select * from movies "
     	    		+ "where substring(movies.title from 1 for 1) "
     	    		+ "= \""+ titleChar +"\" "
     	    		+ "order by movies."+ orderBy +" " 			//change order 
-    	    		+ "limit 10 offset " + ( numMovie * (pageNum-1)) +" ;");	//pagination
+    	    		+ "limit "+ numMovie +" offset " + (numMovie * (pageNum-1)) +" ;");
+    	    		// pagination
     	        
     	    
 

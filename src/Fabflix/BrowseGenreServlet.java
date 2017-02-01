@@ -32,8 +32,8 @@ public class BrowseGenreServlet extends HttpServlet {
 	        Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
         	conn = DriverManager.getConnection(dbConn.DB_URL, dbConn.DB_USERNAME, dbConn.DB_PASSWORD);
         	
-        	//Fabflix/Browse/Genre?genreName=Family
-            String genreName = request.getParameter("genreName");
+        	//Fabflix/Browse/Genre?gid=00000
+            String genreID = request.getParameter("gid");
             
             String order = request.getParameter("order");  
             	// ta: order by title asc	td: order by title desc
@@ -42,12 +42,6 @@ public class BrowseGenreServlet extends HttpServlet {
             int numMovie = Integer.parseInt(request.getParameter("m"));
             
             
-	        if (genreName.equalsIgnoreCase("SciFi")){
-	        	genreName = "Sci%Fi";
-	        }
-            genreName = "%" + genreName + "%";
-            
-            out.println(genreName);
 	        out.println("<br>");
 	        
 	        String orderBy = ""; 
@@ -63,21 +57,27 @@ public class BrowseGenreServlet extends HttpServlet {
 	        	orderBy += "asc";
 	        }
             
-            stmt = conn.prepareStatement("select * from movies "
-            		+ "where movies.id in( "
-            		+ "select genres_in_movies.movie_id "
-            		+ "from genres_in_movies join genres on (genres.id = genres_in_movies.genre_id) "
-            		+ "where genres.name like \"" + genreName + "\") "
+	        System.out.println( "GenreID: " + genreID + "; "+
+					"orderBy:   " + orderBy + "; "+
+					"PageNum:   " + pageNum + "; " +
+ 				   	"numMovie:  " + numMovie);
+	        
+            stmt = conn.prepareStatement("select * "
+            		+ "from genres_in_movies join movies "
+            		+ "on genres_in_movies.movie_id = movies.id "
+            		+ "where genres_in_movies.genre_id = " + genreID + " "
             		+ "order by movies."+ orderBy +" " 					// change order
-            		+ "limit 10 offset " + (numMovie * (pageNum-1)) +" ;");     // pagination
+            		+ "limit "+ numMovie +" offset " + (numMovie * (pageNum-1)) +" ;");     // pagination
             
+            System.out.println(stmt);
         	ResultSet rs = stmt.executeQuery();
 			
 			out.println("<div class='card-columns'>");
 	        while (rs.next()){
-	        	String title = rs.getString(2);
-	        	String director = rs.getString(4);
-	        	String banner = rs.getString(5);
+	        	
+	        	String title = rs.getString("title");
+	        	String director = rs.getString("director");
+	        	String banner = rs.getString("banner_url");
 	        	
 	        	String no_profile = "http://www.solarimpulse.com/img/profile-no-photo.png";
 
@@ -123,6 +123,7 @@ public class BrowseGenreServlet extends HttpServlet {
           }  // end catch SQLException
         catch(java.lang.Exception ex)
           {
+        	
               out.println("<HTML>" +
                           "<HEAD><TITLE>" +
                           "MovieDB: Error" +
