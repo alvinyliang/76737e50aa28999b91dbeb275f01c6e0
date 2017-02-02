@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Hashtable;
 
 public class SearchServlet extends HttpServlet {
@@ -42,39 +43,66 @@ public class SearchServlet extends HttpServlet {
             throws ServletException, IOException {
         // Output stream to STDOUT
         PrintWriter out = response.getWriter();
-        PreparedStatement stmt;
+        
         InputStream input = getServletContext().getResourceAsStream("/WEB-INF/db_config.properties");
         DBConnection dbConn = new DBConnection(input);
         Connection conn;
         HttpSession session = request.getSession(true);
-        
-
+        int queryLimit = 25;
 
         try{
 	        Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
         	conn = DriverManager.getConnection(dbConn.DB_URL, dbConn.DB_USERNAME, dbConn.DB_PASSWORD);
-        	stmt = conn.prepareStatement("SELECT * FROM movies WHERE title LIKE ? LIMIT 20");
+        	PreparedStatement stmt = conn.prepareStatement("SELECT * FROM movies WHERE title LIKE ? ORDER BY title ASC LIMIT ? OFFSET ? ");
+        	PreparedStatement stmt2 = conn.prepareStatement("SELECT COUNT(*) FROM movies WHERE title LIKE ?");
         	
-            String movie_title = request.getParameter("movie_title");
-	        out.println(movie_title);
-	        out.println("<br>");
-	        String pageId = request.getParameter("pageId");
-	        
-	        
-	        
+	        //match movie_title searched for
+        	
+    		String movie_title = (String) session.getAttribute("movie_title");
+    		if (request.getParameter("movie_title") != null){
+    			movie_title = request.getParameter("movie_title");
+    		};
+        	
 	        if (movie_title == null || movie_title.isEmpty()){
 	        	stmt.setString(1, movie_title);	
+	        	stmt2.setString(1, movie_title);	
 	        }
 	        else{
 	        	stmt.setString(1, '%' + movie_title + '%');
+	        	stmt2.setString(1, '%' + movie_title + '%');
 	        }
-	        
-	        
+
+	        //number of results to return
+        	stmt.setInt(2, queryLimit);
+
+        	//offest by pageId
+        	int pageId;
+    		if (request.getParameter("pageId") != null){
+    			pageId = Integer.parseInt(request.getParameter("pageId"));
+    		}
+    		else{
+    			pageId = 1;
+    		}
+    		
+    		if (pageId == 1){
+		        stmt.setInt(3, 0);
+    		}
+    		else{
+	        	stmt.setInt(3, (pageId-1)*queryLimit); //offset results by pageId user is currently on
+    		}
+
+	        //execute table results and count query
 			ResultSet rs = stmt.executeQuery();
-			Hashtable<Integer, Hashtable<String, String>> sql_results = new Hashtable<Integer, Hashtable<String, String>>();
+			ResultSet rs2 = stmt2.executeQuery();
 			
+			rs2.next();
+			int countResults = rs2.getInt(1);
+			
+			ArrayList<Hashtable<String, String>> sql_results = new ArrayList<Hashtable<String, String>>();
+        	
+			String no_profile = "http://www.solarimpulse.com/img/profile-no-photo.png";
+
 			//key for hashtable
-			int countID = 0;
 			while (rs.next()){
 				
 				Hashtable<String, String> to_return = new Hashtable<String, String>();
@@ -82,8 +110,6 @@ public class SearchServlet extends HttpServlet {
 	        	String title = rs.getString(2);
 	        	String director = rs.getString(4);
 	        	String banner = rs.getString(5);
-	        	
-	        	String no_profile = "http://www.solarimpulse.com/img/profile-no-photo.png";
 
 	        	//check for valid banner link
 	        	if (!validURL(banner)){
@@ -94,14 +120,33 @@ public class SearchServlet extends HttpServlet {
 	        	to_return.put("director", director);
 	        	to_return.put("banner", banner);
 	        	
-				sql_results.put(countID, to_return);
-				
-				countID++;
+				sql_results.add(to_return);				
 	        } 
 	        
+			
+			int numPages = (int)Math.ceil(countResults/queryLimit);
+
+			if (pageId - 1 > 0){
+				session.setAttribute("prev", pageId-1);
+			}
+			else{
+				session.setAttribute("prev", 1);
+				}
+			
+			if (pageId + 1 <= numPages){
+				session.setAttribute("next", pageId+1);
+			}
+			else{
+				session.setAttribute("next", numPages+1);
+			}
+			
+			
 			session.setAttribute("results", sql_results);
-	        session.setAttribute("beginPageResults", 0);
-	        session.setAttribute("endPageResults", 10);
+	        session.setAttribute("countResults", countResults);
+            session.setAttribute("movie_title", movie_title);
+            session.setAttribute("pageId", pageId);
+            session.setAttribute("numPages", numPages);
+
         }
         catch (SQLException ex) {
             while (ex != null) {

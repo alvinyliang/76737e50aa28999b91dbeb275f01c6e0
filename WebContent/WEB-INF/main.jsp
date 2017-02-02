@@ -21,7 +21,7 @@
 							<div class="mx-auto" style="width: 800px">
 						        <div class="input-group input-group-lg" style="vertical-align: middle;">
 								
-					            <input type="text" placeholder="Search for movie" class="form-control" name="movie_title" id="search_movie">
+					            <input type="text" placeholder="Search for movie" class="form-control" name="movie_title" id="search_movie_title">
 						            
 		         				</div>
 		         				<div class="pt-2">
@@ -44,6 +44,7 @@
 										    <a class="dropdown-item" href="#">Browse by Genre</a>
 										</div>
 									</div>					
+
 								</div>
 								
 								
@@ -65,21 +66,42 @@
 								
 								
 								
+										
+								<p> Showing ${results.size()} number of results </p>
+								<p> ${countResults} total results found! </p>
+
+								<c:if test="${results.size() > 0}">
+								
+									<nav aria-label="Page navigation example">
+									 	<ul class="pagination">
+								  		  	<li class="page-item"><a class="page-link" href="#${prev}" onclick="visitPage(${prev})">Previous</a></li>
+												 <c:forEach var="x" begin="1" end="${numPages + 1}">
+												 	<c:choose>
+										  		  	    <c:when test="${x == pageId}">
+    											  		  	<li class="page-item active"><a class="page-link" href="#${x}" onclick="visitPage(${x})">${x}</a></li>  	
+													    </c:when>
+													    <c:otherwise>
+												  		  	<li class="page-item"><a class="page-link" href="#${x}" onclick="visitPage(${x})">${x}</a></li>  	
+													    </c:otherwise>
+												 	</c:choose>
+												 </c:forEach>
+								  		  	<li class="page-item"><a class="page-link" href="#${next}" onclick="visitPage(${next})">Next</a></li>
+										  </ul>
+									</nav>
+								
+								</c:if>		
 								<ul class="list-group">
-									<c:forEach var="item" begin="${beginPageResults}" end="${endPageResults}" items="${results}">
-										<li class="list-group-item">${item.value['title']}</li>
+									<c:forEach var="item" items="${results}">
+										<li class="list-group-item">${item['title']}, ${item['director']}</li>
+										
+										
 									</c:forEach>
 								</ul>	
-															
-								<nav aria-label="Page navigation example">
-								  <ul class="pagination">
-								    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-								    <li class="page-item"><a class="page-link" href="#">1</a></li>
-								    <li class="page-item"><a class="page-link" href="#">2</a></li>
-								    <li class="page-item"><a class="page-link" href="#">3</a></li>
-								    <li class="page-item"><a class="page-link" href="#">Next</a></li>
-								  </ul>
-								</nav>
+
+
+							    <c:remove var="results" scope="session" />
+								
+
 								
 							
 								
@@ -93,82 +115,7 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
   		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
-		
-		<script type="text/javascript">
-		$.ajax({
-	  		type: "POST",
-	  		url: "./Browse/Menu",
-	  		success: function(result){
-		  		$("#browse_index").html(result);
-		  	}
-	  	});
-		$(document).ready(function () {
-			  var searchResult = function(){
-					$.ajax({
-		                type: "GET",
-						url:"./Search",
-		                data: {"movie_title" : $('input[name="movie_title"]').val()},
-		                success:function(result){
-				    		location.reload()
-				    	}        
-					});
-			  };
-			  
-			  $(document).keypress(function(e) {
-				    if(e.which == 13) {
-				        searchResult();
-				    }
-				});
-			  
-				  
-			  $("#search_movie_button").on("click", searchResult);
-			  
-			  
-			  
-			  
-			  
-			  
-			  $("#browse_movie_button").click(function (){
-				  $("#content").html("<p></p>")
-				  $("#browse_index").attr("hidden", false);
-			  });
-			  
-			  // to-do: pagination 
-			  $("[id^='./Browse']").click(function(){
-				  
-				  $.ajax({
-		                type: "GET",
-						url: $ (this).attr('id'),
-						data: {"order": "yd",
-							   "p": 1, 
-							   "m": 10},
-						success: function(result){
-				    		$("#content").html(result);
-				    	}
-					});
-				  
-			  });
-			  
-			  $("[id^='./Movie']").click(function(){
-				 $.ajax({
-					 type: "GET",
-					 url: $ (this).attr('id'),
-					 success: function(result){
-				    		$("#content").html(result);
-				    	}
-					 
-				 });
-				 
-			  });
-			  
-			  
-			  
-			 
-			  
-		});
-		
-		</script>
-	
+		<script src="./JS/pageSearch.js"></script>
  	
 	</body>
 </html>
