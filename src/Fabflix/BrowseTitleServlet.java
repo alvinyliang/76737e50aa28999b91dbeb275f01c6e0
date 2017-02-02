@@ -80,12 +80,50 @@ public class BrowseTitleServlet extends HttpServlet {
         try {
 	        Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
         	conn = DriverManager.getConnection(dbConn.DB_URL, dbConn.DB_USERNAME, dbConn.DB_PASSWORD);
+<<<<<<< HEAD
         	           
     	    stmt = conn.prepareStatement("select * from movies "
     	    		+ "where substring(movies.title from 1 for 1) "
     	    		+ "= \""+ titleChar +"\" "
     	    		+ "order by movies."+ sort + " " + order +" ");		//change order 
     	    		//+ "limit 10 offset " + ( numMovie * (pageNum-1)) +" ;");	//pagination
+=======
+        	
+        	// Fabflix/Browse/Title?fchar=P
+            String titleChar = request.getParameter("fchar");
+            
+            String order = request.getParameter("order");
+            int pageNum = Integer.parseInt(request.getParameter("p"));
+            int numMovie = Integer.parseInt(request.getParameter("m"));
+            
+            
+            
+            String orderBy = ""; 
+	        if (order.contains("y")){
+	        	orderBy += "year ";
+	        }else{
+	        	orderBy += "title ";
+	        }
+	        
+	        if (order.contains("d")){
+	        	orderBy += "desc";
+	        }else{
+	        	orderBy += "asc";
+	        }
+	        
+	        System.out.println( "FirstChar: " + titleChar + "; "+
+					"orderBy:   " + orderBy + "; "+
+					"PageNum:   " + pageNum + "; " +
+					"numMovie:  " + numMovie);
+            
+            
+    	    stmt = conn.prepareStatement("select * from movies "
+    	    		+ "where substring(movies.title from 1 for 1) "
+    	    		+ "= \""+ titleChar +"\" "
+    	    		+ "order by movies."+ orderBy +" " 			//change order 
+    	    		+ "limit "+ numMovie +" offset " + (numMovie * (pageNum-1)) +" ;");
+    	    		// pagination
+>>>>>>> refs/remotes/origin/master
     	        
     	    ResultSet rs = stmt.executeQuery();
 	
