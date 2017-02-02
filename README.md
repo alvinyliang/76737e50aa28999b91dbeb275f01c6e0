@@ -6,13 +6,12 @@
   
   - Add External Jar -> MySQL Connector/J 6.0.5 to project buid path
   - Create /lib directory under /WEB-INF and include the following files
-    - mysql-connector-java-6.0.5
-    - jstl-1.2
+    - mysql-connector-java-6.0.5 https://mvnrepository.com/artifact/mysql/mysql-connector-java/6.0.5
+    - jstl-1.2 https://mvnrepository.com/artifact/org.glassfish/javax.json/1.0.4
+    - javax.json 1.0.4
   - Under Eclipse "Problems" tab, change project JRE path to match current Java Version. Current JRE is set to version _111.
   
 ## Project Dependencies
-  - MySQL Connector/J 6.0.5
-    - https://mvnrepository.com/artifact/mysql/mysql-connector-java/6.0.5
   - Tomcat v8.5
   
 ## To do:
