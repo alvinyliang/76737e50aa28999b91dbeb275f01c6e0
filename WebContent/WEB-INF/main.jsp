@@ -39,7 +39,7 @@
 											Browse
 										</button>
 										<div class="dropdown-menu">
-    										<a class="dropdown-item" href="#">Browse by Title</a>
+    										<a class="dropdown-item" href="BrowseTitle.jsp">Browse by Title</a>
 										    <div class="dropdown-divider"></div>
 										    <a class="dropdown-item" href="#">Browse by Genre</a>
 										</div>

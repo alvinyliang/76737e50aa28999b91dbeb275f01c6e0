@@ -24,7 +24,7 @@ public class BrowseTitleServlet extends HttpServlet {
 		HttpSession session = request.getSession(false);  
     	try {
 	        if (session.getAttribute("authenticated") == null) {  
-	    		request.getRequestDispatcher("login.jsp").forward(request,response);
+	        	response.sendRedirect("../login.jsp");
 	    		return;
 	        }  
     	} catch (Exception e) {
@@ -35,18 +35,13 @@ public class BrowseTitleServlet extends HttpServlet {
         String page = request.getParameter("page");
         String sort = request.getParameter("sort");
         String order = request.getParameter("order");
+        
         ArrayList<Movie> movieList;
-        
-        if (titleChar == null) {
-        	movieList = queryMovies("A", "1", "year", "desc");
-        } else {
-        	movieList = queryMovies(titleChar, page, sort, order);
-        }
-        
+    	movieList = queryMovies(titleChar, page, sort, order);
+    	
         PrintWriter out = response.getWriter();
         response.setContentType("application/json;charset=utf-8");
         out.print(buildMovieListJson(movieList));
-        out.flush();
         return;
     }
     
@@ -79,52 +74,13 @@ public class BrowseTitleServlet extends HttpServlet {
         ArrayList<Movie> movieList = new ArrayList<Movie>();
         try {
 	        Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-        	conn = DriverManager.getConnection(dbConn.DB_URL, dbConn.DB_USERNAME, dbConn.DB_PASSWORD);
-<<<<<<< HEAD
-        	           
+        	conn = DriverManager.getConnection(dbConn.DB_URL, dbConn.DB_USERNAME, dbConn.DB_PASSWORD);       
     	    stmt = conn.prepareStatement("select * from movies "
     	    		+ "where substring(movies.title from 1 for 1) "
     	    		+ "= \""+ titleChar +"\" "
     	    		+ "order by movies."+ sort + " " + order +" ");		//change order 
     	    		//+ "limit 10 offset " + ( numMovie * (pageNum-1)) +" ;");	//pagination
-=======
-        	
-        	// Fabflix/Browse/Title?fchar=P
-            String titleChar = request.getParameter("fchar");
-            
-            String order = request.getParameter("order");
-            int pageNum = Integer.parseInt(request.getParameter("p"));
-            int numMovie = Integer.parseInt(request.getParameter("m"));
-            
-            
-            
-            String orderBy = ""; 
-	        if (order.contains("y")){
-	        	orderBy += "year ";
-	        }else{
-	        	orderBy += "title ";
-	        }
-	        
-	        if (order.contains("d")){
-	        	orderBy += "desc";
-	        }else{
-	        	orderBy += "asc";
-	        }
-	        
-	        System.out.println( "FirstChar: " + titleChar + "; "+
-					"orderBy:   " + orderBy + "; "+
-					"PageNum:   " + pageNum + "; " +
-					"numMovie:  " + numMovie);
-            
-            
-    	    stmt = conn.prepareStatement("select * from movies "
-    	    		+ "where substring(movies.title from 1 for 1) "
-    	    		+ "= \""+ titleChar +"\" "
-    	    		+ "order by movies."+ orderBy +" " 			//change order 
-    	    		+ "limit "+ numMovie +" offset " + (numMovie * (pageNum-1)) +" ;");
-    	    		// pagination
->>>>>>> refs/remotes/origin/master
-    	        
+    
     	    ResultSet rs = stmt.executeQuery();
 	
 	        while (rs.next()){
