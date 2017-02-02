@@ -35,42 +35,40 @@ public class BrowseTitleServlet extends HttpServlet {
         String page = request.getParameter("page");
         String sort = request.getParameter("sort");
         String order = request.getParameter("order");
+        ArrayList<Movie> movieList;
         
         if (titleChar == null) {
-			session.setAttribute("movieList", queryMovies("A", "1", "year", "desc")); 
-     		request.getRequestDispatcher("/WEB-INF/BrowseTitle.jsp").forward(request,response);
-     		return;
+        	movieList = queryMovies("A", "1", "year", "desc");
         } else {
-        	ArrayList<Movie> movieList = queryMovies(titleChar, page, sort, order);
-            
-            JsonObjectBuilder builder = Json.createObjectBuilder();
-            JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
-            for (Movie movie : movieList) {
-            	JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
-            	objectBuilder.add("title", movie.title);
-            	objectBuilder.add("year", movie.year);
-            	objectBuilder.add("director", movie.director);
-            	objectBuilder.add("banner", movie.banner);
-            	arrayBuilder.add(objectBuilder);
-            }
-            builder.add("movies", arrayBuilder);
-            JsonObject jsonMovieList = builder.build();
-            
-            PrintWriter out = response.getWriter();
-            response.setContentType("application/json;charset=utf-8");
-            out.print(jsonMovieList);
-            out.flush();
-            
-
-        	//session.setAttribute("movieList", movieList); 
-     		//request.getRequestDispatcher("/WEB-INF/BrowseTitle.jsp").forward(request,response);
-     		return;
+        	movieList = queryMovies(titleChar, page, sort, order);
         }
+        
+        PrintWriter out = response.getWriter();
+        response.setContentType("application/json;charset=utf-8");
+        out.print(buildMovieListJson(movieList));
+        out.flush();
+        return;
     }
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	doPost(request, response);
+    }
+    
+    private JsonObject buildMovieListJson(ArrayList<Movie> movieList) {
+        JsonObjectBuilder builder = Json.createObjectBuilder();
+        JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
+        for (Movie movie : movieList) {
+        	JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
+        	objectBuilder.add("title", movie.title);
+        	objectBuilder.add("year", movie.year);
+        	objectBuilder.add("director", movie.director);
+        	objectBuilder.add("banner", movie.banner);
+        	arrayBuilder.add(objectBuilder);
+        }
+        builder.add("movies", arrayBuilder);
+        JsonObject jsonMovieList = builder.build();
+        return jsonMovieList;
     }
 
     private ArrayList<Movie> queryMovies(String titleChar, String page, String sort, String order) {

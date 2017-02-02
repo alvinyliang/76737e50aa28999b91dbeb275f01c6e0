@@ -58,13 +58,7 @@
 								</div>
 							</div>
 							<div id="content">
-							
 							</div>
-						<ul class="list-group">
-							<c:forEach var="item" items="${movieList}">
-								<li class="list-group-item">${item.getTitle()}</li>
-							</c:forEach>
-						</ul>	
 			    	</div>
 				</div>
 			</div>
