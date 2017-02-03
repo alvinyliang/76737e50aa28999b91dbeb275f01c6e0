@@ -19,15 +19,12 @@ public class BrowseGenreServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        PrintWriter out = response.getWriter();
         PreparedStatement stmt;
         InputStream input = getServletContext().getResourceAsStream("/WEB-INF/db_config.properties");
         DBConnection dbConn = new DBConnection(input);
         Connection conn;
         HttpSession session = request.getSession(true);
         
-
-
         try{
 	        Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
         	conn = DriverManager.getConnection(dbConn.DB_URL, dbConn.DB_USERNAME, dbConn.DB_PASSWORD);
@@ -41,8 +38,7 @@ public class BrowseGenreServlet extends HttpServlet {
             int pageNum = Integer.parseInt(request.getParameter("p"));
             int numMovie = Integer.parseInt(request.getParameter("m"));
             
-            
-	        out.println("<br>");
+
 	        
 	        String orderBy = ""; 
 	        if (order.contains("y")){
@@ -72,45 +68,7 @@ public class BrowseGenreServlet extends HttpServlet {
             System.out.println(stmt);
         	ResultSet rs = stmt.executeQuery();
 			
-			out.println("<div class='card-columns'>");
-	        while (rs.next()){
-	        	
-	        	String title = rs.getString("title");
-	        	String director = rs.getString("director");
-	        	String banner = rs.getString("banner_url");
-	        	
-	        	String no_profile = "http://www.solarimpulse.com/img/profile-no-photo.png";
-
-	        	try{
-		            URL url = new URL(banner);
-		            HttpURLConnection connection = (HttpURLConnection)url.openConnection();
-		            connection.setRequestMethod("HEAD");
-		            connection.setConnectTimeout(10);
-		            
-		            connection.connect();
-		            int code = connection.getResponseCode();
-		            if (code != HttpURLConnection.HTTP_OK){
-		        		banner = no_profile;
-		            }
-	        	}
-	        	catch (Exception e){
-	        		banner = no_profile;
-	        	}
-	    		
-
-
-	        	out.format(""
-	        			+ "<div class='card'> "
-	        			+ "	<img class='card-img-top' src='%s' alt='Profile not found.'> "
-	        			+ "		<div class='card-block'> "
-	        			+ "			<h4 class='card-title'>%s</h4> "
-	        			+ "			<p class='card-text'>%s</p> "
-	        			+ "		</div>"
-	        			+ "</div>"
-	        			, banner, title, director);
-	        } 
-	        out.println("</div>");
-            
+	
 	       
 	        
 	        	
@@ -124,16 +82,11 @@ public class BrowseGenreServlet extends HttpServlet {
         catch(java.lang.Exception ex)
           {
         	
-              out.println("<HTML>" +
-                          "<HEAD><TITLE>" +
-                          "MovieDB: Error" +
-                          "</TITLE></HEAD>\n<BODY>" +
-                          "<P>SQL error in doGet: " +
-                          ex.getMessage() + "</P></BODY></HTML>");
+
               
               return;
           }
-       out.close();
+
     	
     }
     

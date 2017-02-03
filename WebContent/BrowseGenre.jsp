@@ -19,16 +19,22 @@ if (session.getAttribute("authenticated") == null) {
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-12">
-					<div class="text-center">
-							<h3 class="display-3">Browse by Genre</h3>
-								<div id = "browse_index">
-									<div id="genreList">
 
-									</div>
+					<div class="text-center">
+							<h3 class="display-3"><a data-toggle="collapse" data-target="#genreContainer" href="#genreContainer" >Browse by Genre</a> <button type="button" class="btn btn-default" data-toggle="collapse" data-target="#genreContainer">Show/Hide Genres</button></h3>
+
+								<div id = "browse_index">
+
 								</div>
 					</div>
 					<div class="row pt-4">
 						<div class="mx-auto" style="width: 1000px">
+							<div id="genreContainer" class="collapse">
+								<table class="table">
+									<tbody id="genreList">
+									</tbody>
+								</table>
+							</div>
 							<table class="table">
 								<thead>
 									<tr>
@@ -55,12 +61,19 @@ if (session.getAttribute("authenticated") == null) {
   		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
 		
 		<script type="text/javascript">
+		
 		$(document).ready(function(){
+
 			$.ajax({
 					type: "POST",
-					url: "/Fabflix/Browse/GetGenres",
-			        success: function(){
-			           alert("done");
+					url: "/Fabflix/Browse/Menu",
+			        success: function(result){
+			        	var html = "<tbody id='genreList'>";
+			             jQuery.each(result.genres, function(index, item) {
+			            	 html += "<tr><td>" + item.name + "</td></tr>";
+			             });
+			             html += "</tbody>";
+				         $('#genreList').replaceWith(html);
 					}
 			});
 		});

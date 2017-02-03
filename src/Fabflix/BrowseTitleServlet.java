@@ -53,6 +53,7 @@ public class BrowseTitleServlet extends HttpServlet {
     private JsonObject buildMovieListJson(ArrayList<Movie> movieList) {
         JsonObjectBuilder builder = Json.createObjectBuilder();
         JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
+        
         for (Movie movie : movieList) {
         	JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
         	objectBuilder.add("title", movie.title);
