@@ -104,7 +104,7 @@ if (session.getAttribute("authenticated") == null) {
 			        	 sortedArray = [];
 			             jQuery.each(result.movies, function(index, item) {
 			            	 html += 
-			            		 "<tr><th scope='row'>" + "<img src='" + item.banner +  "'>"
+			            		 "<tr><th scope='row'>" + "<img src='" + item.banner +  "' width='125' height='187'>"
 			            		 	+ "<td class='align-middle'>" + item.title + "</td>"
 			            		 	+ "<td class='align-middle'>" + item.year + "</td>"
 			            		 	+ "<td class='align-middle'>" + item.director + "</td>"

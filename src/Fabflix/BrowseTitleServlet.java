@@ -93,19 +93,17 @@ public class BrowseTitleServlet extends HttpServlet {
 	        	movie.banner = banner;
 	        	String no_profile = "https://i.imgur.com/OZISao4.png";
 
-	        	try{
-		            URL url = new URL(banner);
-		            HttpURLConnection connection = (HttpURLConnection)url.openConnection();
-		            connection.setRequestMethod("HEAD");
-		            connection.setConnectTimeout(10);
-		            connection.connect();
-		            int code = connection.getResponseCode();
-		            if (code != HttpURLConnection.HTTP_OK){
-		            	movie.banner = no_profile;
-		            }
-	        	}
-	        	catch (Exception e) {
-	        		movie.banner = no_profile;
+	        	try {
+		        	URL url = new URL(banner);
+		        	HttpURLConnection huc = (HttpURLConnection) url.openConnection();
+		        	huc.setRequestMethod("HEAD");
+		        	int responseCode = huc.getResponseCode();
+	
+		        	if (responseCode != 200) {
+		        		movie.banner = "https://i.imgur.com/OZISao4.png";
+		        	}
+	        	} catch (Exception e) {
+	        		
 	        	}
 	        	movieList.add(movie);
 	        }
