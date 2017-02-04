@@ -69,7 +69,7 @@ public class BrowseGenreServlet extends HttpServlet {
             		+ "order by movies."+ orderBy +" " 					// change order
             		+ "limit "+ numMovie +" offset " + (numMovie * (pageNum-1)) +" ;");     // pagination
             
-            System.out.println(stmt);
+            // System.out.println(stmt);
         	ResultSet rs = stmt.executeQuery();
 			
 			out.println("<div class='card-columns'>");

@@ -59,7 +59,7 @@ public class BrowseMenuServlet extends HttpServlet {
 	        
 	        html += 	"</div>\n";
             
-            
+	        
         	stmt = conn.prepareStatement("select * "
         			+ "from genres order by genres.name;");
         	rs = stmt.executeQuery();
@@ -73,6 +73,9 @@ public class BrowseMenuServlet extends HttpServlet {
 	        	out.println();
 	        
 	        }
+	        
+	        
+	        
 	        
 	        html += 	"</div>\n";
             

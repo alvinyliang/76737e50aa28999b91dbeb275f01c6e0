@@ -43,6 +43,10 @@
 		<servlet-name>MovieServlet</servlet-name>
 		<servlet-class>Fabflix.MovieServlet</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>StarServlet</servlet-name>
+		<servlet-class>Fabflix.StarServlet</servlet-class>
+	</servlet>
 	
 	<servlet-mapping>
 		<servlet-name>LoginServlet</servlet-name>
@@ -77,6 +81,10 @@
 	<servlet-mapping>
 		<servlet-name>MovieServlet</servlet-name>
 		<url-pattern>/Movie</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>StarServlet</servlet-name>
+		<url-pattern>/Star</url-pattern>
 	</servlet-mapping>
 	
 	
