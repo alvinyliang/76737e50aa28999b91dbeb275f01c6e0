@@ -108,9 +108,8 @@ public class BrowseTitleServlet extends HttpServlet {
 	        		movie.banner = no_profile;
 	        	}
 	        	movieList.add(movie);
-	    		
 	        }
-    	
+        conn.close();
         } catch (Exception e) {
         	
         }

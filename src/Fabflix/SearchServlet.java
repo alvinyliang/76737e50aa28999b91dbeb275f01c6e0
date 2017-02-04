@@ -102,6 +102,7 @@ public class SearchServlet extends HttpServlet {
 			session.setAttribute("results", sql_results);
 	        session.setAttribute("beginPageResults", 0);
 	        session.setAttribute("endPageResults", 10);
+	        conn.close();
         }
         catch (SQLException ex) {
             while (ex != null) {

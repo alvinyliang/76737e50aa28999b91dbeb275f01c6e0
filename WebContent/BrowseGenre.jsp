@@ -30,7 +30,7 @@ if (session.getAttribute("authenticated") == null) {
 					<div class="row pt-4">
 						<div class="mx-auto" style="width: 1000px">
 							<div id="genreContainer" class="collapse">
-								<table class="table">
+								<table class="table" id="genreListTable">
 									<tbody id="genreList">
 									</tbody>
 								</table>
@@ -61,16 +61,14 @@ if (session.getAttribute("authenticated") == null) {
   		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
 		
 		<script type="text/javascript">
-		
 		$(document).ready(function(){
-
 			$.ajax({
 					type: "POST",
 					url: "/Fabflix/Browse/Menu",
 			        success: function(result){
 			        	var html = "<tbody id='genreList'>";
 			             jQuery.each(result.genres, function(index, item) {
-			            	 html += "<tr><td>" + item.name + "</td></tr>";
+			            	 html += "<tr><td><a class='genre' href='#'>" + item.name + "</a></td></tr>";
 			             });
 			             html += "</tbody>";
 				         $('#genreList').replaceWith(html);
@@ -79,17 +77,22 @@ if (session.getAttribute("authenticated") == null) {
 		});
 		
 		var lastClick;
-		function browseTitle(title, page, sort, order) {
+		$(document).on('click', "a.genre", function(event) {
+			var genre = $(event.target).text();
+			$('.collapse').collapse('hide'); //Hide Genre list
+			browseGenre(genre, '1', 'year', 'desc');    
+		});
+		
+		function browseGenre(genre, page, sort, order) {
 			var html = "<tbody id= 'content'>";
 			$.ajax(
 			     {
 			         type: "POST",
-			         url: '/Fabflix/Browse/Title',
-			         data: { 'title': title,  'page': page, 'sort':sort, 'order':order},
+			         url: '/Fabflix/Browse/Genre',
+			         data: { 'genre': genre,  'page': page, 'sort':sort, 'order':order},
 			         success: function (result)
 			         {
-			        	 lastClick = title;
-			        	 sortedArray = [];
+			        	 lastClick = genre;
 			             jQuery.each(result.movies, function(index, item) {
 			            	 html += 
 			            		 "<tr><th scope='row'>" + "<img src='" + item.banner +  "'>"
@@ -99,13 +102,13 @@ if (session.getAttribute("authenticated") == null) {
 			            		 + "</tr>";
 			             })
 
-
 			             html += "</tbody>"
 			             $('#content').replaceWith(html);
 			         }
 			     });
            
 		}
+
 		
 		</script>
 

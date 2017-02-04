@@ -28,13 +28,14 @@ public class BrowseMenuServlet extends HttpServlet {
         InputStream input = getServletContext().getResourceAsStream("/WEB-INF/db_config.properties");
         DBConnection dbConn = new DBConnection(input);
         Connection conn;
-        HttpSession session = request.getSession(true);
         
         try {
 	        Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
         	conn = DriverManager.getConnection(dbConn.DB_URL, dbConn.DB_USERNAME, dbConn.DB_PASSWORD);
         	
-	        stmt = conn.prepareStatement("select distinct name from genres order by genres.name;");
+        	//New statement ignores movies that are in the genre list but no movies for it exist
+        	stmt = conn.prepareStatement("SELECT distinct name from genres join genres_in_movies on genres.id = genres_in_movies.genre_id order by genres.name;");
+	        //stmt = conn.prepareStatement("select distinct name from genres order by genres.name;");
 	        
 			ResultSet rs = stmt.executeQuery();
 	        JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
@@ -65,8 +66,5 @@ public class BrowseMenuServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	doPost(request, response);
     }
-
-    
-    
-    
+  
 }
