@@ -39,8 +39,8 @@ if (session.getAttribute("authenticated") == null) {
 								<thead>
 									<tr>
 										<th></th>
-										<th><a href='#' onclick="browseTitle(lastClick, '1', 'title', 'desc')">Title</a></th>
-										<th><a href='#' onclick="browseTitle(lastClick, '1', 'year', 'desc')">Year</a></th>
+										<th><a href='#' onclick="browseGenre(lastGenre, '1', 'title', lastOrder)">Title</a></th>
+										<th><a href='#' onclick="browseGenre(lastGenre, '1', 'year', lastOrder)">Year</a></th>
 										<th>Director</th>
 									</tr>
 								</thead>
@@ -61,6 +61,7 @@ if (session.getAttribute("authenticated") == null) {
   		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
 		
 		<script type="text/javascript">
+		var lastGenre, lastPage, lastSort, lastOrder;
 		$(document).ready(function(){
 			$.ajax({
 					type: "POST",
@@ -76,7 +77,7 @@ if (session.getAttribute("authenticated") == null) {
 			});
 		});
 		
-		var lastClick;
+
 		$(document).on('click', "a.genre", function(event) {
 			var genre = $(event.target).text();
 			$('.collapse').collapse('hide'); //Hide Genre list
@@ -84,6 +85,11 @@ if (session.getAttribute("authenticated") == null) {
 		});
 		
 		function browseGenre(genre, page, sort, order) {
+			if (sort == lastSort) {
+				order = (lastOrder === 'desc') ? 'asc' : 'desc';
+			}
+
+       	 
 			var html = "<tbody id= 'content'>";
 			$.ajax(
 			     {
@@ -91,8 +97,12 @@ if (session.getAttribute("authenticated") == null) {
 			         url: '/Fabflix/Browse/Genre',
 			         data: { 'genre': genre,  'page': page, 'sort':sort, 'order':order},
 			         success: function (result)
-			         {
-			        	 lastClick = genre;
+			         {			        	 
+			        	 lastGenre = genre;
+			        	 lastPage = page;
+			        	 lastOrder = order;
+			        	 lastSort = sort;
+			        	 
 			             jQuery.each(result.movies, function(index, item) {
 			            	 html += 
 			            		 "<tr><th scope='row'>" + "<img src='" + item.banner +  "' width='125' height='187'>"

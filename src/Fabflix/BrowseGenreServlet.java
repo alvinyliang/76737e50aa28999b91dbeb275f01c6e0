@@ -105,7 +105,7 @@ public class BrowseGenreServlet extends HttpServlet {
 		        		movie.banner = "https://i.imgur.com/OZISao4.png";
 		        	}
 	        	} catch (Exception e) {
-	        		
+
 	        	}
 	        	
 	        	movieList.add(movie);
