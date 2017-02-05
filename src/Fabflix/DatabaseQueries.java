@@ -1,6 +1,5 @@
 package Fabflix;
 
-import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.sql.Connection;
@@ -9,9 +8,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import javax.json.Json;
-import javax.json.JsonObjectBuilder;
 
 public class DatabaseQueries {
 	DBConnection dbConn;
@@ -36,6 +32,72 @@ public class DatabaseQueries {
     	} catch (Exception e) {
     		return "https://i.imgur.com/OZISao4.png";
     	}
+	}
+	
+	public HashMap<Integer, String> getStarMovies(int starId) {
+        Connection conn;
+        PreparedStatement stmt;
+        HashMap<Integer, String> movies = new HashMap<Integer, String> ();
+        
+        try {
+	        Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+        	conn = DriverManager.getConnection(dbConn.DB_URL, dbConn.DB_USERNAME, dbConn.DB_PASSWORD);       
+    	    stmt = conn.prepareStatement("select * from stars_in_movies join movies on stars_in_movies.movie_id = movies.id where star_id = ?");
+    	    stmt.setInt(1, starId);
+    
+    	    ResultSet rs = stmt.executeQuery();
+	
+	        while (rs.next()){
+	        	int movieId = rs.getInt("movie_id");
+	        	String title = rs.getString("title");
+	        	movies.put(movieId, title);
+	        }
+	        conn.close();
+        } catch (Exception e) {
+        	
+        }
+    	return movies;	
+	}
+	
+	public Star getStarDetails(int starId) {
+        Connection conn;
+        PreparedStatement stmt;
+        Star star = new Star();
+        
+        try {
+	        Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+        	conn = DriverManager.getConnection(dbConn.DB_URL, dbConn.DB_USERNAME, dbConn.DB_PASSWORD);       
+    	    stmt = conn.prepareStatement("select * from stars where id = ?");
+    	    stmt.setInt(1, starId);
+    
+    	    ResultSet rs = stmt.executeQuery();
+	
+	        while (rs.next()){
+	        	star.id = rs.getInt("id");
+	        	star.firstName = rs.getString("first_name");
+	        	star.lastName = rs.getString("last_name");
+	        	star.dob = rs.getString("dob");
+	        	star.photo = rs.getString("photo_url");
+	        	star.movies = getStarMovies(starId);
+
+	        	try {
+		        	URL url = new URL(star.photo);
+		        	HttpURLConnection huc = (HttpURLConnection) url.openConnection();
+		        	huc.setRequestMethod("HEAD");
+		        	int responseCode = huc.getResponseCode();
+	
+		        	if (responseCode != 200) {
+		        		star.photo = "http://i.imgur.com/maDRWrD.png";
+		        	}
+	        	} catch (Exception e) {
+	        		
+	        	}
+	        }
+	        conn.close();
+        } catch (Exception e) {
+        	
+        }
+    	return star;		
 	}
 	
     public ArrayList<Star> queryStars(int movieId) {
@@ -72,7 +134,7 @@ public class DatabaseQueries {
 	        	}
 	        	starList.add(star);
 	        }
-        conn.close();
+	        conn.close();
         } catch (Exception e) {
         	
         }
