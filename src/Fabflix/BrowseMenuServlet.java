@@ -38,7 +38,7 @@ public class BrowseMenuServlet extends HttpServlet {
 	        //stmt = conn.prepareStatement("select distinct name from genres order by genres.name;");
 	        
 			ResultSet rs = stmt.executeQuery();
-	        JsonArrayBuilder arrayBuilder = Json.createArrayBuilder()
+	        JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
 	        while (rs.next()){
 	        	String genre = rs.getString("name");
 	        	arrayBuilder.add(Json.createObjectBuilder().add("name", genre));

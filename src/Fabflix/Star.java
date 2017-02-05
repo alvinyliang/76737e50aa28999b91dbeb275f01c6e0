@@ -11,11 +11,19 @@ public class Star {
 		
 	}
 	
+	public int getId() {
+		return this.id;
+	}
+	
 	public String getName() {
 		return this.firstName + " " + this.lastName;
 	}
 	
 	public String getDob() {
 		return this.dob;
+	}
+	
+	public String getPhoto () {
+		return this.photo;
 	}
 }
