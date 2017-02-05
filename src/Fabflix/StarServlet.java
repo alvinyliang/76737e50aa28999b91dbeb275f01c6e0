@@ -15,7 +15,8 @@ import java.util.ArrayList;
 import javax.json.*;
 import java.sql.*;
 
-public class MovieServlet extends HttpServlet {
+public class StarServlet extends HttpServlet {
+	
 	static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -41,33 +42,30 @@ public class MovieServlet extends HttpServlet {
 	        Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
         	conn = DriverManager.getConnection(dbConn.DB_URL, dbConn.DB_USERNAME, dbConn.DB_PASSWORD);
         	
-        	// ./Fabflix/Movie?mid=0000
-            String movieID = request.getParameter("mid");
+        	// ./Fabflix/Star?sid=0000
+            String starID = request.getParameter("sid");
             
             
-	        
-            stmt = conn.prepareStatement("select * from movies where id=" + movieID + " ;");
+            stmt = conn.prepareStatement("select * from stars where id=" + starID + " ;");
          
         	ResultSet rs = stmt.executeQuery();
         	JsonObjectBuilder builder = Json.createObjectBuilder();
 			
 	        while (rs.next()){
 	        	
-	        	
-	        	String banner 	= rs.getString("banner_url");
-	        	String trailer 	= rs.getString("trailer_url");
-	        	
 	        	builder.add("id", rs.getString("id"));
-	        	builder.add("title", rs.getString("title"));
-	        	builder.add("year", rs.getString("year"));
-	        	builder.add("director", rs.getString("director"));
+	        	builder.add("name" ,rs.getString("first_name") + 
+	        				  " " + rs.getString("last_name"));
+	        	builder.add("dob", rs.getString("dob"));
+	        	
+	        	String photo 	= rs.getString("photo_url");
 	        	
 	        	
 	        	
 	        	String no_profile = "http://www.solarimpulse.com/img/profile-no-photo.png";
 	        	
 	        	try{
-		            URL url = new URL(banner);
+		            URL url = new URL(photo);
 		            HttpURLConnection connection = (HttpURLConnection)url.openConnection();
 		            connection.setRequestMethod("HEAD");
 		            connection.setConnectTimeout(10);
@@ -75,51 +73,27 @@ public class MovieServlet extends HttpServlet {
 		            connection.connect();
 		            int code = connection.getResponseCode();
 		            if (code != HttpURLConnection.HTTP_OK){
-		        		banner = no_profile;
+		            	photo = no_profile;
 		            }
 	        	}
 	        	catch (Exception e){
-	        		banner = no_profile;
+	        		photo = no_profile;
 	        	}
 	    		
-						
-				try{
-			            URL url = new URL(trailer);
-			            HttpURLConnection connection = (HttpURLConnection)url.openConnection();
-			            connection.setRequestMethod("HEAD");
-			            connection.setConnectTimeout(10);
-			            
-			            connection.connect();
-			            int code = connection.getResponseCode();
-			            if (code != HttpURLConnection.HTTP_OK){
-			            	trailer = "#";
-			            }
-		        	}catch (Exception e){
-		        		trailer = "#";
-		        	}
-						
-
-		        builder.add("banner",banner);
-	        	builder.add("trailer", trailer);
+				builder.add("photo", photo);		
+				
 	        } 
 	        
 	        
-	        // build JsonArray for stars
+	        // build JsonArray for featured movies
 	        stmt = conn.prepareStatement(""
-	        		+ "select CONCAT(stars.first_name ,\" \", stars.last_name) as name, stars.id "
-	        		+ "from stars join stars_in_movies "
-	        		+ "where (stars_in_movies.movie_id = " + movieID +" "
-	        		+ "and stars.id = stars_in_movies.star_id);");
+	        		+ "select movies.title as name, movies.id "
+	        		+ "from movies join stars_in_movies "
+	        		+ "where (stars_in_movies.star_id = " + starID +" "
+	        		+ "and stars_in_movies.movie_id = movies.id);");
 	        
-	        builder.add("stars", buildListJson(stmt));
+	        builder.add("movies", buildListJson(stmt));
 	        
-	        // build JsonArray for genres
-	        stmt = conn.prepareStatement("select genres.name, genres.id "
-	        		+ "from genres join genres_in_movies "
-	        		+ "where (genres_in_movies.movie_id = " + movieID + " "
-	        		+ "and genres.id = genres_in_movies.genre_id);");
-	        
-	        builder.add("genres", buildListJson(stmt));
 	        
 	        
 	        	
@@ -177,5 +151,5 @@ public class MovieServlet extends HttpServlet {
     }
     
     
-    
+ 
 }
