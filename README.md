@@ -10,6 +10,21 @@
     - jstl-1.2 https://mvnrepository.com/artifact/org.glassfish/javax.json/1.0.4
     - javax.json 1.0.4 https://mvnrepository.com/artifact/org.glassfish/javax.json/1.0.4
   - Under Eclipse "Problems" tab, change project JRE path to match current Java Version. Current JRE is set to version _111.
+  - Query to create the schema for the cart:
+  
+  create table carts (
+	session_id varchar(50) not null,
+    customer_id integer not null,
+    movie_id integer not null,
+    quantity integer,
+    primary key (session_id, customer_id, movie_id),
+    FOREIGN KEY (`customer_id`)
+        REFERENCES `moviedb`.`customers` (`id`)
+        ON DELETE CASCADE ON UPDATE NO ACTION,
+    FOREIGN KEY (`movie_id`)
+        REFERENCES `moviedb`.`movies` (`id`)
+        ON DELETE CASCADE ON UPDATE NO ACTION
+    );
   
 ## Project Dependencies
   - Tomcat v8.5
