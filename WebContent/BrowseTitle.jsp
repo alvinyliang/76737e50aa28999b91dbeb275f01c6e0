@@ -68,9 +68,10 @@ if (session.getAttribute("authenticated") == null) {
 								<thead>
 									<tr>
 										<th></th>
-										<th><a href='#' onclick="browseTitle(lastClick, '1', 'title', 'desc')">Title</a></th>
-										<th><a href='#' onclick="browseTitle(lastClick, '1', 'year', 'desc')">Year</a></th>
+										<th><a href='#' onclick="browseTitle(lastClick, '1', 'title', lastOrder)">Title</a></th>
+										<th><a href='#' onclick="browseTitle(lastClick, '1', 'year', lastOrder)">Year</a></th>
 										<th>Director</th>
+										<th>Staring</th>
 									</tr>
 								</thead>
 								<tbody id="content">
@@ -90,8 +91,11 @@ if (session.getAttribute("authenticated") == null) {
   		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
 		
 		<script type="text/javascript">
-		var lastClick;
+		var lastClick, lastPage, lastSort, lastOrder;
 		function browseTitle(title, page, sort, order) {
+			if (sort == lastSort) {
+				order = (lastOrder === 'desc') ? 'asc' : 'desc';
+			}
 			var html = "<tbody id= 'content'>";
 			$.ajax(
 			     {
@@ -104,11 +108,17 @@ if (session.getAttribute("authenticated") == null) {
 			        	 sortedArray = [];
 			             jQuery.each(result.movies, function(index, item) {
 			            	 html += 
-			            		 "<tr><th scope='row'>" + "<img src='" + item.banner +  "'>"
+			            		 "<tr><th scope='row'>" + "<img src='" + item.banner +  "' width='125' height='187'>"
 			            		 	+ "<td class='align-middle'>" + item.title + "</td>"
 			            		 	+ "<td class='align-middle'>" + item.year + "</td>"
 			            		 	+ "<td class='align-middle'>" + item.director + "</td>"
-			            		 + "</tr>";
+			            		 	+ "<td class='align-middle'>";
+			            		 	
+			            		 	jQuery.each(item.stars, function(index, star) {
+			            		 		html += "<a href='Star?starId=" + star.id + "'>" + star.firstName + " " + star.lastName + " </a><br>";
+			            		 	});
+			            		 	
+			            		 	html += "</td></tr>";
 			             })
 
 

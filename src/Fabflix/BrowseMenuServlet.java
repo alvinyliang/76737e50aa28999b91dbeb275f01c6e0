@@ -5,6 +5,11 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+import javax.json.Json;
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -19,92 +24,40 @@ public class BrowseMenuServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        PrintWriter out = response.getWriter();
         PreparedStatement stmt;
         InputStream input = getServletContext().getResourceAsStream("/WEB-INF/db_config.properties");
         DBConnection dbConn = new DBConnection(input);
         Connection conn;
-        HttpSession session = request.getSession(true);
         
-
-
-        try{
+        try {
 	        Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
         	conn = DriverManager.getConnection(dbConn.DB_URL, dbConn.DB_USERNAME, dbConn.DB_PASSWORD);
         	
-        	
-            
-            
-            String html = "";
-            
+        	//New statement ignores movies that are in the genre list but no movies for it exist
+        	stmt = conn.prepareStatement("SELECT distinct name from genres join genres_in_movies on genres.id = genres_in_movies.genre_id order by genres.name;");
+	        //stmt = conn.prepareStatement("select distinct name from genres order by genres.name;");
 	        
-
-	        stmt = conn.prepareStatement("select distinct substring(movies.title from 1 for 1)"
-	        		+ " as first_char from movies "
-	        		+ "order by movies.title;");
-	        
-
 			ResultSet rs = stmt.executeQuery();
-			
-			html +=		"<div>\n";
-			html += 	"	<h5 align='center'>Browse by Title</h5>\n";
-			
-	        while (rs.next()){
-	        	String firstChar = rs.getString("first_char");
-	        	html += "	<a href='#content' id='./Browse/Title?fchar="+ firstChar + "'>"+ firstChar+ "</a>\n";
-	        	out.println();
-	        
-	        }
-	        
-	        
-	        html += 	"</div>\n";
-            
-	        
-        	stmt = conn.prepareStatement("select * "
-        			+ "from genres order by genres.name;");
-        	rs = stmt.executeQuery();
-			html += 	"<div>\n";
-			html += 	"	<h5 align='center'>Browse by Genre</h5>\n";
-			
+	        JsonArrayBuilder arrayBuilder = Json.createArrayBuilder()
 	        while (rs.next()){
 	        	String genre = rs.getString("name");
-	        	String gid = rs.getString("id"); 
-	        	html += "	<a href='#content' id='./Browse/Genre?gid="+ gid + "'>"+ genre+ "</a>\n";
-	        	out.println();
-	        
+	        	arrayBuilder.add(Json.createObjectBuilder().add("name", genre));
 	        }
 	        
-	        
-	        
-	        
-	        html += 	"</div>\n";
-            
-	       
-	        
-	        
-//	        System.out.println(html);
-	        
-	        out.print(html);
-	        	
+	        JsonObjectBuilder builder = Json.createObjectBuilder();
+	        builder.add("genres", arrayBuilder);
+	        JsonObject genreList = builder.build();
+
+	        PrintWriter out = response.getWriter();
+	        response.setContentType("application/json;charset=utf-8");
+	        out.print(genreList);
         }
         catch (SQLException ex) {
-            while (ex != null) {
-                  System.out.println ("SQL Exception:  " + ex.getMessage ());
-                  ex = ex.getNextException ();
-              }  // end while
-          }  // end catch SQLException
-        catch(java.lang.Exception ex)
-          {
-              out.println("<HTML>" +
-                          "<HEAD><TITLE>" +
-                          "MovieDB: Error" +
-                          "</TITLE></HEAD>\n<BODY>" +
-                          "<P>SQL error in doGet: " +
-                          ex.getMessage() + "</P></BODY></HTML>");
-              
-              return;
-          }
-       out.close();
+
+        } 
+        catch(java.lang.Exception ex) {
+
+        }
     	
     }
     
@@ -112,8 +65,5 @@ public class BrowseMenuServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	doPost(request, response);
     }
-
-    
-    
-    
+  
 }
