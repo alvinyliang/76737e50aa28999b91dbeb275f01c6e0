@@ -91,6 +91,12 @@ if (session.getAttribute("authenticated") == null) {
   		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
 		
 		<script type="text/javascript">
+		$(document).ajaxStart(function() {
+		    $(document.body).css({'cursor' : 'wait'});
+		}).ajaxStop(function() {
+		    $(document.body).css({'cursor' : 'default'});
+		});
+		
 		var lastClick, lastPage, lastSort, lastOrder;
 		function browseTitle(title, page, sort, order) {
 			if (sort == lastSort) {
