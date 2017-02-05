@@ -42,6 +42,7 @@ if (session.getAttribute("authenticated") == null) {
 										<th><a href='#' onclick="browseGenre(lastGenre, '1', 'title', lastOrder)">Title</a></th>
 										<th><a href='#' onclick="browseGenre(lastGenre, '1', 'year', lastOrder)">Year</a></th>
 										<th>Director</th>
+										<th>Staring</th>
 									</tr>
 								</thead>
 								<tbody id="content">
@@ -109,7 +110,13 @@ if (session.getAttribute("authenticated") == null) {
 			            		 	+ "<td class='align-middle'>" + item.title + "</td>"
 			            		 	+ "<td class='align-middle'>" + item.year + "</td>"
 			            		 	+ "<td class='align-middle'>" + item.director + "</td>"
-			            		 + "</tr>";
+			            		 	+ "<td class='align-middle'>" + item.director + "</td>"
+			            		 	+ "<td class='align-middle'>";
+			            		 	jQuery.each(item.stars, function(index, star) {
+			            		 		html += "<a href='Star?starId=" + star.id + "'>" + star.firstName + " " + star.lastName + " </a><br>";
+			            		 	});
+			            		 	
+			            		 	html += "</td></tr>";
 			             })
 
 			             html += "</tbody>"
