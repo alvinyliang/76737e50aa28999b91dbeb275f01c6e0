@@ -21,9 +21,9 @@
 			    				<thead>
 									<tr>
 										<th></th>
-										<th style="width:45%">Movie</th>
+										<th style="width:40%">Movie</th>
 										<th style="width:10%">Price</th>
-										<th style="width:13%">Quantity</th>
+										<th style="width:18%">Quantity</th>
 										<th style="width:22%" class="text-center">Subtotal</th>
 										<th style="width:10%">Actions</th>
 									</tr>
@@ -46,16 +46,24 @@
 											</td>
 											<td data-th="Price">$9.99</td>
 											<td data-th="Quantity">
-												<div class="input-group">
-													<input type="number" class="form-control text-center" value="${entry.value}">
-													    <span class="input-group-btn">
-															<button class="btn btn-info btn-sm"><i class="fa fa-refresh"></i></button>
-													    </span>
-												</div>
+												<form action="/Fabflix/UpdateCart" method="POST">
+													<div class="input-group">
+													<input type="number" name="quantity" class="form-control text-center" value="${entry.value}">
+													<input type="hidden" name="movieId" value="${movie.getId()}">
+													<input type="hidden" name="action" value="update">
+													<button type ="submit" class="btn btn-info btn-sm"><i class="fa fa-refresh"></i></button>
+													</div>
+												</form>				
 											</td>
 											<td data-th="Subtotal" class="text-center">1.99</td>
 											<td class="actions" data-th="">
-												<button class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></button>								
+												<form action="/Fabflix/UpdateCart" method="POST">
+													<div class="input-group">
+													<input type="hidden" name="movieId" value="${movie.getId()}">
+													<input type="hidden" name="action" value="remove">
+													<button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></button>
+													</div>
+												</form>								
 											</td>											
 										</tr>
 									</c:forEach>
