@@ -27,7 +27,7 @@ public class SearchServlet extends HttpServlet {
     static final String DEBUG = "OFF";
     
     
-    private JsonObject buildMovieListJson(ArrayList<Movie> movieList, int totalPages) {
+    private JsonObject buildMovieListJson(ArrayList<Movie> movieList, int totalPages, int pageId) {
         JsonObjectBuilder builder = Json.createObjectBuilder();
         JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
         
@@ -40,7 +40,7 @@ public class SearchServlet extends HttpServlet {
         	objectBuilder.add("year", movie.year);
         	objectBuilder.add("director", movie.director);
         	objectBuilder.add("banner", movie.banner);
-        	
+        	objectBuilder.add("pageId", pageId);
         	
             objectBuilder.add("numPages", totalPages);
             
@@ -95,7 +95,8 @@ public class SearchServlet extends HttpServlet {
 			String director = request.getParameter("director");
 			String year = request.getParameter("year");
 			String star = request.getParameter("star");
-			
+	        String sort = request.getParameter("sort");
+	        String order = request.getParameter("order");			
 			 
 			int pageId = getPageId(request);
 			
@@ -112,10 +113,10 @@ public class SearchServlet extends HttpServlet {
             session.setAttribute("star", star);
 			
 
-        	ArrayList<Movie> movieList = querySearchParam(dbQ, conn, title, director, star, year, pageId);
+        	ArrayList<Movie> movieList = querySearchParam(dbQ, conn, title, director, star, year, pageId, sort, order);
         	
         	response.setContentType("application/json;charset=utf-8");
-	        out.print(buildMovieListJson(movieList, totalPages));
+	        out.print(buildMovieListJson(movieList, totalPages, pageId));
 	        out.flush();
         } catch (SQLException ex) {
             while (ex != null) {
@@ -179,20 +180,31 @@ public class SearchServlet extends HttpServlet {
     //conn, title, director, star, year
     protected int querySearchParamCount(Connection conn, String title, String director, String star, String year) throws SQLException{
 
-    	PreparedStatement stmt = conn.prepareStatement("SELECT COUNT(*) FROM movies WHERE (title LIKE ? AND year LIKE ? AND director LIKE ?)");
+    	PreparedStatement stmt = conn.prepareStatement("SELECT COUNT(*) FROM movies WHERE "
+    			+ "(title LIKE ? AND year LIKE ? AND director LIKE ? AND "
+    			+ "id IN "
+    			+ "(SELECT movie_id FROM stars_in_movies WHERE star_id IN "
+    			+ "(SELECT id FROM moviedb.stars WHERE concat(first_name, ' ', last_name) "
+    					+ "LIKE ?))) ");    	
     	
     	//ensure all fields not empty
-    	if ((title == null || title.isEmpty()) && (director == null || director.isEmpty()) && (year == null || year.isEmpty())){
+    	if ((title == null || title.trim().isEmpty()) && 
+    			(director == null || director.trim().isEmpty()) && 
+    			(year == null || year.trim().isEmpty()) &&
+    			(star == null || star.trim().isEmpty())
+    			){
         	stmt.setString(1, "");
         	stmt.setString(2, "");	
         	stmt.setString(3, "");
+        	stmt.setString(4, "");
         }
     	else{
             stmt.setString(1, '%' + title + '%');
         	stmt.setString(2, '%' + year + '%');
         	stmt.setString(3, '%' + director + '%');
+        	stmt.setString(4, star + '%');
     	}
-		
+    	
         ResultSet rs = stmt.executeQuery();
         rs.next();
         int itemCount = rs.getInt(1);
@@ -203,43 +215,52 @@ public class SearchServlet extends HttpServlet {
     }
     
     //conn, title, director, year, star, pageId
-    protected ArrayList<Movie> querySearchParam(DatabaseQueries dbQ, Connection conn, String title, String director, String star, String year, int pageId) throws SQLException{
+    protected ArrayList<Movie> querySearchParam(
+    		DatabaseQueries dbQ, Connection conn, String title, String director, 
+    		String star, String year, int pageId, String sort, String order) throws SQLException{
 
-    	PreparedStatement stmt = conn.prepareStatement("SELECT * FROM movies WHERE (title LIKE ? AND year LIKE ? AND director LIKE ?) ORDER BY title ASC LIMIT ? OFFSET ? ");
+    	PreparedStatement stmt = conn.prepareStatement("SELECT * FROM movies WHERE "
+    			+ "(title LIKE ? AND year LIKE ? AND director LIKE ? AND "
+    			+ "id IN "
+    			+ "(SELECT movie_id FROM stars_in_movies WHERE star_id IN "
+    			+ "(SELECT id FROM moviedb.stars WHERE concat(first_name, ' ', last_name) "
+    					+ "LIKE ?))) "
+    			+ "ORDER BY movies." + sort + " " + order + " LIMIT ? OFFSET ? ");
     	//AND director LIKE ? AND year LIKE ?
 
+    	
         //fuzzy match title
 
     	//ensure all fields not empty
-    	if ((title == null || title.isEmpty()) && 
-    			(director == null || director.isEmpty()) && 
-    			(year == null || year.isEmpty()) &&
-    			(star == null || star.isEmpty())
+    	if ((title == null || title.trim().isEmpty()) && 
+    			(director == null || director.trim().isEmpty()) && 
+    			(year == null || year.trim().isEmpty()) &&
+    			(star == null || star.trim().isEmpty())
     			){
         	stmt.setString(1, "");
         	stmt.setString(2, "");	
         	stmt.setString(3, "");
-//        	stmt.setString(4, "");
+        	stmt.setString(4, "");
         }
     	else{
             stmt.setString(1, '%' + title + '%');
         	stmt.setString(2, '%' + year + '%');
         	stmt.setString(3, '%' + director + '%');
-//        	stmt.setString(4, '%' + director + '%');
+        	stmt.setString(4, '%' + star + '%');
 
     	}
     	System.out.printf("title: %s, director: %s, year: %s, star: %s \n", title, director, year, star);
 
         
         //set number of results to return
-    	stmt.setInt(4, queryLimit); //request.getParameter("numberResultsPerPage");
+    	stmt.setInt(5, queryLimit); //request.getParameter("numberResultsPerPage");
 		
     	//set offest # using pageId
 		if (pageId == 1){
-	        stmt.setInt(5, 0);
+	        stmt.setInt(6, 0);
 		}
 		else{
-        	stmt.setInt(5, (pageId-1)*queryLimit); //offset results by pageId
+        	stmt.setInt(6, (pageId-1)*queryLimit); //offset results by pageId
 		}
 		
     	ResultSet rs = stmt.executeQuery();

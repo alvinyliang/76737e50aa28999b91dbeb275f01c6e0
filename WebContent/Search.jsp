@@ -49,11 +49,11 @@ if (session.getAttribute("authenticated") == null) {
 						<div class="mx-auto" style="width: 1000px">
 							<table class="table">
 								<thead>
-									<tr>
+									<tr id="tableheaders">
 										<th></th>
 										<th>Movie ID</th>
-										<th>Title</th>
-										<th>Year</th>
+										<th><a href="#" id="titlesort">Title</a></th>
+										<th><a href="#" id="yearsort">Year</a></th>
 										<th>Director</th>
 										<th>Staring</th>
 									</tr>
@@ -72,25 +72,34 @@ if (session.getAttribute("authenticated") == null) {
 	 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
 		
 		<script type="text/javascript">
-	
-			function searchMovie(title, year, director, star, pageId){
+
 			
+			var lastPage = 1; 
+			var lastSort = "title";
+			var lastOrder = "asc";
+			var p = 1;
+			
+			function searchMovie(pageId, sort, order){
+
 				var html;
 				var paginate_html = '';
+				var tablehead_html = '';
 				var numPage;
-				var p = pageId;
+				
 				
 				$.ajax({
 					type: "POST",
 					datatype: "json",
 					url: "./Search",
-					data: {"title": title,
-							"year": year,
-							"director": director,
-							"star": star,
-							"pageId": p},
+					data: {"title": $('input[name="movie_title"]').val(),
+							"year": $('input[name="year"]').val(),
+							"director": $('input[name="director"]').val(),
+							"star": $('input[name="star"]').val(),
+							"pageId": pageId,
+							"sort": sort,
+							"order": order},
 					success: function(result){
-	
+			        	 			        	 
 						 html += "<tbody id='content'>";
 						 
 						 jQuery.each(result.movies, function(index, item) {
@@ -114,73 +123,81 @@ if (session.getAttribute("authenticated") == null) {
 						 })
 						 html += "</tbody>";
 						 $('#content').replaceWith(html);
-			         
-				        //Loop through every available page and output a page link
+						
+						p = pageId;
+
+				        //output a pagination
 				        if (numPage){
 				        	var prev = p-1;
 				        	var next = p+1;
 				        	
 				        	if (prev > 0){
-					            paginate_html += '<li class="page-item"><a class="page-link" href="#" onclick="getPage(' + prev + ')">Previous</a></li>';
+					            paginate_html += '<li class="page-item"><a class="page-link" href="#" onclick="getPage(' + 
+					            		prev + " , '" + sort + "' , '" + order + "')" + '">Previous</a></li>';
 				        	}
 				        	else {
-					            paginate_html += '<li class="page-item disabled"><a class="page-link" href="#" onclick="getPage(1)">Previous</a></li>';
+					            paginate_html += '<li class="page-item disabled"><a class="page-link" href="#" onclick="getPage(' + 
+					            		1 + " , '" + sort + "' , '" + order + "')" + '">Previous</a></li>';
 				        	}
-				        	
 				        	for(var x = 1;  x <= numPage; x++){
-				        		
 				       			if (x == p){
-						            paginate_html += '<li class="page-item active"><a class="page-link" href="#" onclick="getPage(' + x + ')">' + x+'</a></li>';
-
+						            paginate_html += '<li class="page-item active"><a class="page-link" href="#" onclick="getPage(' + 
+						            		x + " , '" + sort + "' , '" + order + "')" + '">' + x +'</a></li>';
 				       			}
 				       			else{
-						            paginate_html += '<li class="page-item"><a class="page-link" href="#" onclick="getPage(' + x + ')">' + x+'</a></li>';
-
+						            paginate_html += '<li class="page-item"><a class="page-link" href="#" onclick="getPage(' + 
+						            		x + " , '" + sort + "' , '" + order + "')" + '">'  + x + '</a></li>';
 				       			}
-				        		
 					        }
-				        	
 				        	if (next > numPage){
-					            paginate_html += '<li class="page-item disabled"><a class="page-link" href="#" onclick="getPage(' + numPage + ')">Next</a></li>';
+					            paginate_html += '<li class="page-item disabled"><a class="page-link" href="#" onclick="getPage(' + 
+					            		numPage + " , '" + sort + "' , '" + order + "')" + '">Next</a></li>';
 				        	}
 				        	else {
-					            paginate_html += '<li class="page-item"><a class="page-link" href="#" onclick="getPage(' + next + ')">Next</a></li>';
-
+					            paginate_html += '<li class="page-item"><a class="page-link" href="#" onclick="getPage(' + 
+					            		next + " , '" + sort + "' , '" + order + "')" + '">Next</a></li>';
 				        	}				        	
-				        	
 							 $('#pNumbers').html(paginate_html);					 
 				        }
 				        else{
 							 $('#pNumbers').html("");					 
-
 				        }
+				        
+						if (sort == lastSort) {
+							order = (lastOrder === 'desc') ? 'asc' : 'desc';
+						}
+						
+			        	 lastPage = p;
+			        	 lastSort = sort;       	 
+			        	 lastOrder = order;
+			        	 
+
+						
 					}});
 			}
 			
 		
 		
 		
-			function getPage(page_num){
-		        searchMovie($('input[name="movie_title"]').val(), 
-		        		$('input[name="year"]').val(),
-		        		$('input[name="director"]').val(),
-		        		$('input[name="star"]').val(),
-		        		page_num);
+			function getPage(page_num, sort, order){
+		        searchMovie(page_num, sort, order);
 			}		
 			
 			$(document).ready(function () {
 
 				  $("#search_movie_title, #search_movie_year, #search_movie_director, #search_movie_star").on("keyup", function(e) {
 					    if(e.which == 13) {
-					        searchMovie($('input[name="movie_title"]').val(), 
-					        		$('input[name="year"]').val(),
-					        		$('input[name="director"]').val(),
-					        		$('input[name="star"]').val(),
-					        		1);
+					        searchMovie(1, "title", 'asc');
 					    }
 					    
 
 					});
+				  $("#titlesort").on("click", function(e) {
+						searchMovie(p, "title", lastOrder);
+					});				  
+				  $("#yearsort").on("click", function(e) {
+						searchMovie(p, "year", lastOrder);
+					});					  
 				  
 				});		
 
