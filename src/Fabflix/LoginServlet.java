@@ -1,5 +1,7 @@
 package Fabflix;
 
+
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -7,7 +9,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -34,10 +35,10 @@ public class LoginServlet extends HttpServlet {
 			stmt.setString(2, password);
         	ResultSet rs = stmt.executeQuery();
         	if (rs.next()) {
-        	
+        		String name = rs.getString("first_name");
+        		session.setAttribute("name", name);
         		session.setAttribute("authenticated", "true");
-        		//Change to user's first name?
-        		session.setAttribute("username", username);
+        		
                 response.sendRedirect("Home");
                 return;
         	}

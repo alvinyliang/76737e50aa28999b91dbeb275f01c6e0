@@ -15,8 +15,8 @@
 			<div class="row">
 				<div class="col-12">
 					<div class="jumbotron" style="background:transparent !important">
-						<h3 class="display-3">Welcome to Fabflix</h3>
-						<p>Hello, ${username}.</p>
+						<h3 class="display-3">Welcome to Zotflix</h3>
+						<p>Hello, ${name}.</p>
 						<div class="row">
 							<div class="mx-auto" style="width: 800px">
 						        <div class="input-group input-group-lg" style="vertical-align: middle;">

@@ -10,6 +10,13 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
+	<error-page>
+    <error-code>404</error-code>
+		<location>/ErrorPages/404.jsp</location>
+	</error-page>
+	<error-page>
+        <location>/ErrorPages/error.jsp</location>
+    </error-page>
   <servlet>
     <servlet-name>LoginServlet</servlet-name>
     <servlet-class>Fabflix.LoginServlet</servlet-class>
@@ -50,6 +57,10 @@
     <servlet-name>CartServlet</servlet-name>
     <servlet-class>Fabflix.CartServlet</servlet-class>
   </servlet>
+   <servlet>
+  <servlet-name>UpdateCartServlet</servlet-name>
+    <servlet-class>Fabflix.UpdateCartServlet</servlet-class>
+  </servlet>
   <servlet-mapping>
     <servlet-name>LoginServlet</servlet-name>
     <url-pattern>/Login</url-pattern>
@@ -86,8 +97,14 @@
     <servlet-name>StarServlet</servlet-name>
     <url-pattern>/Star</url-pattern>
   </servlet-mapping>
+  
   <servlet-mapping>
     <servlet-name>CartServlet</servlet-name>
     <url-pattern>/Cart</url-pattern>
+  </servlet-mapping>
+  
+   <servlet-mapping>
+   <servlet-name>UpdateCartServlet</servlet-name>
+    <url-pattern>/UpdateCart</url-pattern>
   </servlet-mapping>  
 </web-app>

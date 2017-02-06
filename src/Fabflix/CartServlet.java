@@ -21,8 +21,7 @@ public class CartServlet extends HttpServlet{
 	    		return;
 	        }
 	        else {
-	        	//String username = (String) session.getAttribute("username");
-	        	//request.setAttribute("username", username);
+	        	request.setAttribute("cart", Cart.cart);
 	     		request.getRequestDispatcher("/WEB-INF/cart.jsp").forward(request,response);
 	     		return;
 	        }  
