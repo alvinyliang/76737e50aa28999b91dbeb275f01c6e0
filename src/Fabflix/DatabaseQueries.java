@@ -1,5 +1,6 @@
 package Fabflix;
 
+import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.sql.Connection;
@@ -10,10 +11,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class DatabaseQueries {
-	DBConnection dbConn;
+	Connection conn = null;
 	
-	public DatabaseQueries(DBConnection dbConn) {
-		this.dbConn = dbConn;
+	public DatabaseQueries(Connection conn) {	
+		this.conn = conn;
 	}
 	
 	private String checkBanner(String bannerUrl) {
@@ -35,13 +36,10 @@ public class DatabaseQueries {
 	}
 	
 	public HashMap<Integer, String> getStarMovies(int starId) {
-        Connection conn;
         PreparedStatement stmt;
         HashMap<Integer, String> movies = new HashMap<Integer, String> ();
         
         try {
-	        Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-        	conn = DriverManager.getConnection(dbConn.DB_URL, dbConn.DB_USERNAME, dbConn.DB_PASSWORD);       
     	    stmt = conn.prepareStatement("select * from stars_in_movies join movies on stars_in_movies.movie_id = movies.id where star_id = ?");
     	    stmt.setInt(1, starId);
     
@@ -52,7 +50,6 @@ public class DatabaseQueries {
 	        	String title = rs.getString("title");
 	        	movies.put(movieId, title);
 	        }
-	        conn.close();
         } catch (Exception e) {
         	
         }
@@ -60,13 +57,10 @@ public class DatabaseQueries {
 	}
 	
 	public Star getStarDetails(int starId) {
-        Connection conn;
         PreparedStatement stmt;
         Star star = new Star();
         
         try {
-	        Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-        	conn = DriverManager.getConnection(dbConn.DB_URL, dbConn.DB_USERNAME, dbConn.DB_PASSWORD);       
     	    stmt = conn.prepareStatement("select * from stars where id = ?");
     	    stmt.setInt(1, starId);
     
@@ -80,20 +74,20 @@ public class DatabaseQueries {
 	        	star.photo = rs.getString("photo_url");
 	        	star.movies = getStarMovies(starId);
 
-	        	try {
-		        	URL url = new URL(star.photo);
-		        	HttpURLConnection huc = (HttpURLConnection) url.openConnection();
-		        	huc.setRequestMethod("HEAD");
-		        	int responseCode = huc.getResponseCode();
-	
-		        	if (responseCode != 200) {
-		        		star.photo = "http://i.imgur.com/maDRWrD.png";
-		        	}
-	        	} catch (Exception e) {
-	        		
-	        	}
+//	        	try {
+//		        	URL url = new URL(star.photo);
+//		        	HttpURLConnection huc = (HttpURLConnection) url.openConnection();
+//		        	huc.setRequestMethod("HEAD");
+//	        		huc.setConnectTimeout(20);
+//		        	int responseCode = huc.getResponseCode();
+//	
+//		        	if (responseCode != 200) {
+//		        		star.photo = "http://i.imgur.com/maDRWrD.png";
+//		        	}
+//	        	} catch (Exception e) {
+//	        		
+//	        	}
 	        }
-	        conn.close();
         } catch (Exception e) {
         	
         }
@@ -101,12 +95,9 @@ public class DatabaseQueries {
 	}
 	
     public ArrayList<Star> queryStars(int movieId) {
-        Connection conn;
         PreparedStatement stmt;
         ArrayList<Star> starList = new ArrayList<Star>();
         try {
-	        Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-        	conn = DriverManager.getConnection(dbConn.DB_URL, dbConn.DB_USERNAME, dbConn.DB_PASSWORD);       
     	    stmt = conn.prepareStatement("SELECT * FROM stars_in_movies join stars ON stars_in_movies.star_id = stars.id WHERE movie_id = ?");
     	    stmt.setInt(1, movieId);
     
@@ -120,21 +111,22 @@ public class DatabaseQueries {
 	        	star.dob = rs.getString(6);
 	        	star.photo = rs.getString(7);
 
-	        	try {
-		        	URL url = new URL(star.photo);
-		        	HttpURLConnection huc = (HttpURLConnection) url.openConnection();
-		        	huc.setRequestMethod("HEAD");
-		        	int responseCode = huc.getResponseCode();
-	
-		        	if (responseCode != 200) {
-		        		star.photo = "http://i.imgur.com/maDRWrD.png";
-		        	}
-	        	} catch (Exception e) {
-	        		
-	        	}
+//	        	try {
+//		        	URL url = new URL(star.photo);
+//		        	HttpURLConnection huc = (HttpURLConnection) url.openConnection();
+//		        	huc.setRequestMethod("HEAD");
+//		            huc.setConnectTimeout(20);
+//
+//		        	int responseCode = huc.getResponseCode();
+//	
+//		        	if (responseCode != 200) {
+//		        		star.photo = "http://i.imgur.com/maDRWrD.png";
+//		        	}
+//	        	} catch (Exception e) {
+//	        		
+//	        	}
 	        	starList.add(star);
 	        }
-	        conn.close();
         } catch (Exception e) {
         	
         }
@@ -142,19 +134,18 @@ public class DatabaseQueries {
     }
     
     public Movie getMovieDetails(int movieId) {
-        Connection conn;
         PreparedStatement stmt;
     	Movie movie = new Movie();
         try{
-	        Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-        	conn = DriverManager.getConnection(dbConn.DB_URL, dbConn.DB_USERNAME, dbConn.DB_PASSWORD);
             stmt = conn.prepareStatement("select * from movies where id= ?;");
             stmt.setInt(1, movieId);
          
         	ResultSet rs = stmt.executeQuery();
 
 	        while (rs.next()){
-	        	movie.banner = checkBanner(rs.getString("banner_url"));
+//	        	movie.banner = checkBanner(rs.getString("banner_url"));
+	        	movie.banner = rs.getString("banner_url");
+
 	        	movie.id = rs.getInt("id");
 	        	movie.title = rs.getString("title");
 	        	movie.year = rs.getInt("year");

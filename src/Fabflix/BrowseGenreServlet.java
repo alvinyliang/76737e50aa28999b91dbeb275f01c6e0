@@ -104,18 +104,18 @@ public class BrowseGenreServlet extends HttpServlet {
 	        	star.dob = rs.getString(6);
 	        	star.photo = rs.getString(7);
 
-	        	try {
-		        	URL url = new URL(star.photo);
-		        	HttpURLConnection huc = (HttpURLConnection) url.openConnection();
-		        	huc.setRequestMethod("HEAD");
-		        	int responseCode = huc.getResponseCode();
-	
-		        	if (responseCode != 200) {
-		        		star.photo = "http://i.imgur.com/maDRWrD.png";
-		        	}
-	        	} catch (Exception e) {
-	        		
-	        	}
+//	        	try {
+//		        	URL url = new URL(star.photo);
+//		        	HttpURLConnection huc = (HttpURLConnection) url.openConnection();
+//		        	huc.setRequestMethod("HEAD");
+//		        	int responseCode = huc.getResponseCode();
+//	
+//		        	if (responseCode != 200) {
+//		        		star.photo = "http://i.imgur.com/maDRWrD.png";
+//		        	}
+//	        	} catch (Exception e) {
+//	        		
+//	        	}
 	        	starList.add(star);
 	        }
         conn.close();
@@ -150,18 +150,18 @@ public class BrowseGenreServlet extends HttpServlet {
 	        	movie.banner = banner;
 	        	movie.stars = queryStars(movie.id);
 	        	
-	        	try {
-		        	URL url = new URL(banner);
-		        	HttpURLConnection huc = (HttpURLConnection) url.openConnection();
-		        	huc.setRequestMethod("HEAD");
-		        	int responseCode = huc.getResponseCode();
-	
-		        	if (responseCode != 200) {
-		        		movie.banner = "https://i.imgur.com/OZISao4.png";
-		        	}
-	        	} catch (Exception e) {
-
-	        	}
+//	        	try {
+//		        	URL url = new URL(banner);
+//		        	HttpURLConnection huc = (HttpURLConnection) url.openConnection();
+//		        	huc.setRequestMethod("HEAD");
+//		        	int responseCode = huc.getResponseCode();
+//	
+//		        	if (responseCode != 200) {
+//		        		movie.banner = "https://i.imgur.com/OZISao4.png";
+//		        	}
+//	        	} catch (Exception e) {
+//
+//	        	}
 	        	
 	        	movieList.add(movie);
 	        }

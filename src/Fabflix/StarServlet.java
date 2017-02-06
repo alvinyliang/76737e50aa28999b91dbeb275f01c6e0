@@ -21,7 +21,10 @@ public class StarServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
+		Connection conn = null;
+        
 	    HttpSession session = request.getSession(false);
+	    
 	    try {
 	        if (session.getAttribute("authenticated") == null) {  
 	    		request.getRequestDispatcher("login.jsp").forward(request,response);
@@ -32,14 +35,33 @@ public class StarServlet extends HttpServlet {
     		return;
 	    }
 		int starId = Integer.parseInt(request.getParameter("starId"));
-        InputStream input = getServletContext().getResourceAsStream("/WEB-INF/db_config.properties");
-        DBConnection dbConn = new DBConnection(input);
-        DatabaseQueries queries = new DatabaseQueries(dbConn);
-        
-        Star starInfo = queries.getStarDetails(starId);
-        session.setAttribute("star", starInfo);
-        
- 		request.getRequestDispatcher("/WEB-INF/star.jsp").forward(request,response);
+
+    	try {
+    		
+            InputStream input = getServletContext().getResourceAsStream("/WEB-INF/db_config.properties");
+            DBConnection dbConn = new DBConnection(input);
+	        Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+	        
+			conn = DriverManager.getConnection(dbConn.DB_URL, dbConn.DB_USERNAME, dbConn.DB_PASSWORD);
+	        DatabaseQueries queries = new DatabaseQueries(conn);
+	        
+	        Star starInfo = queries.getStarDetails(starId);
+	        session.setAttribute("star", starInfo);
+	        
+	 		request.getRequestDispatcher("/WEB-INF/star.jsp").forward(request,response);
+ 		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+		}
+        catch(java.lang.Exception ex)
+        {
+        }    	
+    	finally{
+    		try {
+				conn.close();
+			} catch (SQLException e) {
+			}
+    	}
  		return;
     	
     }

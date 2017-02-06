@@ -31,10 +31,11 @@ public class SearchServlet extends HttpServlet {
         JsonObjectBuilder builder = Json.createObjectBuilder();
         JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
         
+        //iterate over movie list
         for (Movie movie : movieList) {
         	JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
         	
-        	objectBuilder.add("movie_id", movie.id);
+        	objectBuilder.add("id", movie.id);
         	objectBuilder.add("title", movie.title);
         	objectBuilder.add("year", movie.year);
         	objectBuilder.add("director", movie.director);
@@ -42,11 +43,23 @@ public class SearchServlet extends HttpServlet {
         	
         	
             objectBuilder.add("numPages", totalPages);
+            
+            //iterate over stars list
+            JsonArrayBuilder starArrayBuilder = Json.createArrayBuilder();
+            for (Star star : movie.stars) {
+            	JsonObjectBuilder starObjectBuilder = Json.createObjectBuilder();
+            	starObjectBuilder.add("id", star.id);
+            	starObjectBuilder.add("firstName", star.firstName);
+            	starObjectBuilder.add("lastName", star.lastName);
+            	starArrayBuilder.add(starObjectBuilder);
 
+            }
+        	objectBuilder.add("stars", starArrayBuilder);
+        	
         	arrayBuilder.add(objectBuilder);
         }
+        
         builder.add("movies", arrayBuilder);
-
 
         JsonObject jsonMovieList = builder.build();
         return jsonMovieList;
@@ -63,16 +76,19 @@ public class SearchServlet extends HttpServlet {
         // Output stream to STDOUT
         PrintWriter out = response.getWriter();
         
-        InputStream input = getServletContext().getResourceAsStream("/WEB-INF/db_config.properties");
-        DBConnection dbConn = new DBConnection(input);
         HttpSession session = request.getSession(true);
         Connection conn = null;
         
         
         try{
-	        Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+            InputStream input = getServletContext().getResourceAsStream("/WEB-INF/db_config.properties");
+            DBConnection dbConn = new DBConnection(input);
+            Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
         	conn = DriverManager.getConnection(dbConn.DB_URL, dbConn.DB_USERNAME, dbConn.DB_PASSWORD);
-        
+            
+        	DatabaseQueries dbQ = new DatabaseQueries(conn);
+            
+
 
 	        //get params	
 			String title = request.getParameter("title");
@@ -86,11 +102,6 @@ public class SearchServlet extends HttpServlet {
         	//execute table results and count query
 			int countResults = querySearchParamCount(conn, title, director, star, year);
 			int totalPages = (int) Math.ceil( (double) countResults / (double) queryLimit);
-
-			setPrevPagination(session, pageId);
-			setNextPagination(session, pageId, totalPages);
-
-			
 			
 			session.setAttribute("countResults", countResults);
             session.setAttribute("pageId", pageId);
@@ -101,20 +112,17 @@ public class SearchServlet extends HttpServlet {
             session.setAttribute("star", star);
 			
 
-        	ArrayList<Movie> movieList = querySearchParam(conn, title, director, star, year, pageId);
+        	ArrayList<Movie> movieList = querySearchParam(dbQ, conn, title, director, star, year, pageId);
         	
         	response.setContentType("application/json;charset=utf-8");
 	        out.print(buildMovieListJson(movieList, totalPages));
 	        out.flush();
-        }
-        catch (SQLException ex) {
+        } catch (SQLException ex) {
             while (ex != null) {
                   System.out.println ("SQL Exception:  " + ex.getMessage ());
                   ex = ex.getNextException ();
               }  // end while
-          }  // end catch SQLException
-        catch(java.lang.Exception ex)
-          {
+        } catch(java.lang.Exception ex){
               out.println("<HTML>" +
                           "<HEAD><TITLE>" +
                           "MovieDB: Error" +
@@ -122,13 +130,9 @@ public class SearchServlet extends HttpServlet {
                           "<P>SQL error in doGet: " +
                           ex.getMessage() + "</P></BODY></HTML>");
               return;
-          }
-        finally{
+        } finally{
             out.close();
-            try {
-				conn.close();
-			} catch (SQLException e) {
-			}
+            try {conn.close();} catch (SQLException e) {}
         }
     	
     }
@@ -159,37 +163,6 @@ public class SearchServlet extends HttpServlet {
     	
     }
 
-    protected ArrayList<Movie> getSearchParamResults(ResultSet rs) throws SQLException{
-    	ArrayList<Movie> movieList = new ArrayList<Movie>();
-    	String no_profile = "https://i.imgur.com/OZISao4.png";
-
-    	while (rs.next()){
-    		
-        	Movie movie = new Movie();
-        	
-        	movie.id = Integer.parseInt(rs.getString(1));
-        	movie.title = rs.getString(2);
-        	movie.year = Integer.parseInt(rs.getString(3));
-        	movie.director = rs.getString(4);
-        	
-        	String banner = rs.getString(5);
-        	
-        	//check for valid banner link
-        	if (!validURL(banner)){
-        		banner = no_profile;
-        	}
-        	
-        	movie.banner = banner;
-        	
-        	movieList.add(movie);				
-        } 
-	    	
-    	rs.close();
-    	
-    	return movieList;
-    	
-    }
-    
     protected int getPageId(HttpServletRequest request){
 		int pageId;		
 				
@@ -203,26 +176,6 @@ public class SearchServlet extends HttpServlet {
     	return pageId;
     }
     
-    protected void setPrevPagination(HttpSession session, int pageId){
-    	if (pageId - 1 > 0){
-			session.setAttribute("prev", pageId-1);
-		}
-		else{
-			session.setAttribute("prev", 1);
-		}    	
-    }
-
-    
-    protected void setNextPagination(HttpSession session, int pageId, int totalPages){
-		if (pageId + 1 <= totalPages){
-			session.setAttribute("next", pageId+1);
-		}
-		else{
-			session.setAttribute("next", totalPages+1);
-		}
-    	
-    }
-
     //conn, title, director, star, year
     protected int querySearchParamCount(Connection conn, String title, String director, String star, String year) throws SQLException{
 
@@ -250,7 +203,7 @@ public class SearchServlet extends HttpServlet {
     }
     
     //conn, title, director, year, star, pageId
-    protected ArrayList<Movie> querySearchParam(Connection conn, String title, String director, String star, String year, int pageId) throws SQLException{
+    protected ArrayList<Movie> querySearchParam(DatabaseQueries dbQ, Connection conn, String title, String director, String star, String year, int pageId) throws SQLException{
 
     	PreparedStatement stmt = conn.prepareStatement("SELECT * FROM movies WHERE (title LIKE ? AND year LIKE ? AND director LIKE ?) ORDER BY title ASC LIMIT ? OFFSET ? ");
     	//AND director LIKE ? AND year LIKE ?
@@ -260,16 +213,20 @@ public class SearchServlet extends HttpServlet {
     	//ensure all fields not empty
     	if ((title == null || title.isEmpty()) && 
     			(director == null || director.isEmpty()) && 
-    			(year == null || year.isEmpty())
+    			(year == null || year.isEmpty()) &&
+    			(star == null || star.isEmpty())
     			){
         	stmt.setString(1, "");
         	stmt.setString(2, "");	
         	stmt.setString(3, "");
+//        	stmt.setString(4, "");
         }
     	else{
             stmt.setString(1, '%' + title + '%');
         	stmt.setString(2, '%' + year + '%');
         	stmt.setString(3, '%' + director + '%');
+//        	stmt.setString(4, '%' + director + '%');
+
     	}
     	System.out.printf("title: %s, director: %s, year: %s, star: %s \n", title, director, year, star);
 
@@ -286,10 +243,40 @@ public class SearchServlet extends HttpServlet {
 		}
 		
     	ResultSet rs = stmt.executeQuery();
-    	return getSearchParamResults(rs);
+    	return getSearchParamResults(rs, dbQ);
     }
     
-	
+    protected ArrayList<Movie> getSearchParamResults(ResultSet rs, DatabaseQueries dbQ) throws SQLException{
+    	ArrayList<Movie> movieList = new ArrayList<Movie>();
+    	String no_profile = "https://i.imgur.com/OZISao4.png";
+
+    	while (rs.next()){
+    		
+        	Movie movie = new Movie();
+        	
+        	movie.id = Integer.parseInt(rs.getString(1));
+        	movie.title = rs.getString(2);
+        	movie.year = Integer.parseInt(rs.getString(3));
+        	movie.director = rs.getString(4);
+        	
+        	String banner = rs.getString(5);
+        	movie.stars = dbQ.queryStars(movie.id);
+        	
+        	//check for valid banner link
+//        	if (!validURL(banner)){
+//        		banner = no_profile;
+//        	}
+        	
+        	movie.banner = banner;
+        	
+        	movieList.add(movie);				
+        } 
+	    	
+    	rs.close();
+    	
+    	return movieList;
+    	
+    }	
 
 
 }
