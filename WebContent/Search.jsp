@@ -55,6 +55,7 @@ if (session.getAttribute("authenticated") == null) {
 										<th>Title</th>
 										<th>Year</th>
 										<th>Director</th>
+										<th>Staring</th>
 									</tr>
 								</thead>
 							
@@ -97,11 +98,17 @@ if (session.getAttribute("authenticated") == null) {
 							 html += 
 								 "<tr>" +
 								 "<th scope='row'>" + "<img src='" + item.banner +  "' height='36' width='44'>"
-							 	+ "<td class='align-middle'>" + item.movie_id + "</td>"
+							 	+ "<td class='align-middle'>" + item.id + "</td>"
 								+ "<td class='align-middle'>" + item.title + "</td>"
 							 	+ "<td class='align-middle'>" + item.year + "</td>"
 							 	+ "<td class='align-middle'>" + item.director +  "</td>"
-							 + "</tr>";
+							 	+ "<td class='align-middle'>";
+							 	
+		            		 	jQuery.each(item.stars, function(index, star) {
+		            		 		html += "<a href='Star?starId=" + star.id + "'>" + star.firstName + " " + star.lastName + " </a><br>";
+		            		 	});
+		            		 	
+							 + "</td></tr>";
 							 numPage = item.numPages;
 							 
 						 })
