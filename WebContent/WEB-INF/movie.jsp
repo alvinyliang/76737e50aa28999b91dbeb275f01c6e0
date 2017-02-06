@@ -61,7 +61,8 @@ if (session.getAttribute("authenticated") == null) {
 								<div class="card-block">
 									<h3 class="card-title">On sale for $9.99!</h3>
 									<form action="/Fabflix/UpdateCart" method="POST">
-										<input type="hidden" name="movieId" value="${movie.getId}">
+										<input type="hidden" name="movieId" value="${movie.getId()}">
+										<input type="hidden" name="action" value="add">
 										<button type ='submit' class="btn btn-primary">Add to Cart</button>
 									</form>
 								</div>

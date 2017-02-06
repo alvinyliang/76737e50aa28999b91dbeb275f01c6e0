@@ -3,10 +3,10 @@ package Fabflix;
 import java.util.HashMap;
 
 public class Cart {
-	public static HashMap<String, Integer> cart;
+	public static HashMap<String, Integer> cart = new HashMap<String, Integer>();
+	public static HashMap<String, Movie> movies = new HashMap<String, Movie> ();
 	
 	public Cart() {
-		cart = new HashMap<String, Integer> ();
 	}
 	
 	public static boolean removeFromCart(String movieId) {
@@ -31,7 +31,7 @@ public class Cart {
 		return true;
 	}
 	
-	public static void addToCart(String movieId) {
+	public static void addToCart(String movieId, Movie movie) {
 		int count = cart.containsKey(movieId) ? cart.get(movieId) : 0;
 		
 		if (count == 0) {
@@ -39,6 +39,10 @@ public class Cart {
 		} else {
 			cart.put(movieId, cart.get(movieId) + 1);
 		}
-		
+		movies.put(movieId, movie);
+	}
+	
+	public HashMap<String, Integer> getCart() {
+		return this.cart;
 	}
 }

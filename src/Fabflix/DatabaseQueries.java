@@ -179,5 +179,29 @@ public class DatabaseQueries {
 	    }
         return movie;
     }
+    
+    public Movie getSimpleMovieDetails(String movieId) {
+        PreparedStatement stmt;
+    	Movie movie = new Movie();
+        try	{
+            stmt = conn.prepareStatement("select * from movies where id= ?;");
+            stmt.setString(1, movieId);
+         
+        	ResultSet rs = stmt.executeQuery();
+
+	        while (rs.next()){
+	        	movie.banner = rs.getString("banner_url");
+	        	movie.id = rs.getInt("id");
+	        	movie.title = rs.getString("title");
+	        	movie.year = rs.getInt("year");
+	        	movie.director = rs.getString("director");
+	        	movie.trailer = rs.getString("trailer_url");
+	        }
+	        
+        } catch (Exception e) {
+        	
+        }
+        return movie;
+    }
 	
 }

@@ -22,6 +22,7 @@ public class CartServlet extends HttpServlet{
 	        }
 	        else {
 	        	request.setAttribute("cart", Cart.cart);
+	        	request.setAttribute("movies", Cart.movies);
 	     		request.getRequestDispatcher("/WEB-INF/cart.jsp").forward(request,response);
 	     		return;
 	        }  
