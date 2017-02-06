@@ -5,6 +5,11 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+import javax.json.Json;
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -18,135 +23,89 @@ import java.util.Hashtable;
 public class SearchServlet extends HttpServlet {
 
     static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
+    int queryLimit = 10;    
+    static final String DEBUG = "OFF";
     
-    protected boolean validURL(String url){
-    	try{
-            URL valid_url = new URL(url);
-            HttpURLConnection connection = (HttpURLConnection)valid_url.openConnection();
-            connection.setRequestMethod("HEAD");
-            connection.setConnectTimeout(10);
-            connection.connect();
-            
-            if (connection.getResponseCode() == HttpURLConnection.HTTP_OK){
-        		return true;
-            }
-            
-            return false;
-    	}
-    	catch (Exception e){
-    		return false;
-    	}
-    	
+    
+    private JsonObject buildMovieListJson(ArrayList<Movie> movieList, int totalPages) {
+        JsonObjectBuilder builder = Json.createObjectBuilder();
+        JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
+        
+        for (Movie movie : movieList) {
+        	JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
+        	
+        	objectBuilder.add("movie_id", movie.id);
+        	objectBuilder.add("title", movie.title);
+        	objectBuilder.add("year", movie.year);
+        	objectBuilder.add("director", movie.director);
+        	objectBuilder.add("banner", movie.banner);
+        	
+        	
+            objectBuilder.add("numPages", totalPages);
+
+        	arrayBuilder.add(objectBuilder);
+        }
+        builder.add("movies", arrayBuilder);
+
+
+        JsonObject jsonMovieList = builder.build();
+        return jsonMovieList;
     }
+    
+
+    
+    //star first name, star last name
     
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+    	
+    	
         // Output stream to STDOUT
         PrintWriter out = response.getWriter();
         
         InputStream input = getServletContext().getResourceAsStream("/WEB-INF/db_config.properties");
         DBConnection dbConn = new DBConnection(input);
-        Connection conn;
         HttpSession session = request.getSession(true);
-        int queryLimit = 25;
-
+        Connection conn = null;
+        
+        
         try{
 	        Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
         	conn = DriverManager.getConnection(dbConn.DB_URL, dbConn.DB_USERNAME, dbConn.DB_PASSWORD);
-        	PreparedStatement stmt = conn.prepareStatement("SELECT * FROM movies WHERE title LIKE ? ORDER BY title ASC LIMIT ? OFFSET ? ");
-        	PreparedStatement stmt2 = conn.prepareStatement("SELECT COUNT(*) FROM movies WHERE title LIKE ?");
-        	
-	        //match movie_title searched for
-        	
-    		String movie_title = (String) session.getAttribute("movie_title");
-    		if (request.getParameter("movie_title") != null){
-    			movie_title = request.getParameter("movie_title");
-    		};
-        	
-	        if (movie_title == null || movie_title.isEmpty()){
-	        	stmt.setString(1, movie_title);	
-	        	stmt2.setString(1, movie_title);	
-	        }
-	        else{
-	        	stmt.setString(1, '%' + movie_title + '%');
-	        	stmt2.setString(1, '%' + movie_title + '%');
-	        }
+        
 
-	        //number of results to return
-        	stmt.setInt(2, queryLimit);
-
-        	//offest by pageId
-        	int pageId;
-    		if (request.getParameter("pageId") != null){
-    			pageId = Integer.parseInt(request.getParameter("pageId"));
-    		}
-    		else{
-    			pageId = 1;
-    		}
-    		
-    		if (pageId == 1){
-		        stmt.setInt(3, 0);
-    		}
-    		else{
-	        	stmt.setInt(3, (pageId-1)*queryLimit); //offset results by pageId user is currently on
-    		}
-
-	        //execute table results and count query
-			ResultSet rs = stmt.executeQuery();
-			ResultSet rs2 = stmt2.executeQuery();
+	        //get params	
+			String title = request.getParameter("title");
+			String director = request.getParameter("director");
+			String year = request.getParameter("year");
+			String star = request.getParameter("star");
 			
-			rs2.next();
-			int countResults = rs2.getInt(1);
+			 
+			int pageId = getPageId(request);
 			
-			ArrayList<Hashtable<String, String>> sql_results = new ArrayList<Hashtable<String, String>>();
-        	
-			String no_profile = "http://www.solarimpulse.com/img/profile-no-photo.png";
+        	//execute table results and count query
+			int countResults = querySearchParamCount(conn, title, director, star, year);
+			int totalPages = (int) Math.ceil( (double) countResults / (double) queryLimit);
 
-			//key for hashtable
-			while (rs.next()){
-				
-				Hashtable<String, String> to_return = new Hashtable<String, String>();
-				
-	        	String title = rs.getString(2);
-	        	String director = rs.getString(4);
-	        	String banner = rs.getString(5);
+			setPrevPagination(session, pageId);
+			setNextPagination(session, pageId, totalPages);
 
-	        	//check for valid banner link
-	        	if (!validURL(banner)){
-	        		banner = no_profile;
-	        	}
-	    		
-	        	to_return.put("title", title);
-	        	to_return.put("director", director);
-	        	to_return.put("banner", banner);
-	        	
-				sql_results.add(to_return);				
-	        } 
-	        
-			
-			int numPages = (int)Math.ceil(countResults/queryLimit);
-
-			if (pageId - 1 > 0){
-				session.setAttribute("prev", pageId-1);
-			}
-			else{
-				session.setAttribute("prev", 1);
-				}
-			
-			if (pageId + 1 <= numPages){
-				session.setAttribute("next", pageId+1);
-			}
-			else{
-				session.setAttribute("next", numPages+1);
-			}
 			
 			
-			session.setAttribute("results", sql_results);
-	        session.setAttribute("countResults", countResults);
-            session.setAttribute("movie_title", movie_title);
+			session.setAttribute("countResults", countResults);
             session.setAttribute("pageId", pageId);
-            session.setAttribute("numPages", numPages);
+            session.setAttribute("numPages", totalPages);
+            session.setAttribute("movie_title", title);
+            session.setAttribute("year", year);
+            session.setAttribute("director", director);
+            session.setAttribute("star", star);
+			
 
+        	ArrayList<Movie> movieList = querySearchParam(conn, title, director, star, year, pageId);
+        	
+        	response.setContentType("application/json;charset=utf-8");
+	        out.print(buildMovieListJson(movieList, totalPages));
+	        out.flush();
         }
         catch (SQLException ex) {
             while (ex != null) {
@@ -164,7 +123,13 @@ public class SearchServlet extends HttpServlet {
                           ex.getMessage() + "</P></BODY></HTML>");
               return;
           }
-       out.close();
+        finally{
+            out.close();
+            try {
+				conn.close();
+			} catch (SQLException e) {
+			}
+        }
     	
     }
     
@@ -172,4 +137,159 @@ public class SearchServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	doPost(request, response);
     }
+    
+    protected boolean validURL(String url){
+    	try{
+            URL valid_url = new URL(url);
+            HttpURLConnection connection = (HttpURLConnection)valid_url.openConnection();
+            connection.setRequestMethod("HEAD");
+            connection.setConnectTimeout(20);
+            connection.connect();
+            int code = connection.getResponseCode();
+
+            if (code != HttpURLConnection.HTTP_OK){
+        		return false;
+            }
+            
+            return true;
+    	}
+    	catch (Exception e){
+    		return false;
+    	}
+    	
+    }
+
+    protected ArrayList<Movie> getSearchParamResults(ResultSet rs) throws SQLException{
+    	ArrayList<Movie> movieList = new ArrayList<Movie>();
+    	String no_profile = "https://i.imgur.com/OZISao4.png";
+
+    	while (rs.next()){
+    		
+        	Movie movie = new Movie();
+        	
+        	movie.id = Integer.parseInt(rs.getString(1));
+        	movie.title = rs.getString(2);
+        	movie.year = Integer.parseInt(rs.getString(3));
+        	movie.director = rs.getString(4);
+        	
+        	String banner = rs.getString(5);
+        	
+        	//check for valid banner link
+        	if (!validURL(banner)){
+        		banner = no_profile;
+        	}
+        	
+        	movie.banner = banner;
+        	
+        	movieList.add(movie);				
+        } 
+	    	
+    	rs.close();
+    	
+    	return movieList;
+    	
+    }
+    
+    protected int getPageId(HttpServletRequest request){
+		int pageId;		
+				
+		if (request.getParameter("pageId") != null){
+			pageId = Integer.parseInt(request.getParameter("pageId"));
+		}
+		else{
+			pageId = 1;
+		}
+
+    	return pageId;
+    }
+    
+    protected void setPrevPagination(HttpSession session, int pageId){
+    	if (pageId - 1 > 0){
+			session.setAttribute("prev", pageId-1);
+		}
+		else{
+			session.setAttribute("prev", 1);
+		}    	
+    }
+
+    
+    protected void setNextPagination(HttpSession session, int pageId, int totalPages){
+		if (pageId + 1 <= totalPages){
+			session.setAttribute("next", pageId+1);
+		}
+		else{
+			session.setAttribute("next", totalPages+1);
+		}
+    	
+    }
+
+    //conn, title, director, star, year
+    protected int querySearchParamCount(Connection conn, String title, String director, String star, String year) throws SQLException{
+
+    	PreparedStatement stmt = conn.prepareStatement("SELECT COUNT(*) FROM movies WHERE (title LIKE ? AND year LIKE ? AND director LIKE ?)");
+    	
+    	//ensure all fields not empty
+    	if ((title == null || title.isEmpty()) && (director == null || director.isEmpty()) && (year == null || year.isEmpty())){
+        	stmt.setString(1, "");
+        	stmt.setString(2, "");	
+        	stmt.setString(3, "");
+        }
+    	else{
+            stmt.setString(1, '%' + title + '%');
+        	stmt.setString(2, '%' + year + '%');
+        	stmt.setString(3, '%' + director + '%');
+    	}
+		
+        ResultSet rs = stmt.executeQuery();
+        rs.next();
+        int itemCount = rs.getInt(1);
+        rs.close();
+        
+        return itemCount;
+		
+    }
+    
+    //conn, title, director, year, star, pageId
+    protected ArrayList<Movie> querySearchParam(Connection conn, String title, String director, String star, String year, int pageId) throws SQLException{
+
+    	PreparedStatement stmt = conn.prepareStatement("SELECT * FROM movies WHERE (title LIKE ? AND year LIKE ? AND director LIKE ?) ORDER BY title ASC LIMIT ? OFFSET ? ");
+    	//AND director LIKE ? AND year LIKE ?
+
+        //fuzzy match title
+
+    	//ensure all fields not empty
+    	if ((title == null || title.isEmpty()) && 
+    			(director == null || director.isEmpty()) && 
+    			(year == null || year.isEmpty())
+    			){
+        	stmt.setString(1, "");
+        	stmt.setString(2, "");	
+        	stmt.setString(3, "");
+        }
+    	else{
+            stmt.setString(1, '%' + title + '%');
+        	stmt.setString(2, '%' + year + '%');
+        	stmt.setString(3, '%' + director + '%');
+    	}
+    	System.out.printf("title: %s, director: %s, year: %s, star: %s \n", title, director, year, star);
+
+        
+        //set number of results to return
+    	stmt.setInt(4, queryLimit); //request.getParameter("numberResultsPerPage");
+		
+    	//set offest # using pageId
+		if (pageId == 1){
+	        stmt.setInt(5, 0);
+		}
+		else{
+        	stmt.setInt(5, (pageId-1)*queryLimit); //offset results by pageId
+		}
+		
+    	ResultSet rs = stmt.executeQuery();
+    	return getSearchParamResults(rs);
+    }
+    
+	
+
+
 }
