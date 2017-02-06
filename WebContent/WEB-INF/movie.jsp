@@ -40,7 +40,7 @@ if (session.getAttribute("authenticated") == null) {
 									<strong>Genre: </strong><br>
 										<c:set var="genres" value="${movie.getGenres()}"/>
 										<c:forEach items="${genres}" var="entry">
-										<a href="Star?starId=${entry.key}">${entry.value}</a><br>
+										<a href="Browse/Genre?genre=${entry.value}">${entry.value}</a><br>
 										</c:forEach>
 									</p>
 									<a href="${movie.getTrailer()}" class="btn btn-primary">Watch the trailer</a>

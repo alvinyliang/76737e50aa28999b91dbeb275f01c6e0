@@ -68,14 +68,25 @@ if (session.getAttribute("authenticated") == null) {
 								<thead>
 									<tr>
 										<th></th>
-										<th><a href='#' onclick="browseTitle(lastClick, '1', 'title', lastOrder)">Title</a></th>
-										<th><a href='#' onclick="browseTitle(lastClick, '1', 'year', lastOrder)">Year</a></th>
+										<th><a href='?title=${lastClick}&page=1&sort=title&order=${lastOrder}'>Title</a></th>
+										<th><a href='?title=${lastClick}&page=1&sort=year&order=${lastOrder}'>Year</a></th>
 										<th>Director</th>
 										<th>Staring</th>
 									</tr>
 								</thead>
 								<tbody id="content">
-
+									<c:forEach items="${movies}" var="movie">
+										<tr><th scope="row"><img src="${movie.banner}" width="125" height = "187">
+											<td class="align-middle"><a href="../Movie?movieId=${movie.id}">${movie.title}</a></td>
+											<td class="align-middle">${movie.year}</td>
+											<td class="align-middle">${movie.director}</td>
+											<td class="align-middle">
+												<c:forEach items="${movie.stars}" var="star">
+													<a href="../Star?starId=${star.id}"> ${star.getName()}</a><br>
+												</c:forEach>
+											</td>
+										</tr>
+									</c:forEach>
 								</tbody>
 							</table>
 						<div class = "container ">
@@ -98,42 +109,8 @@ if (session.getAttribute("authenticated") == null) {
 		    $(document.body).css({'cursor' : 'default'});
 		});
 		
-		var lastClick, lastPage, lastSort, lastOrder;
 		function browseTitle(title, page, sort, order) {
-			if (sort === lastSort) {
-				order = (lastOrder === 'desc') ? 'asc' : 'desc';
-			}
-			var html = "<tbody id= 'content'>";
-			$.ajax(
-			     {
-			         type: "POST",
-			         url: '/Fabflix/Browse/Title',
-			         data: { 'title': title,  'page': page, 'sort':sort, 'order':order},
-			         success: function (result)
-			         {
-			        	 lastClick = title;
-			        	 sortedArray = [];
-			             jQuery.each(result.movies, function(index, item) {
-			            	 html += 
-			            		 "<tr><th scope='row'>" + "<img src='" + item.banner +  "' width='125' height='187'>"
-			            		 	+ "<td class='align-middle'>" + item.title + "</td>"
-			            		 	+ "<td class='align-middle'>" + item.year + "</td>"
-			            		 	+ "<td class='align-middle'>" + item.director + "</td>"
-			            		 	+ "<td class='align-middle'>";
-			            		 	
-			            		 	jQuery.each(item.stars, function(index, star) {
-			            		 		html += "<a href='Star?starId=" + star.id + "'>" + star.firstName + " " + star.lastName + " </a><br>";
-			            		 	});
-			            		 	
-			            		 	html += "</td></tr>";
-			             })
-
-
-			             html += "</tbody>"
-			             $('#content').replaceWith(html);
-			         }
-			     });
-           
+			window.location = "?title=" + title + "&page=" + page + "&sort=" + sort + "&order=" + order;
 		}
 		
 		</script>

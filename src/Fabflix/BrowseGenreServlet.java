@@ -51,7 +51,63 @@ public class BrowseGenreServlet extends HttpServlet {
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	doPost(request, response);
+		HttpSession session = request.getSession(false);  
+    	try {
+	        if (session.getAttribute("authenticated") == null) {  
+	        	response.sendRedirect("../login.jsp");
+	    		return;
+	        }  
+    	} catch (Exception e) {
+    		
+    	}
+    	
+    	String genre = request.getParameter("genre");
+        String page = request.getParameter("page");
+        String sort = request.getParameter("sort");
+        String order = request.getParameter("order");
+        
+        if (genre == null) {
+        	request.getRequestDispatcher("/WEB-INF/Genres.jsp").forward(request,response);
+            return;
+            
+        }
+        
+        if (page == null || sort == null || order == null) {
+            ArrayList<Movie> movieList;
+        	movieList = queryMovies(genre, "1", "title", "desc");
+        	
+        	session.setAttribute("movies", movieList);
+            session.setAttribute("lastGenre", genre);
+            session.setAttribute("lastOrder", order);
+            session.setAttribute("lastSort", sort);
+    		
+            request.getRequestDispatcher("/WEB-INF/Genres.jsp").forward(request,response);
+            return;
+        }
+        
+        //Check paramaters
+        if ((sort.equals("title") || sort.equals("year")) == false || (order.equals("desc") || order.equals("asc")) == false) {
+        	response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        }
+    	
+    	String lastOrder = (String) session.getAttribute("lastOrder");
+    	String lastSort = (String) session.getAttribute("lastSort");
+    	
+    	if (lastOrder != null && lastSort != null) {
+    		if (sort.equals(lastSort)) {
+    			order = lastOrder.equals("desc") ? "asc" : "desc";
+    		}
+    	}
+    	
+        ArrayList<Movie> movieList;
+    	movieList = queryMovies(genre, page, sort, order);
+    	
+    	session.setAttribute("movies", movieList);
+        session.setAttribute("lastGenre", genre);
+        session.setAttribute("lastOrder", order);
+        session.setAttribute("lastSort", sort);
+		
+        request.getRequestDispatcher("/WEB-INF/Genres.jsp").forward(request,response);
     }
 
     private JsonObject buildMovieListJson(ArrayList<Movie> movieList) {
