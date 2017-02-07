@@ -55,7 +55,6 @@ public class SearchServlet extends HttpServlet {
 
             }
         	objectBuilder.add("stars", starArrayBuilder);
-        	
         	arrayBuilder.add(objectBuilder);
         }
         
