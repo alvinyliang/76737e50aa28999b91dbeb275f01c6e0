@@ -22,7 +22,7 @@ if (session.getAttribute("authenticated") == null) {
 			<%@ include file="../navbar.jsp" %>
 		</div>
 	
-	
+		${sessionScope }
 	
 		<input type="text" placeholder="Search for movie" class="form-control" name="movie_title" id="search_movie_title">
 		<input type="text" placeholder="Search by year" class="form-control" name="year" id="search_movie_year">
@@ -35,10 +35,13 @@ if (session.getAttribute("authenticated") == null) {
 		<div class="container-fluid">
 		<div id="myvariables">
 		</div>
-		
+										
+								<p> Showing ${results.size()} number of results </p>
+								<p> ${countResults} total results found! </p>
+								
+								
 		<nav aria-label="Page navigation example">
 			<ul class="pagination" id="pNumbers">
-			
 			</ul>
 			
 		</nav>			
@@ -88,7 +91,7 @@ if (session.getAttribute("authenticated") == null) {
 				
 				
 				$.ajax({
-					type: "POST",
+					type: "GET",
 					datatype: "json",
 					url: "./Search",
 					data: {"title": $('input[name="movie_title"]').val(),

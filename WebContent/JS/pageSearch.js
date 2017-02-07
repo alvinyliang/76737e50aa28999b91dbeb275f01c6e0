@@ -1,62 +1,49 @@
-
-
-function searchResult(movie_title, pageId){
-	$.ajax({
-        type: "GET",
-		url:"./Search",
-        data: {"movie_title" : movie_title,
-        	"pageId": pageId},
-        success:function(result){
-    		location.reload();
-    		$("#content").html(result);
-    	}        
-	});
-}
-
-function visitPage(pageId){
-	$.ajax({
-        type: "GET",
-		url:"./Search",
-        data: {"pageId": pageId},
-        success:function(result){
-    		location.reload();
-    		$("#content").html(result);
-
-    	}        
-	});
-}
-
 $(document).ready(function () {
 
 	  $("#search_movie_title").on("keyup", function(e) {
-		    if(e.which == 13) {
-		        searchResult($('input[name="movie_title"]').val(), 1);
-		    }
+		  if(e.which == 13) {
+			title = $("#search_movie_title").val();
+			
+			
+			$.ajax({
+			        type: "POST",
+			        url: "Search.jsp",
+			        data: { movie_title : title }, // or the string: 'id=1'
+			        complete:
+			        function () {
+			            window.location = "Search.jsp";
+			        }
+
+			});
+			
+		  }
+	  	});	
+
+	  
+	  $("#search_movie_button").on("click", function(){
+				title = $("#search_movie_title").val();
+				var redirectUrl = 'Search.jsp';
+				
+				var form = $('<form action="' + redirectUrl + '" method="post">' +
+						'<input type="hidden" name="movie_title" value="' + title +  '" />' +
+						'<input type="hidden" name="parameter2" value="Sample data 2" />' +
+						'</form>');
+				$('#content').append(form);
+						
+				$(form).submit(
+						
+				);
+
+	  });
+	  
+	  $('.btn-group').hover(function() {
+		  $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeIn(500);
+		}, function() {
+		  $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeOut(500);
+		  
 		});
 	  
-	  $("#search_movie_button").on("click", searchResult);
 	  
-	  
-	  $("#browse_movie_button").click(function (){
-		  $("#content").html("<p></p>")
-		  $("#browse_index").attr("hidden", false);
-	  });
-	  
-	  
-	  $("[id^='./Browse']").click(function(){
-		  
-		  $.ajax({
-                type: "GET",
-				url: $ (this).attr('id'),
-				data: {"order": "yd",
-					   "p": 2, 
-					   "m": 10},
-				success: function(result){
-		    		$("#content").html(result);
-		    	}
-			});
-		  
-		  
-	  });
+
 	  
 	});
