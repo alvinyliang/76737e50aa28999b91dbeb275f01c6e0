@@ -12,6 +12,14 @@
 			<%@ include file="../navbar.jsp" %>
 		</div>
 		<div class="container-fluid">
+			<c:if test="${not empty message}">
+					<div class="alert alert-info alert-dismissible fade show" role="alert">
+					  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					    <span aria-hidden="true">&times;</span>
+					  </button>
+					  ${message}
+					</div>		
+			</c:if>
 			<div class="row">
 				<div class="col-12">
 					<div class="jumbotron" style="background:transparent !important">
