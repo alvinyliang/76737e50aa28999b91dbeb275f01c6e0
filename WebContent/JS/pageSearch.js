@@ -1,40 +1,37 @@
-
-
-function searchResult(movie_title, pageId){
-	$.ajax({
-        type: "GET",
-		url:"./Search",
-        data: {"movie_title" : movie_title,
-        	"pageId": pageId},
-        success:function(result){
-    		location.reload();
-    		$("#content").html(result);
-    	}        
-	});
-}
-
-function visitPage(pageId){
-	$.ajax({
-        type: "GET",
-		url:"./Search",
-        data: {"pageId": pageId},
-        success:function(result){
-    		location.reload();
-    		$("#content").html(result);
-
-    	}        
-	});
-}
-
 $(document).ready(function () {
-
+		
 	  $("#search_movie_title").on("keyup", function(e) {
 		    if(e.which == 13) {
-		        searchResult($('input[name="movie_title"]').val(), 1);
+		        var title = $('input[name="movie_title"]').val();
+
+		        var html = '';
+		        
+		        html += '<form action="Search.jsp" method="post" id="search_form">'
+		        	+ '<input type="hidden" name="movie_title" id="search_movie_title" value="' + title + '">'
+		        	+ '</form>';
+		        
+		        $('#content').html(html);
+		        $('#search_form').submit();
+		        
+		        
 		    }
 		});
 	  
-	  $("#search_movie_button").on("click", searchResult);
+	  $("#search_movie_button").on("click", function(){
+		  
+	        var title = $('input[name="movie_title"]').val();
+
+	        var html = '';
+	        
+	        html += '<form action="Search.jsp" method="post" id="search_form">'
+	        	+ '<input type="hidden" name="movie_title" id="search_movie_title" value="' + title + '">'
+	        	+ '</form>';
+	        
+	        $('#content').html(html);
+	        $('#search_form').submit();		  
+		  
+		  
+	  });
 	  
 	  
 	  $("#browse_movie_button").click(function (){
@@ -60,3 +57,4 @@ $(document).ready(function () {
 	  });
 	  
 	});
+

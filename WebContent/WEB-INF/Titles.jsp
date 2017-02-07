@@ -62,6 +62,13 @@ if (session.getAttribute("authenticated") == null) {
 									</div>
 								</div>
 					</div>
+					
+		<nav aria-label="Page navigation example">
+			<ul class="pagination" id="pNumbers">
+			</ul>
+			
+		</nav>			
+					
 					<div class="row pt-4">
 						<div class="mx-auto" style="width: 1000px">
 							<table class="table">
@@ -72,6 +79,8 @@ if (session.getAttribute("authenticated") == null) {
 										<th><a href='?title=${lastClick}&page=1&sort=year&order=${lastOrder}'>Year</a></th>
 										<th>Director</th>
 										<th>Staring</th>
+										<th>Genres</th>
+										
 									</tr>
 								</thead>
 								<tbody id="content">
@@ -83,6 +92,12 @@ if (session.getAttribute("authenticated") == null) {
 											<td class="align-middle">
 												<c:forEach items="${movie.stars}" var="star">
 													<a href="../Star?starId=${star.id}"> ${star.getName()}</a><br>
+												</c:forEach>
+											</td>	
+											<td class="align-middle">
+												
+												<c:forEach items="${movie.genres}" var="genre">
+													${genre.value}<br>
 												</c:forEach>
 											</td>
 										</tr>
@@ -109,8 +124,14 @@ if (session.getAttribute("authenticated") == null) {
 		    $(document.body).css({'cursor' : 'default'});
 		});
 		
+		var lastPage = 1; 
+		var lastSort = "title";
+		var lastOrder = "asc";
+		var p = 1;		
+		
 		function browseTitle(title, page, sort, order) {
-			window.location = "?title=" + title + "&page=" + page + "&sort=" + sort + "&order=" + order;
+			window.location = "?title=" + title + "&page=" + page + "&sort=" + sort + "&order=" + order;	
+		
 		}
 		
 		</script>
