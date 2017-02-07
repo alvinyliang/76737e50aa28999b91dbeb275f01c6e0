@@ -17,50 +17,66 @@
 
 					<div class="row pt-4">
 						<div class="mx-auto" style="width: 1000px">
-	<table id="cart" class="table table-hover table-condensed">
-    				<thead>
-						<tr>
-							<th style="width:50%">Product</th>
-							<th style="width:10%">Price</th>
-							<th style="width:8%">Quantity</th>
-							<th style="width:22%" class="text-center">Subtotal</th>
-							<th style="width:10%"></th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td data-th="Product">
-								<div class="row">
-									<div class="col-sm-2 hidden-xs"><img src="http://placehold.it/100x100" alt="..." class="img-responsive"/></div>
-									<div class="col-sm-10">
-										<h4 class="nomargin">Product 1</h4>
-										<p>Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Lorem ipsum dolor sit amet.</p>
-									</div>
-								</div>
-							</td>
-							<td data-th="Price">$1.99</td>
-							<td data-th="Quantity">
-								<input type="number" class="form-control text-center" value="1">
-							</td>
-							<td data-th="Subtotal" class="text-center">1.99</td>
-							<td class="actions" data-th="">
-								<button class="btn btn-info btn-sm"><i class="fa fa-refresh"></i></button>
-								<button class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></button>								
-							</td>
-						</tr>
-					</tbody>
-					<tfoot>
-						<tr class="visible-xs">
-							<td class="text-center"><strong>Total 1.99</strong></td>
-						</tr>
-						<tr>
-							<td><a href="#" class="btn btn-warning"><i class="fa fa-angle-left"></i> Continue Shopping</a></td>
-							<td colspan="2" class="hidden-xs"></td>
-							<td class="hidden-xs text-center"><strong>Total $1.99</strong></td>
-							<td><a href="#" class="btn btn-success btn-block">Checkout <i class="fa fa-angle-right"></i></a></td>
-						</tr>
-					</tfoot>
-				</table>
+							<table id="cart" class="table table-hover table-condensed">
+			    				<thead>
+									<tr>
+										<th></th>
+										<th style="width:40%">Movie</th>
+										<th style="width:10%">Price</th>
+										<th style="width:18%">Quantity</th>
+										<th style="width:22%" class="text-center">Subtotal</th>
+										<th style="width:10%">Actions</th>
+									</tr>
+								</thead>
+								<tbody>
+									<c:forEach items="${cart}" var="entry">
+										<c:set var="movieId" value="${entry.key}"/>
+										<tr>
+											<td><div class="col-sm-2 hidden-xs"><img src="${movies[movieId].banner}" alt="..." class="img-responsive" width="100" height="125"/></div></td>
+											<td data-th="Movie">
+												<div class="row">
+													<div class="col-sm-10">
+														<h4 class="nomargin">${movies[movieId].title}</h4>
+														<p>
+															<strong>Year: </strong>${movies[movieId].year}<br>
+															<strong>Director: </strong>${movies[movieId].director}<br>
+														</p>
+													</div>
+												</div>
+											</td>
+											<td data-th="Price">$9.99</td>
+											<td data-th="Quantity">
+												<form action="/Fabflix/UpdateCart" method="POST">
+													<div class="input-group">
+													<input type="number" name="quantity" class="form-control text-center" value="${entry.value}">
+													<input type="hidden" name="movieId" value="${movie.getId()}">
+													<input type="hidden" name="action" value="update">
+													<button type ="submit" class="btn btn-info btn-sm"><i class="fa fa-refresh"></i></button>
+													</div>
+												</form>				
+											</td>
+											<td data-th="Subtotal" class="text-center">1.99</td>
+											<td class="actions" data-th="">
+												<form action="/Fabflix/UpdateCart" method="POST">
+													<div class="input-group">
+													<input type="hidden" name="movieId" value="${movie.getId()}">
+													<input type="hidden" name="action" value="remove">
+													<button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></button>
+													</div>
+												</form>								
+											</td>											
+										</tr>
+									</c:forEach>
+								</tbody>
+								<tfoot>
+									<tr>
+										<td><a href="#" class="btn btn-warning"><i class="fa fa-angle-left"></i> Continue Shopping</a></td>
+										<td colspan="2" class="hidden-xs"></td>
+										<td class="hidden-xs text-center"><strong>Total: $${9.99 * cart.size()}</strong></td>
+										<td><a href="#" class="btn btn-success btn-block">Checkout <i class="fa fa-angle-right"></i></a></td>
+									</tr>
+								</tfoot>
+						</table>
 						<div class = "container ">
 							
 						</div>

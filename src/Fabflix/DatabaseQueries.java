@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+
 public class DatabaseQueries {
 	Connection conn = null;
 	
@@ -154,12 +155,12 @@ public class DatabaseQueries {
 	        	movie.stars = queryStars(movie.id);
 
 	        }
-	        stmt =  conn.prepareStatement("SELECT distinct backdrop_url from backdrops join movies on backdrops.movie_id = movies.id where movie_id = ?");
-            stmt.setInt(1, movieId);
-        	rs = stmt.executeQuery();
-            while (rs.next()) {
-            	movie.backdrop = rs.getString("backdrop_url");
-            }
+//	        stmt =  conn.prepareStatement("SELECT distinct backdrop_url from backdrops join movies on backdrops.movie_id = movies.id where movie_id = ?");
+//            stmt.setInt(1, movieId);
+//        	rs = stmt.executeQuery();
+//            while (rs.next()) {
+//            	movie.backdrop = rs.getString("backdrop_url");
+//            }
             
             stmt = conn.prepareStatement("SELECT name, genre_id FROM movies join genres_in_movies join genres on movies.id = genres_in_movies.movie_id and genres.id = genres_in_movies.genre_id where movie_id = ? ;");
             stmt.setInt(1, movieId);
@@ -176,6 +177,30 @@ public class DatabaseQueries {
 	    } catch (Exception e) {
 	    	
 	    }
+        return movie;
+    }
+    
+    public Movie getSimpleMovieDetails(String movieId) {
+        PreparedStatement stmt;
+    	Movie movie = new Movie();
+        try	{
+            stmt = conn.prepareStatement("select * from movies where id= ?;");
+            stmt.setString(1, movieId);
+         
+        	ResultSet rs = stmt.executeQuery();
+
+	        while (rs.next()){
+	        	movie.banner = rs.getString("banner_url");
+	        	movie.id = rs.getInt("id");
+	        	movie.title = rs.getString("title");
+	        	movie.year = rs.getInt("year");
+	        	movie.director = rs.getString("director");
+	        	movie.trailer = rs.getString("trailer_url");
+	        }
+	        
+        } catch (Exception e) {
+        	
+        }
         return movie;
     }
 	

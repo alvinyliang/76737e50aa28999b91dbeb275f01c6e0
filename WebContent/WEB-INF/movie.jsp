@@ -40,7 +40,7 @@ if (session.getAttribute("authenticated") == null) {
 									<strong>Genre: </strong><br>
 										<c:set var="genres" value="${movie.getGenres()}"/>
 										<c:forEach items="${genres}" var="entry">
-										<a href="Star?starId=${entry.key}">${entry.value}</a><br>
+										<a href="Browse/Genre?genre=${entry.value}">${entry.value}</a><br>
 										</c:forEach>
 									</p>
 									<a href="${movie.getTrailer()}" class="btn btn-primary">Watch the trailer</a>
@@ -60,7 +60,11 @@ if (session.getAttribute("authenticated") == null) {
 							<div class="card">
 								<div class="card-block">
 									<h3 class="card-title">On sale for $9.99!</h3>
-									<a href="#" class="btn btn-primary">Add to Cart</a>
+									<form action="/Fabflix/UpdateCart" method="POST">
+										<input type="hidden" name="movieId" value="${movie.getId()}">
+										<input type="hidden" name="action" value="add">
+										<button type ='submit' class="btn btn-primary">Add to Cart</button>
+									</form>
 								</div>
 							</div>							
 						</div>
