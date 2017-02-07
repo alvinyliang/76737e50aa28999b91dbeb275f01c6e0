@@ -39,8 +39,8 @@ if (session.getAttribute("authenticated") == null) {
 								<thead>
 									<tr>
 										<th></th>
-										<th><a href='?title=${lastGenre}&page=1&sort=title&order=${lastOrder}'>Title</a></th>
-										<th><a href='?title=${lastGenre}&page=1&sort=year&order=${lastOrder}'>Year</a></th>
+										<th><a href='?title=${lastGenre}&page=1&sort=title&order=${lastOrder}&count=${lastCount}'>Title</a></th>
+										<th><a href='?title=${lastGenre}&page=1&sort=year&order=${lastOrder}&count=${lastCount}'>Year</a></th>
 										<th>Director</th>
 										<th>Staring</th>
 										<th>Genres</th>
@@ -68,9 +68,39 @@ if (session.getAttribute("authenticated") == null) {
 									</c:forEach>
 								</tbody>
 							</table>
-						<div class = "container ">
-							
-						</div>
+							<c:if test="${pageInfo.getPages() > 0}">
+							<c:set var="end" value="${pageInfo.getPages()+1}"/>
+							<nav aria-label="Page navigation example">
+								<ul class="pagination">
+									<li class="page-item">
+							      		<a class="page-link" href="?genre=${lastGenre}&page=${pageInfo.getCurrentPage() - 1}&sort=${lastSort}&order=${lastOrder}" aria-label="Previous">
+							        		<span aria-hidden="true">&laquo;</span>
+							        		<span class="sr-only">Previous</span>
+							      		</a>
+							    	</li>
+							    	<c:forEach items="${pageInfo.getHelper()}" varStatus="loop">
+            							<li class="page-item ${pageInfo.getCurrentPage() == loop.count ? 'active' : ''}"><a class="page-link" href="?genre=${lastGenre}&page=${loop.count}&sort=${lastSort}&order=${lastOrder}">${loop.count}</a></li>
+         							</c:forEach>
+							    	<li class="page-item">
+							      		<a class="page-link" href="?genre=${lastGenre}&page=${pageInfo.getCurrentPage() + 1}&sort=${lastSort}&order=${lastOrder}" aria-label="Next">
+							        		<span aria-hidden="true">&raquo;</span>
+							        			<span class="sr-only">Next</span>
+							      		</a>
+						    		</li>
+						    		<li>
+						    			<span>
+						    			&nbsp;Show:
+										<select id="show">
+											<option value="5" ${lastCount == '5' ? 'selected' : ''}>5</option>
+										  	<option value="10" ${lastCount == '10' ? 'selected' : ''}>10</option>
+										  	<option value="25" ${lastCount == '25' ? 'selected' : ''}>25</option>
+										 	<option value="50" ${lastCount == '50' ? 'selected' : ''}>50</option>
+										</select>
+										</span>
+						    		</li>
+						  		</ul>
+							</nav>
+							</c:if>
 						</div>
 					</div>
 				</div>
@@ -82,6 +112,12 @@ if (session.getAttribute("authenticated") == null) {
   		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
 		
 		<script type="text/javascript">
+		$('#show').on('change', function() {
+			var e = document.getElementById("show");
+			var count = e.options[e.selectedIndex].value;
+			window.location = "?genre=" + "${lastGenre}" + "&page=1" + "&sort=" + "${lastSort}" + "&order=" + "${lastOrder}" + "&count=" + count;
+		})
+			
 		$(document).ready(function(){
 			$.ajax({
 					type: "POST",

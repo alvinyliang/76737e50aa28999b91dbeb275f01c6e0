@@ -32,12 +32,32 @@ public class BrowseTitleServlet extends HttpServlet {
     	}
     	
         String titleChar = request.getParameter("title");
-        String page = request.getParameter("page");
+        String pageString = request.getParameter("page");
         String sort = request.getParameter("sort");
         String order = request.getParameter("order");
+        String countString = request.getParameter("count");
+        
+        int page = 1;
+        if (pageString != null) {
+        	try {
+        		page = Integer.parseInt(pageString);
+        	} catch (Exception e) {
+  
+        	}
+        }
+        
+        int count = 5;
+        if (countString != null) {
+        	try {
+        		count = Integer.parseInt(countString);
+        	} catch (Exception e) {
+  
+        	}
+        }
+        
         
         ArrayList<Movie> movieList;
-    	movieList = queryMovies(titleChar, page, sort, order);
+    	movieList = queryMovies(titleChar, page, sort, order, count);
     	
         PrintWriter out = response.getWriter();
         response.setContentType("application/json;charset=utf-8");
@@ -58,13 +78,32 @@ public class BrowseTitleServlet extends HttpServlet {
     	}
     	
     	String titleChar = request.getParameter("title");
-        String page = request.getParameter("page");
+        String pageString = request.getParameter("page");
         String sort = request.getParameter("sort");
         String order = request.getParameter("order");
+        String countString = request.getParameter("count");
         
-        if (titleChar == null || page == null || sort == null || order == null) {
+        if (titleChar == null || sort == null || order == null) {
         	request.getRequestDispatcher("/WEB-INF/Titles.jsp").forward(request,response);
         	return;
+        }
+ 
+        int page = 1;
+        if (pageString != null) {
+        	try {
+        		page = Integer.parseInt(pageString);
+        	} catch (Exception e) {
+  
+        	}
+        }
+      
+        int count = 5;
+        if (countString != null) {
+        	try {
+        		count = Integer.parseInt(countString);
+        	} catch (Exception e) {
+  
+        	}
         }
         
         //Check paramaters
@@ -82,12 +121,38 @@ public class BrowseTitleServlet extends HttpServlet {
     	}
     	
         ArrayList<Movie> movieList;
-    	movieList = queryMovies(titleChar, page, sort, order);
+    	movieList = queryMovies(titleChar, page, sort, order, count);
     	
     	session.setAttribute("movies", movieList);
         session.setAttribute("lastClick", titleChar);
         session.setAttribute("lastOrder", order);
         session.setAttribute("lastSort", sort);
+        session.setAttribute("lastCount", count);
+        
+        //Pagination
+        int pages = 1;
+        int rows = 0;
+        InputStream input = getServletContext().getResourceAsStream("/WEB-INF/db_config.properties");
+        DBConnection dbConn = new DBConnection(input);
+        try {
+        Connection conn = DriverManager.getConnection(dbConn.DB_URL, dbConn.DB_USERNAME, dbConn.DB_PASSWORD);       
+        DatabaseQueries query = new DatabaseQueries(conn);
+        rows = query.getTotalTitleRows(titleChar);
+        conn.close();
+        } catch (Exception e) {
+        	
+        }
+        pages = (int) rows / count; 
+        if (page < 1) {
+        	page = pages;
+        } else if (page > pages) {
+        	page = 1;
+        }
+        
+        PagingInfo info = new PagingInfo(pages, page);
+        session.setAttribute("pageInfo", info);
+        session.setAttribute("pages", pages);
+        session.setAttribute("currentPage", page);        
 		
         request.getRequestDispatcher("/WEB-INF/Titles.jsp").forward(request,response);
     }
@@ -176,7 +241,7 @@ public class BrowseTitleServlet extends HttpServlet {
     	return starList;
     }
 
-    private ArrayList<Movie> queryMovies(String titleChar, String page, String sort, String order) {
+    private ArrayList<Movie> queryMovies(String titleChar, int page, String sort, String order, int count) {
         InputStream input = getServletContext().getResourceAsStream("/WEB-INF/db_config.properties");
         DBConnection dbConn = new DBConnection(input);
         Connection conn;
@@ -185,11 +250,8 @@ public class BrowseTitleServlet extends HttpServlet {
         try {
 	        Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
         	conn = DriverManager.getConnection(dbConn.DB_URL, dbConn.DB_USERNAME, dbConn.DB_PASSWORD);       
-    	    stmt = conn.prepareStatement("select * from movies "
-    	    		+ "where substring(movies.title from 1 for 1) "
-    	    		+ "= \""+ titleChar +"\" "
-    	    		+ "order by movies."+ sort + " " + order +" ");		//change order 
-    	    		//+ "limit 10 offset " + ( numMovie * (pageNum-1)) +" ;");	//pagination
+    	    stmt = conn.prepareStatement("select * from movies where substring(movies.title from 1 for 1) = ? order by movies."+ sort + " " + order + " limit " + count + " offset " + count*(page-1) + ";");	//change order 
+    	    stmt.setString(1, titleChar);
     
     	    ResultSet rs = stmt.executeQuery();
         	DatabaseQueries dbQ = new DatabaseQueries(conn);

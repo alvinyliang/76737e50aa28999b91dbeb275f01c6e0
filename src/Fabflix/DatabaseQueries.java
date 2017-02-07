@@ -36,6 +36,40 @@ public class DatabaseQueries {
     	}
 	}
 	
+	public int getTotalTitleRows(String titleChar) {
+		int totalRows = 0;
+		try {
+			PreparedStatement stmt = conn.prepareStatement("select count(*) from movies where substring(movies.title from 1 for 1) = ?");
+			stmt.setString(1, titleChar);
+			
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				totalRows = rs.getInt(1);
+			} 
+		} catch (Exception e) {
+			
+		}
+		return totalRows;
+		
+	}
+	
+	public int getTotalGenreRows(String genreName) {
+		//Rewrite query to use genreId?
+		int totalRows = 0;
+		try {
+			PreparedStatement stmt = conn.prepareStatement("SELECT count(*) FROM genres_in_movies join movies join genres on genres_in_movies.movie_id = movies.id and genres_in_movies.genre_id = genres.id WHERE name = ?");
+			stmt.setString(1, genreName);
+			
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				totalRows = rs.getInt(1);
+			}
+		} catch (Exception e) {
+			
+		}
+		return totalRows;	
+	}
+	
 	public HashMap<Integer, String> getStarMovies(int starId) {
         PreparedStatement stmt;
         HashMap<Integer, String> movies = new HashMap<Integer, String> ();

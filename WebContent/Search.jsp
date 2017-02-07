@@ -49,6 +49,7 @@ if (session.getAttribute("authenticated") == null) {
      <div class="row">
      
         <div class="span6" style="float: none; margin: 0 auto;">
+
 			
 		    <div class="input-group">
 		  
@@ -122,7 +123,7 @@ if (session.getAttribute("authenticated") == null) {
 				var title = 
 				
 				$.ajax({
-					type: "POST",
+					type: "GET",
 					datatype: "json",
 					url: "./Search",
 					data: {"title": $('input[name="movie_title"]').val(),

@@ -36,12 +36,31 @@ public class BrowseGenreServlet extends HttpServlet {
     	}
         
         String genre = request.getParameter("genre");
-        String page = request.getParameter("page");
+        String pageString = request.getParameter("page");
         String sort = request.getParameter("sort");
         String order = request.getParameter("order");
+        String countString = request.getParameter("countString");
+        
+        int page = 1;
+        if (pageString != null) {
+        	try {
+        		page = Integer.parseInt(pageString);
+        	} catch (Exception e) {
+  
+        	}
+        }
+        
+        int count = 5;
+        if (countString != null) {
+        	try {
+        		count = Integer.parseInt(countString);
+        	} catch (Exception e) {
+  
+        	}
+        }
         
         ArrayList<Movie> movieList;
-    	movieList = queryMovies(genre, page, sort, order);
+    	movieList = queryMovies(genre, page, sort, order, count);
     	
         PrintWriter out = response.getWriter();
         response.setContentType("application/json;charset=utf-8");
@@ -62,9 +81,10 @@ public class BrowseGenreServlet extends HttpServlet {
     	}
     	
     	String genre = request.getParameter("genre");
-        String page = request.getParameter("page");
+        String pageString = request.getParameter("page");
         String sort = request.getParameter("sort");
         String order = request.getParameter("order");
+        String countString = request.getParameter("count");
         
         if (genre == null) {
         	request.getRequestDispatcher("/WEB-INF/Genres.jsp").forward(request,response);
@@ -72,14 +92,32 @@ public class BrowseGenreServlet extends HttpServlet {
             
         }
         
-        if (page == null || sort == null || order == null) {
+        int page = 1;
+        if (pageString != null) {
+        	try {
+        		page = Integer.parseInt(pageString);
+        	} catch (Exception e) {
+  
+        	}
+        }
+      
+        int count = 5;
+        if (countString != null) {
+        	try {
+        		count = Integer.parseInt(countString);
+        	} catch (Exception e) {
+  
+        	}
+        }
+        
+        if (sort == null || order == null) {
             ArrayList<Movie> movieList;
-        	movieList = queryMovies(genre, "1", "title", "desc");
+        	movieList = queryMovies(genre, page, "title", "desc", count);
         	
         	session.setAttribute("movies", movieList);
             session.setAttribute("lastGenre", genre);
-            session.setAttribute("lastOrder", order);
-            session.setAttribute("lastSort", sort);
+            session.setAttribute("lastOrder", "desc");
+            session.setAttribute("lastSort", "title");
     		
             request.getRequestDispatcher("/WEB-INF/Genres.jsp").forward(request,response);
             return;
@@ -100,13 +138,40 @@ public class BrowseGenreServlet extends HttpServlet {
     	}
     	
         ArrayList<Movie> movieList;
-    	movieList = queryMovies(genre, page, sort, order);
+    	movieList = queryMovies(genre, page, sort, order, count);
     	
     	session.setAttribute("movies", movieList);
         session.setAttribute("lastGenre", genre);
         session.setAttribute("lastOrder", order);
         session.setAttribute("lastSort", sort);
-		
+        session.setAttribute("lastCount", count);
+        
+        //Pagination
+        int pages = 1;
+        int rows = 0;
+        InputStream input = getServletContext().getResourceAsStream("/WEB-INF/db_config.properties");
+        DBConnection dbConn = new DBConnection(input);
+        try {
+        Connection conn = DriverManager.getConnection(dbConn.DB_URL, dbConn.DB_USERNAME, dbConn.DB_PASSWORD);       
+        DatabaseQueries query = new DatabaseQueries(conn);
+        rows = query.getTotalGenreRows(genre);
+        conn.close();
+        } catch (Exception e) {
+        	
+        }
+        pages = (int) rows / count; 
+        if (page < 1) {
+        	page = pages;
+        } else if (page > pages) {
+        	page = 1;
+        }
+        
+        
+        PagingInfo info = new PagingInfo(pages, page);
+        session.setAttribute("pageInfo", info);
+        session.setAttribute("pages", pages);
+        session.setAttribute("currentPage", page);
+        
         request.getRequestDispatcher("/WEB-INF/Genres.jsp").forward(request,response);
     }
 
@@ -180,7 +245,7 @@ public class BrowseGenreServlet extends HttpServlet {
     	return starList;
     }
     
-    private ArrayList<Movie> queryMovies(String genre, String page, String sort, String order) {
+    private ArrayList<Movie> queryMovies(String genre, int page, String sort, String order, int count) {
         InputStream input = getServletContext().getResourceAsStream("/WEB-INF/db_config.properties");
         DBConnection dbConn = new DBConnection(input);
         Connection conn;
@@ -189,10 +254,12 @@ public class BrowseGenreServlet extends HttpServlet {
         try {
 	        Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
         	conn = DriverManager.getConnection(dbConn.DB_URL, dbConn.DB_USERNAME, dbConn.DB_PASSWORD);       
-            stmt = conn.prepareStatement("SELECT * FROM genres_in_movies join movies join genres on genres_in_movies.movie_id = movies.id and genres_in_movies.genre_id = genres.id WHERE name = ? order by " + sort + " " + order);
+            stmt = conn.prepareStatement("SELECT * FROM genres_in_movies join movies join genres on genres_in_movies.movie_id = movies.id and genres_in_movies.genre_id = genres.id WHERE name = ? order by " + 
+            		sort + " " + order + " limit " + count + " offset " + count*(page-1) + ";");
             stmt.setString(1, genre);
             		//+ "limit "+ numMovie +" offset " + (numMovie * (pageNum-1)) +" ;");     // pagination
             
+
     	    ResultSet rs = stmt.executeQuery();
         	DatabaseQueries dbQ = new DatabaseQueries(conn);
 
@@ -206,18 +273,7 @@ public class BrowseGenreServlet extends HttpServlet {
 	        	movie.banner = banner;
 	        	movie.stars = queryStars(movie.id);
 	        	movie.genres = dbQ.queryGenres(movie.id);
-//	        	try {
-//		        	URL url = new URL(banner);
-//		        	HttpURLConnection huc = (HttpURLConnection) url.openConnection();
-//		        	huc.setRequestMethod("HEAD");
-//		        	int responseCode = huc.getResponseCode();
-//	
-//		        	if (responseCode != 200) {
-//		        		movie.banner = "https://i.imgur.com/OZISao4.png";
-//		        	}
-//	        	} catch (Exception e) {
-//
-//	        	}
+
 	        	
 	        	movieList.add(movie);
 	        }

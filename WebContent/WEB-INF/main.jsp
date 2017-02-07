@@ -33,11 +33,13 @@
 			         				<div class="btn-group">
 	 									<button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 											Browse
-										</button>
-										<div class="dropdown-menu">
-    										<a class="dropdown-item" href="Browse/Title">Browse by Title</a>
-										    <div class="dropdown-divider"></div>
-										    <a class="dropdown-item" href="Browse/Genre">Browse by Genre</a>
+										</button>										
+										<div class="dropdown-containter">
+											<div class="dropdown-menu">
+	    										<a class="dropdown-item" href="BrowseTitle.jsp">Browse by Title</a>
+											    <div class="dropdown-divider"></div>
+											    <a class="dropdown-item" href="BrowseGenre.jsp">Browse by Genre</a>
+											</div>
 										</div>
 									</div>					
 
@@ -53,6 +55,7 @@
 								
 								<div id="content"></div>
 		
+
 						
 			    	</div>
 				</div>

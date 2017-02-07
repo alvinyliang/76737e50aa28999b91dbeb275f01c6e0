@@ -34,27 +34,31 @@ $(document).ready(function () {
 	  });
 	  
 	  
-	  $("#browse_movie_button").click(function (){
-		  $("#content").html("<p></p>")
-		  $("#browse_index").attr("hidden", false);
+	  $("#search_movie_button").on("click", function(){
+				title = $("#search_movie_title").val();
+				var redirectUrl = 'Search.jsp';
+				
+				var form = $('<form action="' + redirectUrl + '" method="post">' +
+						'<input type="hidden" name="movie_title" value="' + title +  '" />' +
+						'<input type="hidden" name="parameter2" value="Sample data 2" />' +
+						'</form>');
+				$('#content').append(form);
+						
+				$(form).submit(
+						
+				);
+
 	  });
 	  
+	  $('.btn-group').hover(function() {
+		  $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeIn(500);
+		}, function() {
+		  $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeOut(500);
+		  
+		});
 	  
-	  $("[id^='./Browse']").click(function(){
-		  
-		  $.ajax({
-                type: "GET",
-				url: $ (this).attr('id'),
-				data: {"order": "yd",
-					   "p": 2, 
-					   "m": 10},
-				success: function(result){
-		    		$("#content").html(result);
-		    	}
-			});
-		  
-		  
-	  });
+	  
+
 	  
 	});
 

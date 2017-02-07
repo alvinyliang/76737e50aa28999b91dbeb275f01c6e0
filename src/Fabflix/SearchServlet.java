@@ -69,6 +69,7 @@ public class SearchServlet extends HttpServlet {
         	
         	
         	
+
         }
         
         builder.add("movies", arrayBuilder);
