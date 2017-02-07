@@ -196,6 +196,17 @@ public class BrowseGenreServlet extends HttpServlet {
 
             }
         	objectBuilder.add("stars", starArrayBuilder);
+        	
+            //iterate over genres list
+            JsonArrayBuilder genresArrayBuilder = Json.createArrayBuilder();
+            for (String genreName : movie.genres.values()) {
+            	JsonObjectBuilder genresObjectBuilder = Json.createObjectBuilder();
+            	genresObjectBuilder.add("genreName", genreName);
+            	genresArrayBuilder.add(genresObjectBuilder);
+
+            }
+        	objectBuilder.add("genres", genresArrayBuilder);   
+        	
         	arrayBuilder.add(objectBuilder);
         }
         builder.add("movies", arrayBuilder);
@@ -225,18 +236,6 @@ public class BrowseGenreServlet extends HttpServlet {
 	        	star.dob = rs.getString(6);
 	        	star.photo = rs.getString(7);
 
-//	        	try {
-//		        	URL url = new URL(star.photo);
-//		        	HttpURLConnection huc = (HttpURLConnection) url.openConnection();
-//		        	huc.setRequestMethod("HEAD");
-//		        	int responseCode = huc.getResponseCode();
-//	
-//		        	if (responseCode != 200) {
-//		        		star.photo = "http://i.imgur.com/maDRWrD.png";
-//		        	}
-//	        	} catch (Exception e) {
-//	        		
-//	        	}
 	        	starList.add(star);
 	        }
         conn.close();
@@ -258,9 +257,12 @@ public class BrowseGenreServlet extends HttpServlet {
             stmt = conn.prepareStatement("SELECT * FROM genres_in_movies join movies join genres on genres_in_movies.movie_id = movies.id and genres_in_movies.genre_id = genres.id WHERE name = ? order by " + 
             		sort + " " + order + " limit " + count + " offset " + count*(page-1) + ";");
             stmt.setString(1, genre);
-    
+            		//+ "limit "+ numMovie +" offset " + (numMovie * (pageNum-1)) +" ;");     // pagination
+            
+
     	    ResultSet rs = stmt.executeQuery();
-    	    
+        	DatabaseQueries dbQ = new DatabaseQueries(conn);
+
 	        while (rs.next()){
 	        	Movie movie = new Movie();
 	        	movie.id = rs.getInt(2);
@@ -270,19 +272,8 @@ public class BrowseGenreServlet extends HttpServlet {
 	        	String banner = rs.getString(7);
 	        	movie.banner = banner;
 	        	movie.stars = queryStars(movie.id);
-	        	
-//	        	try {
-//		        	URL url = new URL(banner);
-//		        	HttpURLConnection huc = (HttpURLConnection) url.openConnection();
-//		        	huc.setRequestMethod("HEAD");
-//		        	int responseCode = huc.getResponseCode();
-//	
-//		        	if (responseCode != 200) {
-//		        		movie.banner = "https://i.imgur.com/OZISao4.png";
-//		        	}
-//	        	} catch (Exception e) {
-//
-//	        	}
+	        	movie.genres = dbQ.queryGenres(movie.id);
+
 	        	
 	        	movieList.add(movie);
 	        }

@@ -52,14 +52,27 @@ public class SearchServlet extends HttpServlet {
             	starObjectBuilder.add("firstName", star.firstName);
             	starObjectBuilder.add("lastName", star.lastName);
             	starArrayBuilder.add(starObjectBuilder);
-
+           
             }
         	objectBuilder.add("stars", starArrayBuilder);
-        	arrayBuilder.add(objectBuilder);
+
+            //iterate over genres list
+            JsonArrayBuilder genresArrayBuilder = Json.createArrayBuilder();
+            for (String genreName : movie.genres.values()) {
+            	JsonObjectBuilder genresObjectBuilder = Json.createObjectBuilder();
+            	genresObjectBuilder.add("genreName", genreName);
+            	genresArrayBuilder.add(genresObjectBuilder);
+
+            }
+        	objectBuilder.add("genres", genresArrayBuilder);
+        	arrayBuilder.add(objectBuilder);        	
+        	
+        	
+        	
+
         }
         
         builder.add("movies", arrayBuilder);
-
         JsonObject jsonMovieList = builder.build();
         return jsonMovieList;
     }
@@ -95,7 +108,9 @@ public class SearchServlet extends HttpServlet {
 			String year = request.getParameter("year");
 			String star = request.getParameter("star");
 	        String sort = request.getParameter("sort");
-	        String order = request.getParameter("order");			
+	        String order = request.getParameter("order");
+	        String limit = request.getParameter("limit");			
+	        queryLimit = Integer.parseInt(limit);
 			 
 			int pageId = getPageId(request);
 			
@@ -281,6 +296,7 @@ public class SearchServlet extends HttpServlet {
         	
         	String banner = rs.getString(5);
         	movie.stars = dbQ.queryStars(movie.id);
+        	movie.genres = dbQ.queryGenres(movie.id);
         	
         	//check for valid banner link
 //        	if (!validURL(banner)){

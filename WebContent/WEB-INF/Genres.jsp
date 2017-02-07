@@ -43,6 +43,8 @@ if (session.getAttribute("authenticated") == null) {
 										<th><a href='?title=${lastGenre}&page=1&sort=year&order=${lastOrder}&count=${lastCount}'>Year</a></th>
 										<th>Director</th>
 										<th>Staring</th>
+										<th>Genres</th>
+										
 									</tr>
 								</thead>
 								<tbody id="content">
@@ -55,6 +57,12 @@ if (session.getAttribute("authenticated") == null) {
 												<c:forEach items="${movie.stars}" var="star">
 													<a href="../Star?starId=${star.id}"> ${star.getName()}</a><br>
 												</c:forEach>
+											</td>
+											<td class="align-middle">
+												<c:forEach items="${movie.genres}" var="genre">
+													${genre.value}<br>
+												</c:forEach>											
+											
 											</td>
 										</tr>
 									</c:forEach>

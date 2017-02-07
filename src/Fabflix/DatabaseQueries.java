@@ -145,19 +145,6 @@ public class DatabaseQueries {
 	        	star.photo = rs.getString("photo_url");
 	        	star.movies = getStarMovies(starId);
 
-//	        	try {
-//		        	URL url = new URL(star.photo);
-//		        	HttpURLConnection huc = (HttpURLConnection) url.openConnection();
-//		        	huc.setRequestMethod("HEAD");
-//	        		huc.setConnectTimeout(20);
-//		        	int responseCode = huc.getResponseCode();
-//	
-//		        	if (responseCode != 200) {
-//		        		star.photo = "http://i.imgur.com/maDRWrD.png";
-//		        	}
-//	        	} catch (Exception e) {
-//	        		
-//	        	}
 	        }
         } catch (Exception e) {
         	
@@ -181,21 +168,6 @@ public class DatabaseQueries {
 	        	star.lastName = rs.getString(5);
 	        	star.dob = rs.getString(6);
 	        	star.photo = rs.getString(7);
-
-//	        	try {
-//		        	URL url = new URL(star.photo);
-//		        	HttpURLConnection huc = (HttpURLConnection) url.openConnection();
-//		        	huc.setRequestMethod("HEAD");
-//		            huc.setConnectTimeout(20);
-//
-//		        	int responseCode = huc.getResponseCode();
-//	
-//		        	if (responseCode != 200) {
-//		        		star.photo = "http://i.imgur.com/maDRWrD.png";
-//		        	}
-//	        	} catch (Exception e) {
-//	        		
-//	        	}
 	        	starList.add(star);
 	        }
         } catch (Exception e) {
@@ -203,6 +175,28 @@ public class DatabaseQueries {
         }
     	return starList;
     }
+    
+    public HashMap<Integer, String> queryGenres(int movieId){
+        PreparedStatement stmt;
+        HashMap<Integer, String> genres = new HashMap<Integer, String> ();
+        try{
+	        stmt = conn.prepareStatement("SELECT name, genre_id FROM movies join genres_in_movies join genres on movies.id = genres_in_movies.movie_id and genres.id = genres_in_movies.genre_id where movie_id = ? ;");
+	        stmt.setInt(1, movieId);
+	        ResultSet rs = stmt.executeQuery();
+	        
+	        while (rs.next()) {
+	        	int genreId = rs.getInt("genre_id");
+	        	String name = rs.getString("name");
+	        	genres.put(genreId, name);
+	        }
+        } catch (Exception e){
+        	
+        }
+        return genres;    	
+    }
+    
+    
+
     
     public Movie getMovieDetails(int movieId) {
         PreparedStatement stmt;

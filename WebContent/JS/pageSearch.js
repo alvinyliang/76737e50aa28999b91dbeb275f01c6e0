@@ -1,24 +1,38 @@
 $(document).ready(function () {
-
+		
 	  $("#search_movie_title").on("keyup", function(e) {
-		  if(e.which == 13) {
-			title = $("#search_movie_title").val();
-			
-			
-			$.ajax({
-			        type: "POST",
-			        url: "Search.jsp",
-			        data: { movie_title : title }, // or the string: 'id=1'
-			        complete:
-			        function () {
-			            window.location = "Search.jsp";
-			        }
+		    if(e.which == 13) {
+		        var title = $('input[name="movie_title"]').val();
 
-			});
-			
-		  }
-	  	});	
+		        var html = '';
+		        
+		        html += '<form action="Search.jsp" method="post" id="search_form">'
+		        	+ '<input type="hidden" name="movie_title" id="search_movie_title" value="' + title + '">'
+		        	+ '</form>';
+		        
+		        $('#content').html(html);
+		        $('#search_form').submit();
+		        
+		        
+		    }
+		});
+	  
+	  $("#search_movie_button").on("click", function(){
+		  
+	        var title = $('input[name="movie_title"]').val();
 
+	        var html = '';
+	        
+	        html += '<form action="Search.jsp" method="post" id="search_form">'
+	        	+ '<input type="hidden" name="movie_title" id="search_movie_title" value="' + title + '">'
+	        	+ '</form>';
+	        
+	        $('#content').html(html);
+	        $('#search_form').submit();		  
+		  
+		  
+	  });
+	  
 	  
 	  $("#search_movie_button").on("click", function(){
 				title = $("#search_movie_title").val();
@@ -47,3 +61,4 @@ $(document).ready(function () {
 
 	  
 	});
+

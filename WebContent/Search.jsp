@@ -21,30 +21,56 @@ if (session.getAttribute("authenticated") == null) {
 		<div class="container">
 			<%@ include file="../navbar.jsp" %>
 		</div>
-		<div class="container">
-		<input type="text" placeholder="Search for movie" class="form-control" name="movie_title" id="search_movie_title">
-		<input type="text" placeholder="Search by year" class="form-control" name="year" id="search_movie_year">
-		<input type="text" placeholder="Search by director" class="form-control" name="director" id="search_movie_director">
-		<input type="text" placeholder="Search by star" class="form-control" name="star" id="search_movie_star">
-				<nav aria-label="Page navigation example">
-			<ul class="pagination" id="pNumbers">
-			</ul>
-			
-		</nav>	
-		</div>
+	
+		
 		<div style="padding-top:1%;"></div>
 
 		
 		<div class="container-fluid">
-		<div id="myvariables">
-		</div>							
-								
+    <div class="row">
+        <div class="span6" style="float: none; margin: 0 auto;">
+			<form class="form-group form-inline">
+			
+		    <div class="input-group">
+		          <span class="input-group-addon" id="basic-addon1">Search</span>
+		  
+					<input type="text" placeholder="Search by movie title" class="form-control" name="movie_title" id="search_movie_title" aria-describedby="basic-addon1">
+					<input type="text" placeholder="Search by year" class="form-control" name="year" id="search_movie_year" aria-describedby="basic-addon1">
+					<input type="text" placeholder="Search by director" class="form-control" name="director" id="search_movie_director" aria-describedby="basic-addon1">
+					<input type="text" placeholder="Search by star" class="form-control" name="star" id="search_movie_star" aria-describedby="basic-addon1">	  
+		    </div>
+		    
+
+		 	</form>
+        </div>
+    </div>	  
+    
+    
+     <div class="row">
+     
+        <div class="span6" style="float: none; margin: 0 auto;">
+
+			
+		    <div class="input-group">
+		  
+  			<nav>
+				<ul class="pagination" id="pNumbers"></ul>
+			</nav>
+			</div>
+		</div>
+		    
+
+    </div>   
+    
+  
+  
+	
 		
 		
 				<div class="row">
 					<div class="col-12">
 					<div class="row pt-4">
-						<div class="mx-auto" style="width: 1000px">
+						<div class="mx-auto" style="width: auto">
 							<table class="table">
 								<thead>
 									<tr id="tableheaders">
@@ -54,6 +80,16 @@ if (session.getAttribute("authenticated") == null) {
 										<th><a href="#" id="yearsort">Year</a></th>
 										<th>Director</th>
 										<th>Staring</th>
+										<th>Genres</th>	
+										<th>
+										    <select class="form-control" id="selectLimit">
+										      <option value="10">10</option>
+										      <option value="25">25</option>
+										      <option value="50">50</option>
+										      <option value="100">100</option>
+										    </select> 
+		    							</th>
+																			
 									</tr>
 								</thead>
 							
@@ -76,7 +112,7 @@ if (session.getAttribute("authenticated") == null) {
 			var lastSort = "title";
 			var lastOrder = "asc";
 			var p = 1;
-			
+
 			function searchMovie(pageId, sort, order){
 
 				var html;
@@ -84,6 +120,7 @@ if (session.getAttribute("authenticated") == null) {
 				var tablehead_html = '';
 				var numPage;
 				
+				var title = 
 				
 				$.ajax({
 					type: "GET",
@@ -95,7 +132,9 @@ if (session.getAttribute("authenticated") == null) {
 							"star": $('input[name="star"]').val(),
 							"pageId": pageId,
 							"sort": sort,
-							"order": order},
+							"order": order,
+							"limit": $('#selectLimit option:selected').val()
+							},
 					success: function(result){
 			        	 			        	 
 						 html += "<tbody id='content'>";
@@ -106,7 +145,7 @@ if (session.getAttribute("authenticated") == null) {
 								 "<tr>" +
 								 "<th scope='row'>" + "<img src='" + item.banner +  "' height='36' width='44'>"
 							 	+ "<td class='align-middle'>" + item.id + "</td>"
-								+ "<td class='align-middle'><a href='/Fabflix/Movie?movieId=" + item.id + "'>" + item.title + "</a></td>"
+								+ "<td class='align-middle'>" + "<a href='Movie?movieId=" + item.id + "'>" + item.title +  "</a></td>"
 							 	+ "<td class='align-middle'>" + item.year + "</td>"
 							 	+ "<td class='align-middle'>" + item.director +  "</td>"
 							 	+ "<td class='align-middle'>";
@@ -114,8 +153,15 @@ if (session.getAttribute("authenticated") == null) {
 		            		 	jQuery.each(item.stars, function(index, star) {
 		            		 		html += "<a href='Star?starId=" + star.id + "'>" + star.firstName + " " + star.lastName + " </a><br>";
 		            		 	});
+								 html += "</td>";
+								 
+								 html += "<td class='align-middle'>";
+
+		            		 	jQuery.each(item.genres, function(index, genre) {
+		            		 		html += genre.genreName + " <br>";
+		            		 	});
 		            		 	
-							 + "</td></tr>";
+							 html += "</td></tr>";
 							 numPage = item.numPages;
 							 
 						 })
@@ -163,11 +209,13 @@ if (session.getAttribute("authenticated") == null) {
 				        
 						if (sort == lastSort) {
 							order = (lastOrder === 'desc') ? 'asc' : 'desc';
+
 						}
 						
 			        	 lastPage = p;
 			        	 lastSort = sort;       	 
 			        	 lastOrder = order;
+				        
 			        	 
 
 						
@@ -180,26 +228,39 @@ if (session.getAttribute("authenticated") == null) {
 			function getPage(page_num, sort, order){
 		        searchMovie(page_num, sort, order);
 			}		
-			
-			$(document).ready(function () {
 
+
+			$(document).ready(function () {
+				$(document).ajaxStart(function() {
+				    $(document.body).css({'cursor' : 'wait'});
+				}).ajaxStop(function() {
+				    $(document.body).css({'cursor' : 'default'});
+				});					  
 				  $("#search_movie_title, #search_movie_year, #search_movie_director, #search_movie_star").on("keyup", function(e) {
 					    if(e.which == 13) {
 					        searchMovie(1, "title", 'asc');
 					    }
-					    
-
 					});
-				  $("#titlesort").on("click", function(e) {
+				  
+				  $("#selectLimit").change(function () { 
+						searchMovie(1, 'title', 'asc');
+					  });
+				  
+				  $("#titlesort").on("click", function() {
 						searchMovie(p, "title", lastOrder);
 					});				  
-				  $("#yearsort").on("click", function(e) {
+				  $("#yearsort").on("click", function() {
 						searchMovie(p, "year", lastOrder);
-					});					  
+					});	
+				  
+
+				  
+				  
+				  
 				  
 				});		
 
-			
+		
 
 			    //Set up the page number links
 

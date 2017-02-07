@@ -110,7 +110,7 @@ public class BrowseTitleServlet extends HttpServlet {
         if (titleChar.length() != 1 || (sort.equals("title") || sort.equals("year")) == false || (order.equals("desc") || order.equals("asc")) == false) {
         	response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
-    	
+
     	String lastOrder = (String) session.getAttribute("lastOrder");
     	String lastSort = (String) session.getAttribute("lastSort");
     	
@@ -169,6 +169,7 @@ public class BrowseTitleServlet extends HttpServlet {
         	objectBuilder.add("director", movie.director);
         	objectBuilder.add("banner", movie.banner);
         	
+        	//iterate over stars list
             JsonArrayBuilder starArrayBuilder = Json.createArrayBuilder();
             for (Star star : movie.stars) {
             	JsonObjectBuilder starObjectBuilder = Json.createObjectBuilder();
@@ -179,6 +180,17 @@ public class BrowseTitleServlet extends HttpServlet {
 
             }
         	objectBuilder.add("stars", starArrayBuilder);
+        	
+            //iterate over genres list
+            JsonArrayBuilder genresArrayBuilder = Json.createArrayBuilder();
+            for (String genreName : movie.genres.values()) {
+            	JsonObjectBuilder genresObjectBuilder = Json.createObjectBuilder();
+            	genresObjectBuilder.add("genreName", genreName);
+            	genresArrayBuilder.add(genresObjectBuilder);
+
+            }
+        	objectBuilder.add("genres", genresArrayBuilder);        	
+        	
         	arrayBuilder.add(objectBuilder);
         }
         builder.add("movies", arrayBuilder);
@@ -242,7 +254,8 @@ public class BrowseTitleServlet extends HttpServlet {
     	    stmt.setString(1, titleChar);
     
     	    ResultSet rs = stmt.executeQuery();
-	
+        	DatabaseQueries dbQ = new DatabaseQueries(conn);
+
 	        while (rs.next()){
 	        	Movie movie = new Movie();
 	        	movie.id = rs.getInt(1);
@@ -253,6 +266,7 @@ public class BrowseTitleServlet extends HttpServlet {
 	        	movie.banner = banner;
 	        	String no_profile = "https://i.imgur.com/OZISao4.png";
 	        	movie.stars = queryStars(movie.id);
+	        	movie.genres = dbQ.queryGenres(movie.id);
 
 //	        	try {
 //		        	URL url = new URL(banner);
