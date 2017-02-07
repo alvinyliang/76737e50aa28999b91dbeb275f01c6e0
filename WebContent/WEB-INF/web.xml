@@ -70,6 +70,14 @@
   <servlet-name>SaveOrderServlet</servlet-name>
     <servlet-class>Fabflix.SaveOrderServlet</servlet-class>
   </servlet>
+  
+  <servlet>
+  <servlet-name>ReportServlet</servlet-name>
+    <servlet-class>Fabflix.ReportServlet</servlet-class>
+  </servlet>  
+  
+  
+  
   <servlet-mapping>
     <servlet-name>LoginServlet</servlet-name>
     <url-pattern>/Login</url-pattern>
@@ -124,4 +132,10 @@
    <servlet-name>UpdateCartServlet</servlet-name>
     <url-pattern>/UpdateCart</url-pattern>
   </servlet-mapping>  
+  
+   <servlet-mapping>
+   <servlet-name>ReportServlet</servlet-name>
+    <url-pattern>/reports/like_predicate</url-pattern>
+  </servlet-mapping>    
+  
 </web-app>

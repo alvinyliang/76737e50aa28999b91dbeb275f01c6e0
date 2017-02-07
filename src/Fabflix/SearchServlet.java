@@ -84,13 +84,15 @@ public class SearchServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
     	
+
     	
         // Output stream to STDOUT
         PrintWriter out = response.getWriter();
         
-        HttpSession session = request.getSession(true);
         Connection conn = null;
-        
+        HttpSession session = request.getSession(true);
+
+
         
         try{
             InputStream input = getServletContext().getResourceAsStream("/WEB-INF/db_config.properties");
@@ -111,7 +113,7 @@ public class SearchServlet extends HttpServlet {
 	        String order = request.getParameter("order");
 	        String limit = request.getParameter("limit");			
 	        queryLimit = Integer.parseInt(limit);
-			 
+
 			int pageId = getPageId(request);
 			
         	//execute table results and count query
@@ -132,19 +134,11 @@ public class SearchServlet extends HttpServlet {
         	response.setContentType("application/json;charset=utf-8");
 	        out.print(buildMovieListJson(movieList, totalPages, pageId));
 	        out.flush();
+	        return;
         } catch (SQLException ex) {
-            while (ex != null) {
-                  System.out.println ("SQL Exception:  " + ex.getMessage ());
-                  ex = ex.getNextException ();
-              }  // end while
+
         } catch(java.lang.Exception ex){
-              out.println("<HTML>" +
-                          "<HEAD><TITLE>" +
-                          "MovieDB: Error" +
-                          "</TITLE></HEAD>\n<BODY>" +
-                          "<P>SQL error in doGet: " +
-                          ex.getMessage() + "</P></BODY></HTML>");
-              return;
+
         } finally{
             out.close();
             try {conn.close();} catch (SQLException e) {}
