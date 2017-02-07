@@ -5,9 +5,6 @@
             <li class="nav-item">
               <a class="nav-link active" href="/Fabflix/Home"><i class="fa fa-home" aria-hidden="true"></i> Home <span class="sr-only">(current)</span></a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">About</a>
-            </li>
             <% if (session.getAttribute("authenticated") != null) {
                 %><li class="nav-item">
                 <a class="nav-link" href="/Fabflix/Cart"><i class="fa fa-shopping-cart"></i> View Cart</a>

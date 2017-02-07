@@ -21,12 +21,11 @@
 							<div class="mx-auto" style="width: 800px">
 						        <div class="input-group input-group-lg" style="vertical-align: middle;">
 								
-					            <input type="text" placeholder="Search for movie" class="form-control" name="movie_title" id="search_movie_title">
-						            
+						     
 		         				</div>
 		         				<div class="pt-2">
 			         				<div class="btn-group">
-										<button type="button" class="btn btn-info" id="search_movie_button">Search</button>
+										<button type="button" class="btn btn-info" href="/Fabflix/search.jsp" id="search_movie_button">Search</button>
 
 
 									</div>

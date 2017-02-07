@@ -12,6 +12,7 @@
 			<div class="jumbotron">
 		     	<form class="form-group" action="/Fabflix/SaveOrder" method="POST">
 					<div class="row">
+					${message}
 						<div class="col-3">
 							<p>Name: </p>
 						</div>

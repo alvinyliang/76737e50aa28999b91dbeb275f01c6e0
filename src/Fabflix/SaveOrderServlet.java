@@ -27,12 +27,12 @@ public class SaveOrderServlet extends HttpServlet{
 	        }
 	        else {
 	        	
-	        	String firstName = (String) session.getAttribute("firstName");
-	        	String lastName = (String) session.getAttribute("lastName");
-	        	String cardNumber = (String) session.getAttribute("cardNumber");
-	        	String day = (String) session.getAttribute("day");
-	        	String month = (String) session.getAttribute("month");
-	        	String year = (String) session.getAttribute("year");
+	        	String firstName = (String) request.getAttribute("firstName");
+	        	String lastName = (String) request.getAttribute("lastName");
+	        	String cardNumber = (String) request.getAttribute("cardNumber");
+	        	String day = (String) request.getAttribute("day");
+	        	String month = (String) request.getAttribute("month");
+	        	String year = (String) request.getAttribute("year");
 	        	String userId = (String) session.getAttribute("userId");
 	            InputStream input = getServletContext().getResourceAsStream("/WEB-INF/db_config.properties");
 	            DBConnection dbConn = new DBConnection(input);
