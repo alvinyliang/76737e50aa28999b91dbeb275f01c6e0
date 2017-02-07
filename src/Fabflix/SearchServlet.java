@@ -91,8 +91,6 @@ public class SearchServlet extends HttpServlet {
         
         Connection conn = null;
         HttpSession session = request.getSession(true);
-
-
         
         try{
             InputStream input = getServletContext().getResourceAsStream("/WEB-INF/db_config.properties");
@@ -113,7 +111,7 @@ public class SearchServlet extends HttpServlet {
 	        String order = request.getParameter("order");
 	        String limit = request.getParameter("limit");			
 	        queryLimit = Integer.parseInt(limit);
-
+			 
 			int pageId = getPageId(request);
 			
         	//execute table results and count query
@@ -257,7 +255,6 @@ public class SearchServlet extends HttpServlet {
         	stmt.setString(4, '%' + star + '%');
 
     	}
-    	System.out.printf("title: %s, director: %s, year: %s, star: %s \n", title, director, year, star);
 
         
         //set number of results to return

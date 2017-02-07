@@ -24,7 +24,7 @@ public class UpdateCartServlet extends HttpServlet{
 			Connection conn = DriverManager.getConnection(dbConn.DB_URL, dbConn.DB_USERNAME, dbConn.DB_PASSWORD);
 	        DatabaseQueries queries = new DatabaseQueries(conn);
 	        movie = queries.getSimpleMovieDetails(movieId);
-	         
+	         conn.close();
 		} catch (Exception e) {
 
 		}

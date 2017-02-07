@@ -17,7 +17,7 @@ public class CheckoutServlet extends HttpServlet{
     	try {
 	        HttpSession session = request.getSession(false);  
 	        if (session.getAttribute("authenticated") == null) {  
-	    		request.getRequestDispatcher("login.jsp").forward(request,response);
+	    		request.getRequestDispatcher("./login.jsp").forward(request,response);
 	    		return;
 	        }
 	        else {
