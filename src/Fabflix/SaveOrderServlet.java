@@ -44,6 +44,7 @@ public class SaveOrderServlet extends HttpServlet{
 	        	if (saveOrder(firstName, lastName, cardNumber, day, month, year, dbQ))
 	        	{
 	        		dbQ.saveOrder(userId, Cart.cart);
+	        		Cart.cleanCart();
         			request.setAttribute("message", "Thank you for your order!");
 	        		request.getRequestDispatcher("/WEB-INF/main.jsp").forward(request,response);
 	        	}

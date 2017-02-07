@@ -57,7 +57,7 @@ public class DatabaseQueries {
 	
 	public Boolean checkCreditCard(String cardNumber, String first_name, String last_name, java.util.Date exp) {
 		try {
-			PreparedStatement stmt = conn.prepareStatement("select * from creditcards where id = ? and first_name = ? and last_name = ? and expiration = ?");
+			PreparedStatement stmt = conn.prepareStatement("select count(distinct creditcards.id) as count from creditcards where id = ? and first_name = ? and last_name = ? and expiration = ?");
 			stmt.setString(1, cardNumber);
 			stmt.setString(2, first_name);
 			stmt.setString(3, last_name);
@@ -66,7 +66,10 @@ public class DatabaseQueries {
 			
 			ResultSet rs=stmt.executeQuery();
 			while (rs.next()) {
-				return true;
+				if (rs.getInt("count") > 0)
+					return true;
+				else
+					return false;
 			}
 		} catch (SQLException e) {
 			return false;

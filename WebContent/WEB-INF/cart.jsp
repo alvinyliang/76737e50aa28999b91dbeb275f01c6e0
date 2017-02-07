@@ -62,7 +62,7 @@
 													</div>
 												</form>				
 											</td>
-											<td data-th="Subtotal" class="text-center">1.99</td>
+											<td data-th="Subtotal" class="text-center">9.99</td>
 											<td class="actions" data-th="">
 												<form action="/Fabflix/UpdateCart" method="POST">
 													<div class="input-group">
