@@ -57,9 +57,18 @@
     <servlet-name>CartServlet</servlet-name>
     <servlet-class>Fabflix.CartServlet</servlet-class>
   </servlet>
+  
    <servlet>
   <servlet-name>UpdateCartServlet</servlet-name>
     <servlet-class>Fabflix.UpdateCartServlet</servlet-class>
+  </servlet>
+  <servlet>
+  <servlet-name>CheckoutServlet</servlet-name>
+    <servlet-class>Fabflix.Checkoutervlet</servlet-class>
+  </servlet>
+  <servlet>
+  <servlet-name>SaveOrderServlet</servlet-name>
+    <servlet-class>Fabflix.SaveOrderServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>LoginServlet</servlet-name>
@@ -96,6 +105,14 @@
   <servlet-mapping>
     <servlet-name>StarServlet</servlet-name>
     <url-pattern>/Star</url-pattern>
+  </servlet-mapping>
+   <servlet-mapping>
+  <servlet-name>CheckoutServlet</servlet-name>
+    <url-pattern>/Checkout</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>SaveOrderServlet</servlet-name>
+    <url-pattern>/SaveOrder</url-pattern>
   </servlet-mapping>
   
   <servlet-mapping>
