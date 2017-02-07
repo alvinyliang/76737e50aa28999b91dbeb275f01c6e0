@@ -38,6 +38,8 @@ public class LoginServlet extends HttpServlet {
         		String name = rs.getString("first_name");
         		session.setAttribute("name", name);
         		session.setAttribute("authenticated", "true");
+        		String userId = rs.getString("id");
+        		session.setAttribute("userId", userId);
         		
                 response.sendRedirect("Home");
                 return;

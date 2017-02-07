@@ -7,8 +7,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.text.SimpleDateFormat;
 
 
 public class DatabaseQueries {
@@ -53,6 +55,40 @@ public class DatabaseQueries {
 		
 	}
 	
+	public Boolean checkCreditCard(String cardNumber, String first_name, String last_name, java.util.Date exp) {
+		try {
+			PreparedStatement stmt = conn.prepareStatement("select * from creditcards where id = ? and first_name = ? and last_name = ? and expiration = ?");
+			stmt.setString(1, cardNumber);
+			stmt.setString(2, first_name);
+			stmt.setString(3, last_name);
+			java.sql.Date sqlDob = new java.sql.Date(exp.getTime());
+			stmt.setDate(4, sqlDob);
+			
+			ResultSet rs=stmt.executeQuery();
+			while (rs.next()) {
+				return true;
+			}
+		} catch (SQLException e) {
+			return false;
+		}
+		return true;
+	}
+	
+	public void saveOrder(String userId, HashMap<String, Integer> cart) {
+		for (HashMap.Entry<String, Integer> entry : cart.entrySet()) {
+			for (int i = 0; i < entry.getValue(); i++) {
+				try {
+					PreparedStatement stmt = conn.prepareStatement("Insert into sales (customer_id, movie_id, sale_date) VALUES(?, ?, CURDATE());");
+					stmt.setString(1, userId);
+					stmt.setString(2, entry.getKey());
+					stmt.executeQuery();
+				} catch (SQLException e) {
+
+				}
+				
+			}
+		}
+	}
 	public int getTotalGenreRows(String genreName) {
 		//Rewrite query to use genreId?
 		int totalRows = 0;

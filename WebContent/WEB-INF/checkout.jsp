@@ -8,18 +8,18 @@
 	</head>
 	<body>
 		<div class="container">
-			<%@ include file="navbar.jsp" %>
+			<%@ include file="../navbar.jsp" %>
 			<div class="jumbotron">
-		     	<form class="form-group">
+		     	<form class="form-group" action="/Fabflix/SaveOrder" method="POST">
 					<div class="row">
 						<div class="col-3">
 							<p>Name: </p>
 						</div>
 						<div class="col-4" style="padding-right:5; padding-left:5;">
-						 	<input type="text" class="form-control" placeholder="First Name">
+						 	<input type="text" class="form-control" placeholder="First Name" name="lastName">
 						</div>
 						<div class="col-4" style="padding-right:5; padding-left:5;">
-						 	<input type="text" class="form-control" placeholder="Last Name">
+						 	<input type="text" class="form-control" placeholder="Last Name" name="firstName">
 						</div>
 					</div>
 					<div class="row">
@@ -27,7 +27,7 @@
 							<p>Credit Card #: </p>
 						</div>
 						<div class="col-8" style="padding-right:5; padding-left:5;">
-						 	<input type="text" class="form-control" placeholder="Credit Card Number">
+						 	<input type="text" class="form-control" placeholder="Credit Card Number" name="cardNumber">
 						</div>
 					</div>
 					<div class="row">
@@ -35,30 +35,31 @@
 							<p>Expiration Dates:</p>
 						</div>
 						<div class="col-2" style="padding-right:5; padding-left:5;">
-						 	<input type="text" maxlength="2" class="form-control" placeholder="Day">
+						 	<input type="text" maxlength="2" class="form-control" placeholder="Day" name="day">
 						</div>
 						<div class="col-3" style="padding-right:5; padding-left:5;">
-						 	      <select class="form-control" id="sel1">
-							        <option>January</option>
-							        <option>February</option>
-							        <option>March</option>
-							        <option>April</option>
-							        <option>June</option>
-							        <option>July</option>
-							        <option>August</option>
-							        <option>September</option>
-							        <option>October</option>
-							        <option>November</option>
-							        <option>December</option>
+						 	      <select class="form-control" name="month">
+							        <option>1</option>
+							        <option>2</option>
+							        <option>3</option>
+							        <option>4</option>
+							        <option>5</option>
+							        <option>6</option>
+							        <option>7</option>
+							        <option>8</option>
+							        <option>9</option>
+							        <option>10</option>
+							        <option>11</option>
+							        <option>12</option>
 							      </select>
 						</div>
 						<div class="col-3"  style="padding-right:5; padding-left:5;">
-							<input type="text" maxlength="4" class="form-control" placeholder="Year">
+							<input type="text" maxlength="4" class="form-control" placeholder="Year" name="year">
 						</div>
 					</div>
 
-  <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+ 				<button type="submit" class="btn btn-primary">Purchase</button>
+			</form>
 		    </div>
 		</div>
 		<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>

@@ -21,30 +21,25 @@ if (session.getAttribute("authenticated") == null) {
 		<div class="container">
 			<%@ include file="../navbar.jsp" %>
 		</div>
-	
-		${sessionScope }
-	
+		<div class="container">
 		<input type="text" placeholder="Search for movie" class="form-control" name="movie_title" id="search_movie_title">
 		<input type="text" placeholder="Search by year" class="form-control" name="year" id="search_movie_year">
 		<input type="text" placeholder="Search by director" class="form-control" name="director" id="search_movie_director">
 		<input type="text" placeholder="Search by star" class="form-control" name="star" id="search_movie_star">
-		
+				<nav aria-label="Page navigation example">
+			<ul class="pagination" id="pNumbers">
+			</ul>
+			
+		</nav>	
+		</div>
 		<div style="padding-top:1%;"></div>
 
 		
 		<div class="container-fluid">
 		<div id="myvariables">
-		</div>
-										
-								<p> Showing ${results.size()} number of results </p>
-								<p> ${countResults} total results found! </p>
+		</div>							
 								
-								
-		<nav aria-label="Page navigation example">
-			<ul class="pagination" id="pNumbers">
-			</ul>
-			
-		</nav>			
+		
 		
 				<div class="row">
 					<div class="col-12">
@@ -111,7 +106,7 @@ if (session.getAttribute("authenticated") == null) {
 								 "<tr>" +
 								 "<th scope='row'>" + "<img src='" + item.banner +  "' height='36' width='44'>"
 							 	+ "<td class='align-middle'>" + item.id + "</td>"
-								+ "<td class='align-middle'>" + item.title + "</td>"
+								+ "<td class='align-middle'><a href='/Fabflix/Movie?movieId=" + item.id + "'>" + item.title + "</a></td>"
 							 	+ "<td class='align-middle'>" + item.year + "</td>"
 							 	+ "<td class='align-middle'>" + item.director +  "</td>"
 							 	+ "<td class='align-middle'>";

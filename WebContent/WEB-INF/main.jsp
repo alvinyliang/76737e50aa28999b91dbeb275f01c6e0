@@ -36,9 +36,9 @@
 										</button>										
 										<div class="dropdown-containter">
 											<div class="dropdown-menu">
-	    										<a class="dropdown-item" href="BrowseTitle.jsp">Browse by Title</a>
+	    										<a class="dropdown-item" href="/Fabflix/Browse/Title">Browse by Title</a>
 											    <div class="dropdown-divider"></div>
-											    <a class="dropdown-item" href="BrowseGenre.jsp">Browse by Genre</a>
+											    <a class="dropdown-item" href="/Fabflix/Browse/Genre">Browse by Genre</a>
 											</div>
 										</div>
 									</div>					

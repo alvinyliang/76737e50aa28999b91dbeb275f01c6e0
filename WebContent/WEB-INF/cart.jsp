@@ -14,7 +14,12 @@
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-12">
-
+					<div class="alert alert-warning alert-dismissible fade show" role="alert">
+					  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					    <span aria-hidden="true">&times;</span>
+					  </button>
+					  ${message}
+					</div>
 					<div class="row pt-4">
 						<div class="mx-auto" style="width: 1000px">
 							<table id="cart" class="table table-hover table-condensed">

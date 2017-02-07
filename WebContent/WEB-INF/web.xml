@@ -64,7 +64,7 @@
   </servlet>
   <servlet>
   <servlet-name>CheckoutServlet</servlet-name>
-    <servlet-class>Fabflix.Checkoutervlet</servlet-class>
+    <servlet-class>Fabflix.CheckoutServlet</servlet-class>
   </servlet>
   <servlet>
   <servlet-name>SaveOrderServlet</servlet-name>
