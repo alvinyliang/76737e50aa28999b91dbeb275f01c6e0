@@ -12,21 +12,28 @@
 			<%@ include file="../navbar.jsp" %>
 		</div>
 		<div class="container-fluid">
+			<c:if test="${not empty message}">
+					<div class="alert alert-info alert-dismissible fade show" role="alert">
+					  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					    <span aria-hidden="true">&times;</span>
+					  </button>
+					  ${message}
+					</div>		
+			</c:if>
 			<div class="row">
 				<div class="col-12">
 					<div class="jumbotron" style="background:transparent !important">
 						<h3 class="display-3">Welcome to Zotflix</h3>
-						<p>Hello, ${name}.</p>
+						<h4>Hello, ${name}.</h4>
 						<div class="row">
 							<div class="mx-auto" style="width: 800px">
 						        <div class="input-group input-group-lg" style="vertical-align: middle;">
 								
-					            <input type="text" placeholder="Search for movie" class="form-control" name="movie_title" id="search_movie_title">
-						            
+						     
 		         				</div>
 		         				<div class="pt-2">
 			         				<div class="btn-group">
-										<button type="button" class="btn btn-info" id="search_movie_button">Search</button>
+										<button type="button" class="btn btn-info" href="/Fabflix/search.jsp" id="search_movie_button">Search</button>
 
 
 									</div>
@@ -36,9 +43,9 @@
 										</button>										
 										<div class="dropdown-containter">
 											<div class="dropdown-menu">
-	    										<a class="dropdown-item" href="BrowseTitle.jsp">Browse by Title</a>
+	    										<a class="dropdown-item" href="/Fabflix/Browse/Title">Browse by Title</a>
 											    <div class="dropdown-divider"></div>
-											    <a class="dropdown-item" href="BrowseGenre.jsp">Browse by Genre</a>
+											    <a class="dropdown-item" href="/Fabflix/Browse/Genre">Browse by Genre</a>
 											</div>
 										</div>
 									</div>					

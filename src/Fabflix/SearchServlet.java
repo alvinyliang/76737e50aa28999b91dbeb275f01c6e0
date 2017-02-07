@@ -190,7 +190,7 @@ public class SearchServlet extends HttpServlet {
     			+ "(title LIKE ? AND year LIKE ? AND director LIKE ? AND "
     			+ "id IN "
     			+ "(SELECT movie_id FROM stars_in_movies WHERE star_id IN "
-    			+ "(SELECT id FROM moviedb.stars WHERE concat(first_name, ' ', last_name) "
+    			+ "(SELECT id FROM stars WHERE concat(first_name, ' ', last_name) "
     					+ "LIKE ?))) ");    	
     	
     	//ensure all fields not empty
@@ -229,7 +229,7 @@ public class SearchServlet extends HttpServlet {
     			+ "(title LIKE ? AND year LIKE ? AND director LIKE ? AND "
     			+ "id IN "
     			+ "(SELECT movie_id FROM stars_in_movies WHERE star_id IN "
-    			+ "(SELECT id FROM moviedb.stars WHERE concat(first_name, ' ', last_name) "
+    			+ "(SELECT id FROM stars WHERE concat(first_name, ' ', last_name) "
     					+ "LIKE ?))) "
     			+ "ORDER BY movies." + sort + " " + order + " LIMIT ? OFFSET ? ");
     	//AND director LIKE ? AND year LIKE ?

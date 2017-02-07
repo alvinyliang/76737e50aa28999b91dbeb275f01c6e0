@@ -45,4 +45,10 @@ public class Cart {
 	public HashMap<String, Integer> getCart() {
 		return this.cart;
 	}
+	
+	public static void cleanCart(){ 
+		cart = new HashMap<String, Integer>();
+		movies = new HashMap<String, Movie> ();
+		
+	}
 }

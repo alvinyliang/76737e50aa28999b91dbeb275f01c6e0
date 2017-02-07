@@ -21,9 +21,12 @@ public class CheckoutServlet extends HttpServlet{
 	    		return;
 	        }
 	        else {
-	        	request.setAttribute("cart", Cart.cart);
-	        	request.setAttribute("movies", Cart.movies);
-	     		request.getRequestDispatcher("/WEB-INF/checkout.jsp").forward(request,response);
+	        	if (!Cart.cart.isEmpty())
+	        		request.getRequestDispatcher("/WEB-INF/checkout.jsp").forward(request,response);
+	        	else {
+	        		request.setAttribute("message", "Your cart is empty!");
+	        		request.getRequestDispatcher("/WEB-INF/cart.jsp").forward(request,response);
+	        	}
 	     		return;
 	        }  
     	} catch (Exception e) {
