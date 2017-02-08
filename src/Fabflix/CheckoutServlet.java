@@ -21,14 +21,15 @@ public class CheckoutServlet extends HttpServlet{
 	    		return;
 	        }
 	        else {
-	        	if (!Cart.cart.isEmpty())
+	        	if (!Cart.cart.isEmpty()){
+	        		request.setAttribute("message", "Enter a valid credit card to check out!");
 	        		request.getRequestDispatcher("/WEB-INF/checkout.jsp").forward(request,response);
-	        	else {
+	        	} else {
 	        		request.setAttribute("message", "Your cart is empty!");
 	        		request.getRequestDispatcher("/WEB-INF/cart.jsp").forward(request,response);
+	        		return;
 	        	}
-	     		return;
-	        }  
+    		}
     	} catch (Exception e) {
     		
     	}

@@ -51,6 +51,7 @@
 													</div>
 												</div>
 											</td>
+											
 											<td data-th="Price">$9.99</td>
 											<td data-th="Quantity">
 												<form action="/Fabflix/UpdateCart" method="POST">
@@ -62,7 +63,8 @@
 													</div>
 												</form>				
 											</td>
-											<td data-th="Subtotal" class="text-center">9.99</td>
+											
+											<td data-th="Subtotal" class="text-center">${9.99 * cart[movieId]}  </td>
 											<td class="actions" data-th="">
 												<form action="/Fabflix/UpdateCart" method="POST">
 													<div class="input-group">
@@ -79,7 +81,13 @@
 									<tr>
 										<td><a href="/Fabflix" class="btn btn-warning"><i class="fa fa-angle-left"></i> Continue Shopping</a></td>
 										<td colspan="2" class="hidden-xs"></td>
-										<td class="hidden-xs text-center"><strong>Total: $${9.99 * cart.size()}</strong></td>
+										
+										<c:set var="total" value="${0}"/>
+										<c:forEach var="cartitem" items="${cart.values()}">
+										    <c:set var="total" value="${total + (cartitem * 9.99)}" />
+										</c:forEach>
+										
+										<td class="hidden-xs text-center"><strong>Total: $${ total}</strong></td>
 										<td><a href="/Fabflix/Checkout" class="btn btn-success btn-block">Checkout <i class="fa fa-angle-right"></i></a></td>
 									</tr>
 								</tfoot>

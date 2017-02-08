@@ -1,6 +1,6 @@
 <%
 if (session.getAttribute("authenticated") == null) {
-	request.getRequestDispatcher("login.jsp").forward(request,response);
+	request.getRequestDispatcher("/login.jsp").forward(request,response);
 }
 %>
 

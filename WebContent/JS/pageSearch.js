@@ -51,9 +51,9 @@ $(document).ready(function () {
 	  });
 	  
 	  $('.btn-group').hover(function() {
-		  $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeIn(500);
+		  $(this).find('.dropdown-menu').stop(true, true).fadeIn(500);
 		}, function() {
-		  $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeOut(500);
+		  $(this).find('.dropdown-menu').stop(true, true).fadeOut(500);
 		  
 		});
 	  

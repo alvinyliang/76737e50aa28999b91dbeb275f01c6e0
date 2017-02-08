@@ -62,7 +62,23 @@ if (session.getAttribute("authenticated") == null) {
 
     </div>   
     
-  
+  	<style>
+  	table {
+  width: 100%;
+}
+th.movietitle{
+	width: 30%
+}
+th.movieid, th.year {
+  width: 5%
+}
+th.director, th.staring, th.genres {
+  width: 15%; /* Not necessary, since only 70% width remains */
+}
+th.option{
+	width: 10%;
+}
+  	</style>
   
 	
 		
@@ -70,19 +86,19 @@ if (session.getAttribute("authenticated") == null) {
 				<div class="row">
 					<div class="col-12">
 					<div class="row pt-4">
-						<div class="mx-auto" style="width: auto">
+						<div class="mx-auto" style="width: 1000px">
 							<table class="table">
 								<thead>
 									<tr id="tableheaders">
 										<th></th>
-										<th>Movie ID</th>
-										<th><a href="#" id="titlesort">Title</a></th>
-										<th><a href="#" id="yearsort">Year</a></th>
-										<th>Director</th>
-										<th>Staring</th>
-										<th>Genres</th>	
-										<th>
-										    <select class="form-control" id="selectLimit">
+										<th class="movieid">ID</th>
+										<th class="movietitle"><a href="#" id="titlesort">Title</a></th>
+										<th class="year"><a href="#" id="yearsort">Year</a></th>
+										<th class="director">Director</th>
+										<th class="staring">Staring</th>
+										<th class="genres">Genres</th>	
+										<th class="option">
+										    Show: <select class="form-control" id="selectLimit">
 										      <option value="10">10</option>
 										      <option value="25">25</option>
 										      <option value="50">50</option>
@@ -143,7 +159,7 @@ if (session.getAttribute("authenticated") == null) {
 	
 							 html += 
 								 "<tr>" +
-								 "<th scope='row'>" + "<img src='" + item.banner +  "' height='36' width='44'>"
+								 "<th scope='row'>"
 							 	+ "<td class='align-middle'>" + item.id + "</td>"
 								+ "<td class='align-middle'>" + "<a href='Movie?movieId=" + item.id + "'>" + item.title +  "</a></td>"
 							 	+ "<td class='align-middle'>" + item.year + "</td>"

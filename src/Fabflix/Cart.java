@@ -51,4 +51,5 @@ public class Cart {
 		movies = new HashMap<String, Movie> ();
 		
 	}
+	
 }

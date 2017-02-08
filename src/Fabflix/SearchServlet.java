@@ -40,8 +40,9 @@ public class SearchServlet extends HttpServlet {
         	objectBuilder.add("year", movie.year);
         	objectBuilder.add("director", movie.director);
         	objectBuilder.add("banner", movie.banner);
-        	objectBuilder.add("pageId", pageId);
         	
+        	//paging
+        	objectBuilder.add("pageId", pageId);
             objectBuilder.add("numPages", totalPages);
             
             //iterate over stars list

@@ -108,12 +108,7 @@ if (session.getAttribute("authenticated") == null) {
 			     {
 			         type: "POST",
 			         url: '/Fabflix/Browse/Title',
-			         data: { 'title': title,  'page': page, 'sort':sort, 'order':order},
-			         success: function (result)
-			         {
-			        	 lastClick = title;
-			        	 sortedArray = [];
-			             jQuery.each(result.movies, function(index, item) {
+			         data: { 'title': title,  'page': page, 'sort':sort, 'order':order},     jQuery.each(result.movies, function(index, item) {
 			            	 html += 
 			            		 "<tr><th scope='row'>" + "<img src='" + item.banner +  "' width='125' height='187'>"
 			            		 	+ "<td class='align-middle'>" + item.title + "</td>"
