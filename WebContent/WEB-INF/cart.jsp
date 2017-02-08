@@ -57,7 +57,7 @@
 												<form action="/Fabflix/UpdateCart" method="POST">
 													<div class="input-group">
 													<input type="number" name="quantity" class="form-control text-center" value="${entry.value}">
-													<input type="hidden" name="movieId" value="${movie.getId()}">
+													<input type="hidden" name="movieId" value="${movies[movieId].getId()}">
 													<input type="hidden" name="action" value="update">
 													<button type ="submit" class="btn btn-info btn-sm"><i class="fa fa-refresh"></i></button>
 													</div>
@@ -68,7 +68,7 @@
 											<td class="actions" data-th="">
 												<form action="/Fabflix/UpdateCart" method="POST">
 													<div class="input-group">
-													<input type="hidden" name="movieId" value="${movie.getId()}">
+													<input type="hidden" name="movieId" value="${movies[movieId].getId()}">
 													<input type="hidden" name="action" value="remove">
 													<button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></button>
 													</div>
