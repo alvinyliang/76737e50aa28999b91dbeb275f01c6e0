@@ -103,10 +103,10 @@ if (session.getAttribute("authenticated") == null) {
 										<th class="genres">Genres</th>
 										<th class="option">
 										    Show: <select class="form-control" id="selectLimit">
-										      <option value="10">5</option>
-										      <option value="25">10</option>
-										      <option value="50">25</option>
-										      <option value="100">50</option>
+												<option value="5" ${lastCount == '5' ? 'selected' : ''}>5</option>
+											  	<option value="10" ${lastCount == '10' ? 'selected' : ''}>10</option>
+											  	<option value="25" ${lastCount == '25' ? 'selected' : ''}>25</option>
+											 	<option value="50" ${lastCount == '50' ? 'selected' : ''}>50</option>
 										    </select> 
 		    							</th>									
 									</tr>
