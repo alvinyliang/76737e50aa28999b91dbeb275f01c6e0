@@ -135,14 +135,14 @@ public class BrowseTitleServlet extends HttpServlet {
         InputStream input = getServletContext().getResourceAsStream("/WEB-INF/db_config.properties");
         DBConnection dbConn = new DBConnection(input);
         try {
-        Connection conn = DriverManager.getConnection(dbConn.DB_URL, dbConn.DB_USERNAME, dbConn.DB_PASSWORD);       
-        DatabaseQueries query = new DatabaseQueries(conn);
-        rows = query.getTotalTitleRows(titleChar);
-        conn.close();
+	        Connection conn = DriverManager.getConnection(dbConn.DB_URL, dbConn.DB_USERNAME, dbConn.DB_PASSWORD);       
+	        DatabaseQueries query = new DatabaseQueries(conn);
+	        rows = query.getTotalTitleRows(titleChar);
+	        conn.close();
         } catch (Exception e) {
         	
         }
-        pages = (int) rows / count; 
+        pages = (int) ((double) rows / (double) count); 
         if (page < 1) {
         	page = pages;
         } else if (page > pages) {
@@ -218,18 +218,6 @@ public class BrowseTitleServlet extends HttpServlet {
 	        	star.dob = rs.getString(6);
 	        	star.photo = rs.getString(7);
 
-//	        	try {
-//		        	URL url = new URL(star.photo);
-//		        	HttpURLConnection huc = (HttpURLConnection) url.openConnection();
-//		        	huc.setRequestMethod("HEAD");
-//		        	int responseCode = huc.getResponseCode();
-//	
-//		        	if (responseCode != 200) {
-//		        		star.photo = "http://i.imgur.com/maDRWrD.png";
-//		        	}
-//	        	} catch (Exception e) {
-//	        		
-//	        	}
 	        	starList.add(star);
 	        }
         conn.close();
@@ -249,7 +237,8 @@ public class BrowseTitleServlet extends HttpServlet {
 	        Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
         	conn = DriverManager.getConnection(dbConn.DB_URL, dbConn.DB_USERNAME, dbConn.DB_PASSWORD);       
         	DatabaseQueries dbQ = new DatabaseQueries(conn);
-    	    stmt = conn.prepareStatement("select * from movies where substring(movies.title from 1 for 1) = ? order by movies."+ sort + " " + order + " limit " + count + " offset " + count*(page-1) + ";");	//change order 
+    	    stmt = conn.prepareStatement("select * from movies where substring(movies.title from 1 for 1) = ? "
+    	    		+ "order by movies."+ sort + " " + order + " limit " + count + " offset " + count*(page-1) + ";");	//change order 
     	    stmt.setString(1, titleChar);
     
     	    ResultSet rs = stmt.executeQuery();
@@ -266,18 +255,6 @@ public class BrowseTitleServlet extends HttpServlet {
 	        	movie.stars = queryStars(movie.id);
 	        	movie.genres = dbQ.queryGenres(movie.id);
 
-//	        	try {
-//		        	URL url = new URL(banner);
-//		        	HttpURLConnection huc = (HttpURLConnection) url.openConnection();
-//		        	huc.setRequestMethod("HEAD");
-//		        	int responseCode = huc.getResponseCode();
-//	
-//		        	if (responseCode != 200) {
-//		        		movie.banner = "https://i.imgur.com/OZISao4.png";
-//		        	}
-//	        	} catch (Exception e) {
-//	        		
-//	        	}
 	        	movieList.add(movie);
 	        }
         conn.close();

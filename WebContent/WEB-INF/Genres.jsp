@@ -35,21 +35,51 @@ if (session.getAttribute("authenticated") == null) {
 									</tbody>
 								</table>
 							</div>
+							
+							  	<style>
+							  	table {
+							  width: 100%;
+							}
+							th.movietitle{
+								width: 30%
+							}
+							th.movieid, th.year {
+							  width: 5%
+							}
+							th.director, th.staring, th.genres {
+							  width: 15%; 
+							}
+							th.option{
+								width: 10%;
+							}
+							  	</style>							
+							
 							<table class="table">
 								<thead>
 									<tr>
 										<th></th>
-										<th><a href='?genre=${lastGenre}&page=1&sort=title&order=${lastOrder}&count=${lastCount}'>Title</a></th>
-										<th><a href='?genre=${lastGenre}&page=1&sort=year&order=${lastOrder}&count=${lastCount}'>Year</a></th>
-										<th>Director</th>
-										<th>Staring</th>
-										<th>Genres</th>
+										<th class="movieid">ID</th>
 										
+										<th class="movietitle"><a href='?genre=${lastGenre}&page=1&sort=title&order=${lastOrder}&count=${lastCount}'>Title</a></th>
+										<th class="year"><a href='?genre=${lastGenre}&page=1&sort=year&order=${lastOrder}&count=${lastCount}'>Year</a></th>
+										<th class="director">Director</th>
+										<th class="staring">Staring</th>
+										<th class="genres">Genres</th>	
+										<th class="option">
+										Show: 										
+										<select class="form-control" id="show">
+											<option value="5" ${lastCount == '5' ? 'selected' : ''}>5</option>
+										  	<option value="10" ${lastCount == '10' ? 'selected' : ''}>10</option>
+										  	<option value="25" ${lastCount == '25' ? 'selected' : ''}>25</option>
+										 	<option value="50" ${lastCount == '50' ? 'selected' : ''}>50</option>
+										</select>
+										</th>
 									</tr>
 								</thead>
 								<tbody id="content">
 									<c:forEach items="${movies}" var="movie">
-										<tr><th scope="row"><img src="${movie.banner}" width="125" height = "187">
+										<tr><th scope="row">
+											<td class="align-middle">${movie.id}</td>
 											<td class="align-middle"><a href="../Movie?movieId=${movie.id}">${movie.title}</a></td>
 											<td class="align-middle">${movie.year}</td>
 											<td class="align-middle">${movie.director}</td>
@@ -87,17 +117,7 @@ if (session.getAttribute("authenticated") == null) {
 							        			<span class="sr-only">Next</span>
 							      		</a>
 						    		</li>
-						    		<li>
-						    			<span>
-						    			&nbsp;Show:
-										<select id="show">
-											<option value="5" ${lastCount == '5' ? 'selected' : ''}>5</option>
-										  	<option value="10" ${lastCount == '10' ? 'selected' : ''}>10</option>
-										  	<option value="25" ${lastCount == '25' ? 'selected' : ''}>25</option>
-										 	<option value="50" ${lastCount == '50' ? 'selected' : ''}>50</option>
-										</select>
-										</span>
-						    		</li>
+
 						  		</ul>
 							</nav>
 							</c:if>
@@ -117,7 +137,7 @@ if (session.getAttribute("authenticated") == null) {
 			var count = e.options[e.selectedIndex].value;
 			window.location = "?genre=" + "${lastGenre}" + "&page=1" + "&sort=" + "${lastSort}" + "&order=" + "${lastOrder}" + "&count=" + count;
 		})
-			
+				
 		$(document).ready(function(){
 			$.ajax({
 					type: "POST",
