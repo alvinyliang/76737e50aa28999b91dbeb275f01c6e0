@@ -90,9 +90,8 @@ if (session.getAttribute("authenticated") == null) {
 											</td>
 											<td class="align-middle">
 												<c:forEach items="${movie.genres}" var="genre">
-													<a href="?genre=${genre.value}">${genre.value}</a><br>
+													<a href="?genre=${genre.value}&page=1&sort=title&order=desc">${genre.value}</a><br>
 												</c:forEach>											
-											
 											</td>
 										</tr>
 									</c:forEach>

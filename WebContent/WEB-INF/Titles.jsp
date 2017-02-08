@@ -127,7 +127,7 @@ if (session.getAttribute("authenticated") == null) {
 											<td class="align-middle">
 												
 												<c:forEach items="${movie.genres}" var="genre">
-													<a href="/Fabflix/Browse/Genre?genre=${genre.value}">${genre.value}</a><br>
+													<a href="/Fabflix/Browse/Genre?genre=${genre.value}&page=1&sort=title&order=desc">${genre.value}</a><br>
 												</c:forEach>
 											</td>
 										</tr>

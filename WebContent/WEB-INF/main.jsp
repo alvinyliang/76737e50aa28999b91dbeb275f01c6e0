@@ -23,8 +23,18 @@
 			<div class="row">
 				<div class="col-12">
 					<div class="jumbotron" style="background:transparent !important">
-						<h3 class="display-3">Welcome to Zotflix</h3>
+						<h3 class="display-3">Welcome to </h3>
+						
+						<div id="cf2" class="shadow">
+						  <img class="top" src="zotflix.png" />
+						</div>
+						
 						<h4>Hello, ${name}.</h4>
+						<br>
+						<br>
+						
+						<h4>Zotflix is where you can find movies worth watching.</h4>
+
 						<div class="row">
 							<div class="mx-auto" style="width: 800px">
 						        <div class="input-group input-group-lg" style="vertical-align: middle;">

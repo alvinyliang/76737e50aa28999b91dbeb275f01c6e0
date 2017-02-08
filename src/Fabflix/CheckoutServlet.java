@@ -21,7 +21,9 @@ public class CheckoutServlet extends HttpServlet{
 	    		return;
 	        }
 	        else {
+	        	
 	        	if (!Cart.cart.isEmpty()){
+	        		request.setAttribute("message", "Please enter a valid credit card to continue.");
 	        		request.getRequestDispatcher("/WEB-INF/checkout.jsp").forward(request,response);
 	        	} else {
 	        		request.setAttribute("message", "Your cart is empty!");
