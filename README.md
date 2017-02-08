@@ -10,7 +10,7 @@
     - jstl-1.2 https://mvnrepository.com/artifact/javax.servlet/jstl/1.2
     - javax.json 1.0.4 https://mvnrepository.com/artifact/org.glassfish/javax.json/1.0.4
   - Under Eclipse "Problems" tab, change project JRE path to match current Java Version. Current JRE is set to version _111.
-  
+  -Set the database information in db_config.properties at WebContent/WEB-INF/db_config.properties
   
 ## Project Dependencies
   - Tomcat v8.5
@@ -19,9 +19,9 @@
   
   
 ## Completed:
-	 - Implement search
-    - Implement substring matching and partial matching (SQL queries with LIKE and ILIKE)
-    - Implement browse
+  - Implement search
+  - Implement substring matching and partial matching (SQL queries with LIKE and ILIKE)
+  - Implement browse
   - Implement pagination for search and browse
   - Implement movie and star info page
   - Implement shopping cart and check out
