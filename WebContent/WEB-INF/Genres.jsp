@@ -39,8 +39,8 @@ if (session.getAttribute("authenticated") == null) {
 								<thead>
 									<tr>
 										<th></th>
-										<th><a href='?title=${lastGenre}&page=1&sort=title&order=${lastOrder}&count=${lastCount}'>Title</a></th>
-										<th><a href='?title=${lastGenre}&page=1&sort=year&order=${lastOrder}&count=${lastCount}'>Year</a></th>
+										<th><a href='?genre=${lastGenre}&page=1&sort=title&order=${lastOrder}&count=${lastCount}'>Title</a></th>
+										<th><a href='?genre=${lastGenre}&page=1&sort=year&order=${lastOrder}&count=${lastCount}'>Year</a></th>
 										<th>Director</th>
 										<th>Staring</th>
 										<th>Genres</th>

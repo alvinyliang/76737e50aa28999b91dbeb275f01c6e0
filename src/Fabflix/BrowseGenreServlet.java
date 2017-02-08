@@ -106,7 +106,6 @@ public class BrowseGenreServlet extends HttpServlet {
         	try {
         		count = Integer.parseInt(countString);
         	} catch (Exception e) {
-  
         	}
         }
         
@@ -171,7 +170,7 @@ public class BrowseGenreServlet extends HttpServlet {
         session.setAttribute("pageInfo", info);
         session.setAttribute("pages", pages);
         session.setAttribute("currentPage", page);
-        
+
         request.getRequestDispatcher("/WEB-INF/Genres.jsp").forward(request,response);
     }
 
