@@ -108,7 +108,7 @@ if (session.getAttribute("authenticated") == null) {
 							<c:set var="end" value="${pageInfo.getPages()+1}"/>
 							<nav aria-label="Page navigation example">
 								<ul class="pagination">
-									<li class="page-item">
+									<li class="page-item ${pageInfo.getCurrentPage() == 1 ? 'disabled' : ''}">
 							      		<a class="page-link" href="?title=${lastClick}&page=${pageInfo.getCurrentPage() - 1}&sort=${lastSort}&order=${lastOrder}" aria-label="Previous">
 							        		<span aria-hidden="true">&laquo;</span>
 							        		<span class="sr-only">Previous</span>
@@ -117,7 +117,7 @@ if (session.getAttribute("authenticated") == null) {
 							    	<c:forEach items="${pageInfo.getHelper()}" varStatus="loop">
             							<li class="page-item ${pageInfo.getCurrentPage() == loop.count ? 'active' : ''}"><a class="page-link" href="?title=${lastClick}&page=${loop.count}&sort=${lastSort}&order=${lastOrder}">${loop.count}</a></li>
          							</c:forEach>
-							    	<li class="page-item">
+							    	<li class="page-item ${pageInfo.getCurrentPage() == pageInfo.getPages() ? 'disabled' : ''}">
 							      		<a class="page-link" href="?title=${lastClick}&page=${pageInfo.getCurrentPage() + 1}&sort=${lastSort}&order=${lastOrder}" aria-label="Next">
 							        		<span aria-hidden="true">&raquo;</span>
 							        			<span class="sr-only">Next</span>
