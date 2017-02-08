@@ -67,7 +67,7 @@ if (session.getAttribute("authenticated") == null) {
 										<th class="genres">Genres</th>	
 										<th class="option">
 										Show: 										
-										<select class="form-control" id="show">
+										<select class="form-control" id="selectLimit">
 											<option value="5" ${lastCount == '5' ? 'selected' : ''}>5</option>
 										  	<option value="10" ${lastCount == '10' ? 'selected' : ''}>10</option>
 										  	<option value="25" ${lastCount == '25' ? 'selected' : ''}>25</option>
@@ -132,8 +132,8 @@ if (session.getAttribute("authenticated") == null) {
   		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
 		
 		<script type="text/javascript">
-		$('#show').on('change', function() {
-			var e = document.getElementById("show");
+		$('#selectLimit').on('change', function() {
+			var e = document.getElementById("selectLimit");
 			var count = e.options[e.selectedIndex].value;
 			window.location = "?genre=" + "${lastGenre}" + "&page=1" + "&sort=" + "${lastSort}" + "&order=" + "${lastOrder}" + "&count=" + count;
 		})
