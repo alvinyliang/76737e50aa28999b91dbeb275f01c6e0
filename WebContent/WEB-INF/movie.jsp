@@ -73,7 +73,7 @@ if (session.getAttribute("authenticated") == null) {
 									<form action="/Fabflix/UpdateCart" method="POST" id="addMovie">
 										<input type="hidden" name="movieId" id="movieId" value="${movie.getId()}">
 										<input type="hidden" name="action" value="add">
-										<button onclick="addCart()" class="btn btn-primary" onsubmit='return false;'>Add to Cart</button>
+										<button id="addCart" class="btn btn-primary" onsubmit='return false;'>Add to Cart</button>
 									</form>
 								</div>
 							</div>							
@@ -93,18 +93,21 @@ if (session.getAttribute("authenticated") == null) {
 		    $(document.body).css({'cursor' : 'default'});
 		});
 		$(document).ready(function () {
-		
-		function addCart() {
-			var movieId = $("#movieId").val();
-			$.ajax({
-				type: "POST",
-				url: "/Fabflix/UpdateCart",
-				data: {'movieId': movieId, 'action':'add'},
-		        success: function(result){
+			  $("#addCart").on("click", function() {
 			        alert("Added movie to cart!");
+
+				  	e.preventDefault();
+					var movieId = $("#movieId").val();
+					$.ajax({
+						type: "POST",
+						url: "/Fabflix/UpdateCart",
+						data: {'movieId': movieId, 'action':'add'},
+				        success: function(result){
+				   
+						}
+					});
 				}
-			});
-		}
+			);
 		});
 		
 		</script>
