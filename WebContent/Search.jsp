@@ -174,7 +174,7 @@ th.option{
 								 html += "<td class='align-middle'>";
 
 		            		 	jQuery.each(item.genres, function(index, genre) {
-		            		 		html += genre.genreName + " <br>";
+		            		 		html += '<a href="./Browse/Genre?genre=' + genre.genreName + '&page=1&sort=title&order=asc" >' + genre.genreName + " </a><br>";
 		            		 	});
 		            		 	
 							 html += "</td></tr>";
