@@ -126,6 +126,19 @@ public class BrowseTitleServlet extends HttpServlet {
 
             }
         	objectBuilder.add("stars", starArrayBuilder);
+        	
+            //iterate over genres list
+            JsonArrayBuilder genresArrayBuilder = Json.createArrayBuilder();
+            for (String genreName : movie.genres.values()) {
+            	JsonObjectBuilder genresObjectBuilder = Json.createObjectBuilder();
+            	genresObjectBuilder.add("genreName", genreName);
+            	genresArrayBuilder.add(genresObjectBuilder);
+
+            }
+        	objectBuilder.add("genres", genresArrayBuilder);
+        	arrayBuilder.add(objectBuilder);         	
+        	
+        	
         	arrayBuilder.add(objectBuilder);
         }
         builder.add("movies", arrayBuilder);
@@ -154,19 +167,6 @@ public class BrowseTitleServlet extends HttpServlet {
 	        	star.lastName = rs.getString(5);
 	        	star.dob = rs.getString(6);
 	        	star.photo = rs.getString(7);
-
-//	        	try {
-//		        	URL url = new URL(star.photo);
-//		        	HttpURLConnection huc = (HttpURLConnection) url.openConnection();
-//		        	huc.setRequestMethod("HEAD");
-//		        	int responseCode = huc.getResponseCode();
-//	
-//		        	if (responseCode != 200) {
-//		        		star.photo = "http://i.imgur.com/maDRWrD.png";
-//		        	}
-//	        	} catch (Exception e) {
-//	        		
-//	        	}
 	        	starList.add(star);
 	        }
         conn.close();
@@ -185,7 +185,9 @@ public class BrowseTitleServlet extends HttpServlet {
         try {
 	        Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
         	conn = DriverManager.getConnection(dbConn.DB_URL, dbConn.DB_USERNAME, dbConn.DB_PASSWORD);       
-    	    stmt = conn.prepareStatement("select * from movies "
+    	    DatabaseQueries dbQ = new DatabaseQueries(conn);
+    	    
+        	stmt = conn.prepareStatement("select * from movies "
     	    		+ "where substring(movies.title from 1 for 1) "
     	    		+ "= \""+ titleChar +"\" "
     	    		+ "order by movies."+ sort + " " + order +" LIMIT ? OFFSET ? ");		//change order 
@@ -223,20 +225,8 @@ public class BrowseTitleServlet extends HttpServlet {
 	        	movie.banner = banner;
 	        	String no_profile = "https://i.imgur.com/OZISao4.png";
 	        	movie.stars = queryStars(movie.id);
+	        	movie.genres = dbQ.queryGenres(movie.id);
 	        	
-
-//	        	try {
-//		        	URL url = new URL(banner);
-//		        	HttpURLConnection huc = (HttpURLConnection) url.openConnection();
-//		        	huc.setRequestMethod("HEAD");
-//		        	int responseCode = huc.getResponseCode();
-//	
-//		        	if (responseCode != 200) {
-//		        		movie.banner = "https://i.imgur.com/OZISao4.png";
-//		        	}
-//	        	} catch (Exception e) {
-//	        		
-//	        	}
 	        	movieList.add(movie);
 	        }
         conn.close();

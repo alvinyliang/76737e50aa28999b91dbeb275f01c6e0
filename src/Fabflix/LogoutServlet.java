@@ -16,6 +16,7 @@ import java.sql.*;
 public class LogoutServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	request.getSession().invalidate();
+    	Cart.cleanCart();
 		String message = "You have logged out.";
 		request.setAttribute("message", message);
 		request.getRequestDispatcher("login.jsp").forward(request,response);
@@ -26,6 +27,7 @@ public class LogoutServlet extends HttpServlet {
             throws ServletException, IOException {
     	request.getSession().invalidate();
 		String message = "You have logged out.";
+		Cart.cleanCart();
 		request.setAttribute("message", message);
 		request.getRequestDispatcher("login.jsp").forward(request,response);
     }
