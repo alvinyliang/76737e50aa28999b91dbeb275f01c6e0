@@ -92,6 +92,7 @@ if (session.getAttribute("authenticated") == null) {
 		}).ajaxStop(function() {
 		    $(document.body).css({'cursor' : 'default'});
 		});
+		$(document).ready(function () {
 		
 		function addCart() {
 			var movieId = $("#movieId").val();
@@ -104,6 +105,7 @@ if (session.getAttribute("authenticated") == null) {
 				}
 			});
 		}
+		});
 		
 		</script>
 
