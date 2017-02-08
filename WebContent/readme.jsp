@@ -59,7 +59,6 @@ if (session.getAttribute("authenticated") == null) {
 								<li>Implement substring matching and partial matching (SQL queries with LIKE and ILIKE)</li>
 								<li>Implement browsing</li>
 								<li>Implement pagination for search and browse</li>
-								<li>Implement caching for search results</li>
 								<li>Implement movie and star info page</li>
 								<li>Implement shopping cart and check out</li>
 								<li>Implement order saving</li>

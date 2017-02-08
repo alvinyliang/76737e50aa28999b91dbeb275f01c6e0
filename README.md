@@ -23,12 +23,10 @@
     - Implement substring matching and partial matching (SQL queries with LIKE and ILIKE)
     - Implement browse
   - Implement pagination for search and browse
-    - Implement caching for search results
   - Implement movie and star info page
   - Implement shopping cart and check out
   - Implement order saving
-  - Implemented login page
-    - Implemented login post to servlet
+  - Implemented login page and login post to servlet
   - Implemented Home page
   - Implemented authenciate user in session
   - Implemented session checking
