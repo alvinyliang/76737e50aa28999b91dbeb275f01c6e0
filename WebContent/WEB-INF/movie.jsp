@@ -18,6 +18,16 @@ if (session.getAttribute("authenticated") == null) {
 		</div>
 
 		<div class="container">
+				<c:if test="${not empty message}">
+					<div class="alert alert-warning alert-dismissible fade show" role="alert">
+					  
+					  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					    <span aria-hidden="true">&times;</span>
+					  </button>
+					  ${message}
+					</div>		
+				</c:if>
+				<c:remove var="message" scope="session" />
 				<div class="card">
 					<div class="card-block">
 						<h1 class="display-4">${movie.getTitle()}</h1>
@@ -60,10 +70,10 @@ if (session.getAttribute("authenticated") == null) {
 							<div class="card">
 								<div class="card-block">
 									<h3 class="card-title">On sale for $9.99!</h3>
-									<form action="/Fabflix/UpdateCart" method="POST">
-										<input type="hidden" name="movieId" value="${movie.getId()}">
+									<form action="/Fabflix/UpdateCart" method="POST" id="addMovie">
+										<input type="hidden" name="movieId" id="movieId" value="${movie.getId()}">
 										<input type="hidden" name="action" value="add">
-										<button type ='submit' class="btn btn-primary">Add to Cart</button>
+										<button onclick="addCart()" class="btn btn-primary" onsubmit='return false;'>Add to Cart</button>
 									</form>
 								</div>
 							</div>							
@@ -77,7 +87,23 @@ if (session.getAttribute("authenticated") == null) {
   		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
 		
 		<script type="text/javascript">
-
+		$(document).ajaxStart(function() {
+		    $(document.body).css({'cursor' : 'wait'});
+		}).ajaxStop(function() {
+		    $(document.body).css({'cursor' : 'default'});
+		});
+		
+		function addCart() {
+			var movieId = $("#movieId").val();
+			$.ajax({
+				type: "POST",
+				url: "/Fabflix/UpdateCart",
+				data: {'movieId': movieId, 'action':'add'},
+		        success: function(result){
+			        alert("Added movie to cart!");
+				}
+			});
+		}
 		
 		</script>
 
