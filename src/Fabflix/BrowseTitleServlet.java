@@ -142,7 +142,7 @@ public class BrowseTitleServlet extends HttpServlet {
         } catch (Exception e) {
         	
         }
-        pages = (int) rows / count; 
+        pages = (int) java.lang.Math.ceil(rows / count); 
         if (page < 1) {
         	page = pages;
         } else if (page > pages) {

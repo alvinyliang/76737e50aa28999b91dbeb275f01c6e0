@@ -18,6 +18,7 @@
 					  ${message}
 					</div>		
 				</c:if>
+				<c:remove var="message" scope="session" />
 			<div class="jumbotron">
 		     	<form class="form-group" action="/Fabflix/SaveOrder" method="POST">
 					<div class="row">

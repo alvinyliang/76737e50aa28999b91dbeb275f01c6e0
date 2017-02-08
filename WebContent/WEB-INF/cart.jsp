@@ -20,6 +20,7 @@
 					  ${message}
 					</div>		
 			</c:if>
+			<c:remove var="message" scope="session" />
 			<div class="row">
 				<div class="col-12">
 					<div class="row pt-4">

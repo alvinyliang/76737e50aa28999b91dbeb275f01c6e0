@@ -158,7 +158,7 @@ public class BrowseGenreServlet extends HttpServlet {
         } catch (Exception e) {
         	
         }
-        pages = (int) rows / count; 
+        pages = (int) java.lang.Math.ceil((double)rows / (double)count); 
         if (page < 1) {
         	page = pages;
         } else if (page > pages) {

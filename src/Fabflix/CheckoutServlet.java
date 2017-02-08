@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 public class CheckoutServlet extends HttpServlet{
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     	
     	try {
 	        HttpSession session = request.getSession(false);  
@@ -22,7 +22,6 @@ public class CheckoutServlet extends HttpServlet{
 	        }
 	        else {
 	        	if (!Cart.cart.isEmpty()){
-	        		request.setAttribute("message", "Enter a valid credit card to check out!");
 	        		request.getRequestDispatcher("/WEB-INF/checkout.jsp").forward(request,response);
 	        	} else {
 	        		request.setAttribute("message", "Your cart is empty!");
@@ -31,12 +30,12 @@ public class CheckoutServlet extends HttpServlet{
 	        	}
     		}
     	} catch (Exception e) {
-    		
+    		response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
     	}
     }
     
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     	doPost(request, response);
     }
 }
