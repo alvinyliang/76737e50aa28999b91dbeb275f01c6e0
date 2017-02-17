@@ -1,4 +1,4 @@
-# Fabflix
+
 
 ## When cloning the project:
   - Ensure MySQL Service is running on local machine.
