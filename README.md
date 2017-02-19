@@ -1,4 +1,4 @@
-# Fabflix
+View the demo at https://zotflix.com
 
 ## When cloning the project:
   - Ensure MySQL Service is running on local machine.
