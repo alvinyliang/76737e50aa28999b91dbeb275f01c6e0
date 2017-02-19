@@ -16,26 +16,39 @@ if (session.getAttribute("authenticated") == null) {
 		<div class="container">
 			<%@ include file="navbar.jsp" %>
 			<div class="jumbotron">
-				<h1 class="display-3">Welcome to Fabflix</h1>
+				<h1 class="display-3">Welcome to Zotflix</h1>
 		     	<p class="lead">Please login to continue.</p>
 		     	<div class="row">
 		     	<div class="col-3"></div> 
 		     	<div class="col-6">
 					<form action="Login" method="POST">
 						<div class="form-group">
-							<input type="text" class="form-control" id="username" name="username">
+							<input type="text" required class="form-control" id="username" name="username">
 				  		</div>
+				  		
 				  		<div class="form-group">
-				    		<input type="password" class="form-control" id="password" name="password">
+				    		<input type="password" required class="form-control" id="password" name="password">
 				  		</div>
+				  		
 				  		<p class="lead">${message}</p>
 				  		<c:remove var="message" scope="session" />
+				  		
+				  		<div class="g-recaptcha" data-sitekey="6LcO6RUUAAAAAOJfYRwq3NpxD5niBX9mWzYfo9mF"></div>
+				  		
+				  		<br>
+
 				  		<input type="submit" class="btn btn-info" value="Login">
+				  		
+				  		
+
 					</form>
+
+					
 				</div>
 				</div>
 		    </div>
 		</div>
+		<script src='https://www.google.com/recaptcha/api.js'></script>
 		<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
   		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>

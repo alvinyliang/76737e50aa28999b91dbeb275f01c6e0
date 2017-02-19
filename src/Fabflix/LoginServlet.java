@@ -22,27 +22,43 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
+        
+        // get reCAPTCHA request param
+ 		String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
+ 		boolean valid = VerifyUtils.verify(gRecaptchaResponse);
+        
+        
         InputStream input = getServletContext().getResourceAsStream("/WEB-INF/db_config.properties");
         DBConnection dbConn = new DBConnection(input);
         Connection conn;
         PreparedStatement stmt;
         HttpSession session = request.getSession(true);
+        
         try {
-        	Class.forName("com.mysql.cj.jdbc.Driver");
-        	conn = DriverManager.getConnection(dbConn.DB_URL, dbConn.DB_USERNAME, dbConn.DB_PASSWORD);
-        	stmt = conn.prepareStatement("SELECT * FROM customers WHERE email = ? AND password = ?");
-			stmt.setString(1, username);
-			stmt.setString(2, password);
-        	ResultSet rs = stmt.executeQuery();
-        	if (rs.next()) {
-        		String name = rs.getString("first_name");
-        		session.setAttribute("name", name);
-        		session.setAttribute("authenticated", "true");
-        		String userId = rs.getString("id");
-        		session.setAttribute("userId", userId);
-        		
-                response.sendRedirect("Home");
-                return;
+        	
+        	if (valid){
+	        	Class.forName("com.mysql.cj.jdbc.Driver");
+	        	conn = DriverManager.getConnection(dbConn.DB_URL, dbConn.DB_USERNAME, dbConn.DB_PASSWORD);
+	        	stmt = conn.prepareStatement("SELECT * FROM customers WHERE email = ? AND password = ?");
+				stmt.setString(1, username);
+				stmt.setString(2, password);
+	        	ResultSet rs = stmt.executeQuery();
+	        	
+	        	
+	        	if (rs.next()) {
+	        		String name = rs.getString("first_name");
+	        		String userId = rs.getString("id");
+
+	        		session.setAttribute("name", name);
+	        		session.setAttribute("userId", userId);
+
+	        		session.setAttribute("authenticated", "true");
+	        		
+	        		rs.close();
+	        		
+	                response.sendRedirect("Home");
+	                return;
+	        	}
         	}
         	
         } catch (SQLException se) { 
@@ -50,8 +66,17 @@ public class LoginServlet extends HttpServlet {
         } catch (Exception e) {
         	e.printStackTrace();
         }
+        
+  
+        
         //If login fails
 		String message = "Invalid login!";
+		
+		//check recaptcha
+		if (!valid) {
+			message = "You missed the Captcha.";
+		} 
+		
 		request.setAttribute("message", message);
 		request.getRequestDispatcher("login.jsp").forward(request,response);
     }
