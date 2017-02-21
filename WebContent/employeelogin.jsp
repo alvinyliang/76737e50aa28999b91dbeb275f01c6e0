@@ -16,10 +16,12 @@ if (session.getAttribute("authenticated") == null) {
 		<div class="container">
 			<%@ include file="navbar.jsp" %>
 			<div class="jumbotron">
+				<h1 class="display-3">Employee Dashboard</h1>
 		     	<p class="lead">Please login to continue.</p>
 		     	<div class="row">
 		     	<div class="col-3"></div> 
 		     	<div class="col-6">
+					<form action="/Fabflix/_dashboard/Login" method="POST">
 						<div class="form-group">
 							<input type="text" required class="form-control" id="username" name="username">
 				  		</div>

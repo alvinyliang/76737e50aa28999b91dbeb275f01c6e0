@@ -54,7 +54,7 @@ public class EmployeeLoginServlet extends HttpServlet {
 	        		session.setAttribute("employeeName", name);
 	        		session.setAttribute("employeeAuthenticated", "true");
 	        		rs.close();
-	                response.sendRedirect("_dashboard");
+	                response.sendRedirect("/Fabflix/_dashboard");
 	                return;
 	        	}
         	}
