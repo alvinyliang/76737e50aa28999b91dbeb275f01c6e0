@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<!--DOCTYPE actors PUBLIC "-//DAML Project//DTD Play//EN"-->
+<!DOCTYPE ACTORS.DTD>
+<!-- contained 6865 actors on Feb. 2005 -->
+<!-- Version 47 was XML error free, but did not have expanded notes, awards -->
+<!-- Version 63 Updated 20 April 2004 -->
+<actors>
+<!-- end actors -->
+<actor>
+	<stagename>Nova Pilbeam</stagename> 
+	<dowstart>1934</dowstart> 
+	<dowend>1948</dowend> 
+	<familyname>Pilbeam</familyname> 
+	<firstname>Nova</firstname> 
+	<gender>F</gender> 
+	<dob>1919</dob> 
+	<dod>1984+</dod> <roletype>teenager</roletype> <origin>\Br</origin> 
+	<relationships>	<relship><reltype>Ww</reltype><towhom>
+	<relname>Hitchcock</relname><relattr>D</relattr></towhom></relship>
+	</relationships> 
+	<notes/>
+</actor>
+
+<actor>
+	<stagename>Ernest Thesiger</stagename> 
+			<dowstart>1929</dowstart> <dowend>1961</dowend> 
+			<familyname>Thesiger</familyname> <firstname>Ernest</firstname> 
+			<gender>M</gender> 
+	<dob>1879</dob> 
+		<dod>1961</dod> <roletype>skeletal-looking</roletype> <origin>\Br</origin> 
+	<picref>[4.535; 19.207]</picref> <relationships/> <notes/>
+</actor>
+
+<actor>
+	<stagename>Martin Vaughn</stagename> 
+			<dowstart></dowstart> <dowend></dowend> <familyname></familyname> 
+			<firstname></firstname> <gender>M</gender> 
+	<dob></dob> <dod>1992+</dod>
+			<roletype>unknown</roletype> <origin>\Ct</origin> <picref/> <relationships/> <notes><refs>![1]</refs></notes> 
+</actor>
+
+<actor>
+	<stagename>Lon Chaney~jr.</stagename> 
+			<dowstart>1932</dowstart> <dowend>1968</dowend><familyname>Chaney</familyname> <firstname>Creighton</firstname> <gender>M</gender> 
+	<dob>1906</dob> <dod>1973</dod> 
+			<roletype>massive</roletype> <origin>\Am</origin> <picref/> <relationships/> <notes/>
+</actor>
+
+<actor><stagename>Lee J. Cobb</stagename> <dowstart>1937</dowstart> <dowend>1975</dowend> <familyname>Jacoby</familyname> <firstname>Leo</firstname> <gender>M</gender> <dob>1911</dob> <dod>1976</dod> <roletype>powerful</roletype> <origin>\Am</origin> <picref/> <relationships/> <notes/>
+</actor>
+ 
+<actor>
+	<stagename>Douglas `Wrong Way' Corrigan</stagename> 
+			<dowstart>1939</dowstart> <dowend>1939</dowend> <familyname>Corrigan</familyname> <firstname>Douglas</firstname> <gender>M</gender> 
+	<dob>1907</dob> 
+			<dod>1984+</dod> <roletype>unknown</roletype> <origin>\Am</origin> <picref/> <notes><text>self as aviator</text></notes> 
+</actor>
+
+<actor>
+	<stagename>Cantilene</stagename>
+			<dowstart>1919</dowstart> <dowend></dowend> <familyname>Cantil\`ene</familyname> <firstname></firstname> <gender>M</gender> <roletype>romantic, phlegmatic</roletype> <origin>\Fr</origin> <picref/> <relationships/> <notes/>
+</actor>
+
+
+</actors>

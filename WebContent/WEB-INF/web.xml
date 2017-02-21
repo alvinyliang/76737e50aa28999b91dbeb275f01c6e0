@@ -99,6 +99,16 @@
   	<servlet-class>Fabflix.employee.EmployeeServlet</servlet-class>
   </servlet>
   
+  <servlet>
+  	<servlet-name>XMLParserServlet</servlet-name>
+  	<servlet-class>XMLParsers.XMLParserServlet</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>XMLParserReportServlet</servlet-name>
+  	<servlet-class>XMLParsers.XMLParserReportServlet</servlet-class>
+  </servlet>
+  
+  
   
   <servlet-mapping>
     <servlet-name>LoginServlet</servlet-name>
@@ -175,5 +185,16 @@
   	<servlet-name>EmployeeServlet</servlet-name>
   	<url-pattern>/_dashboard</url-pattern>
   </servlet-mapping> 
+  
+  
+  <servlet-mapping>
+  	<servlet-name>XMLParserServlet</servlet-name>
+  	<url-pattern>/XMLParser</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>XMLParserReportServlet</servlet-name>
+  	<url-pattern>/reports/XMLParserReport</url-pattern>
+  </servlet-mapping>
+  
   
 </web-app>
