@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!--DOCTYPE casts PUBLIC "-//DAML Project//DTD Play//EN"-->
+<!DOCTYPE CAST.DTD>
+<!-- MASTER BASE File of casts in [varese]mydocs/mov/xml/castsnnn.xml. -->
+<!-- XML copy, validated with IE, 29 Dec 2003-->
+<!-- This file is copyright 1987,1989,1990,1993,1996,1998,2000,2003 by Gio Wiederhold. -->
+<!-- Corresponding DTD is in [varese]mydocs/mov/xml/castmm.dtd --> 
+<!-- Total 48K+ entries (April 2001). ~9000 films by ~2700 directors -->
+<!-- CASTS: Fairly complete for Hitchcock actors. -->
+<!-- Entries are arranged alphabetically by directors' and film codes, -->
+<!-- The major fields are {filmcode, title, actor, followed by dep. info, -->
+<!-- 		role-type, role-description, and optional role-name, role-specs} -->
+<!-- Each letter section starts with a comment with 5 repeats of the letter -->
+<!-- For each director a header entry is provided with {code, name, note} -->
+
+<casts>
+<dirfilms><dirid>H</dirid><is>Hitchcock</is><castnote>Actors in Silent Hitchcock Films.</castnote>
+<filmc>
+<m><f>H1</f><t>Always Tell Your Wife</t><a>Seymour Hicks</a><p>Und</p><r>husband</r></m>
+<m><f>H1</f><t>Always Tell Your Wife</t><a>Ellaline Teriss</a><p>Und</p><r>wife</r></m>
+</filmc>
+<filmc>
+<m><f>H2</f><t>Number Thirteen</t><a>Clare Greet</a><p>Und</p><r/></m>
+<m><f>H2</f><t>Number Thirteen</t><a>Ernest Thesiger</a><p>Und</p><r/></m>
+</filmc>
+<filmc>
+<m><f>H30</f><t>Young and Innocent</t><a>Nova Pilbeam</a><p>Sav</p><r>s., daughter of constable</r> <n>Erica</n></m>
+<m><f>H30</f><t>Young and Innocent</t><a>Derrick deMarney</a><p>Und</p><r>suspect, gigolo</r> <n>Robert</n></m>
+<m><f>H30</f><t>Young and Innocent</t><a>Percy Marmont</a><p>Und</p><r/> <n>Col.B.</n></m>
+<m><f>H30</f><t>Young and Innocent</t><a>Basil Radford</a><p>Und</p><r>uncle</r></m>
+<m><f>H30</f><t>Young and Innocent</t><a>Alfred Hitchcock</a><p>Cam</p><r>fumbling press photographer</r></m></filmc>
+<filmc>
+<m><f>H31</f><t>The Lady Vanishes</t><a>Sally Stewart</a><p>Und</p><r/></m>
+<m><f>H31</f><t>The Lady Vanishes</t><a>Josephine Wilson</a><p>Und</p><r/></m>
+<m><f>H31</f><t>The Lady Vanishes</t><a>Charles Oliver</a><p>Und</p><r>intelligence chief</r><error>R(An)</error></m>
+<m><f>H31</f><t>The Lady Vanishes</t><a>Kathleen Tremaine</a><p>Und</p><r/></m></filmc>
+</dirfilms>
+<!-- Only in casts -->
+<dirfilms><dirid>IoA</dirid><is>Auzins</is><castnote>Actors and notes.</castnote>
+<filmc>
+<m><f>IoA10</f><t>We of the Never Never</t><a>Angela Punch McGregor</a><p>Und</p><r>marries rancher</r></m>
+<m><f>IoA10</f><t>We of the Never Never</t><a>Arthur Dignam</a><p>Und</p><r>rancher</r></m>
+<m><f>IoA10</f><t>We of the Never Never</t><a>Martin Vaughn</a><p>Und</p><r/></m>
+<m><f>IoA10</f><t>We of the Never Never</t><a>Tony Barry</a><p>Und</p><r/></m>
+<m><f>IoA10</f><t>We of the Never Never</t><a>Tommy Lewis</a><p>Und</p><r/></m></filmc>
+</dirfilms>
+
+
+</casts>
+<!--  end -->
+
