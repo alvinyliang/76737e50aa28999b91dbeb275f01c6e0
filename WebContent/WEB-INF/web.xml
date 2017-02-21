@@ -83,7 +83,21 @@
   	<servlet-name>ReadMeServlet</servlet-name>
   	<servlet-class>Fabflix.ReadMeServlet</servlet-class>
   </servlet>
+
+  <servlet>
+  	<servlet-name>EmployeeActionsServlet</servlet-name>
+  	<servlet-class>Fabflix.employee.EmployeeActionsServlet</servlet-class>
+  </servlet>
   
+  <servlet>
+  	<servlet-name>EmployeeLoginServlet</servlet-name>
+  	<servlet-class>Fabflix.employee.EmployeeLoginServlet</servlet-class>
+  </servlet>
+ 
+  <servlet>
+  	<servlet-name>EmployeeServlet</servlet-name>
+  	<servlet-class>Fabflix.employee.EmployeeServlet</servlet-class>
+  </servlet>
   
   
   <servlet-mapping>
@@ -145,6 +159,21 @@
   <servlet-mapping>
   	<servlet-name>ReadMeServlet</servlet-name>
   	<url-pattern>/reports/readme</url-pattern>
-  </servlet-mapping>    
+  </servlet-mapping>
+  
+  <servlet-mapping>
+  	<servlet-name>EmployeeActionsServlet</servlet-name>
+  	<url-pattern>/_dashboard/Actions</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+  	<servlet-name>EmployeeLoginServlet</servlet-name>
+  	<url-pattern>/_dashboard/Login</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+  	<servlet-name>EmployeeServlet</servlet-name>
+  	<url-pattern>/_dashboard</url-pattern>
+  </servlet-mapping> 
   
 </web-app>
