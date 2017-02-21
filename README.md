@@ -16,19 +16,27 @@ View the demo at https://zotflix.com
   - Tomcat v8.5
   
 ## To do:
-  
+  - Autocompletion Search
+  - Auto popup window for each movie
+  - Android App
+  - Fuzzy Search
   
 ## Completed:
-  - Implement search
-  - Implement substring matching and partial matching (SQL queries with LIKE and ILIKE)
-  - Implement browse
-  - Implement pagination for search and browse
-  - Implement movie and star info page
-  - Implement shopping cart and check out
-  - Implement order saving
+  - Implemented search
+  - Implemented substring matching and partial matching (SQL queries with LIKE and ILIKE)
+  - Implemented browse
+  - Implemented pagination for search and browse
+  - Implemented movie and star info page
+  - Implemented shopping cart and check out
+  - Implemented order saving
   - Implemented login page and login post to servlet
   - Implemented Home page
   - Implemented authenciate user in session
   - Implemented session checking
     - If user is logged in, login page redirects to home page
   - Implement logout button (for session)
+  - Implemented reCAPTHA
+  - Implemented HTTPS
+  - Implemented Employee Dashboard
+  - Implemented stored procedures for inserting new movie/star
+  - Implemented XML parser
