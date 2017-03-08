@@ -1,4 +1,4 @@
-<%
+,<%
 if (session.getAttribute("authenticated") == null) {
      
 } else if(session.getAttribute("authenticated").equals("true")) {

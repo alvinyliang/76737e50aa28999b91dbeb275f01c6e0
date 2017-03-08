@@ -102,7 +102,6 @@ public class SearchServlet extends HttpServlet {
         	DatabaseQueries dbQ = new DatabaseQueries(conn);
             
 
-
 	        //get params	
 			String title = request.getParameter("title");
 			String director = request.getParameter("director");
@@ -110,7 +109,10 @@ public class SearchServlet extends HttpServlet {
 			String star = request.getParameter("star");
 	        String sort = request.getParameter("sort");
 	        String order = request.getParameter("order");
-	        String limit = request.getParameter("limit");			
+	        String limit = request.getParameter("limit");		
+        	String auto_complete_text = request.getParameter("auto_complete");
+
+	        
 	        queryLimit = Integer.parseInt(limit);
 			 
 			int pageId = getPageId(request);
@@ -129,8 +131,33 @@ public class SearchServlet extends HttpServlet {
 			
 
         	ArrayList<Movie> movieList = querySearchParam(dbQ, conn, title, director, star, year, pageId, sort, order);
+        	if (auto_complete_text != null){
+	        	String[] auto_complete_parts = auto_complete_text.split(" ");
+	        	 
+	        	
+	        	//TODO: full text matching
+	        	//	SELECT movieId FROM movies WHERE MATCH (title) AGAINST ('+graduate -michigan' IN BOOLEAN MODE)
+	        	String match_against = "";
+	        	
+	        	for (int i = 0; i < auto_complete_parts.length; i++){
+	        		//check last word
+	        		if (i == (auto_complete_parts.length -1)){
+	            		match_against += "+" + auto_complete_parts[i] + "*";
+	        		}
+	        		else{
+	            		match_against += "+" + auto_complete_parts[i] + " ";
+	        		}
+	        	}
+	        	
+	        	String matchQuery = "SELECT * FROM movies WHERE MATCH (title) AGAINST ('" + match_against + "' IN BOOLEAN MODE)";
+	        	System.out.println(matchQuery);
+	        	PreparedStatement stmt = conn.prepareStatement(matchQuery);
+	        	ResultSet rs = stmt.executeQuery();
+	        	movieList = getSearchParamResults(rs, dbQ);
+        	}
         	
         	response.setContentType("application/json;charset=utf-8");
+        	
 	        out.print(buildMovieListJson(movieList, totalPages, pageId));
 	        out.flush();
 	        return;
@@ -192,7 +219,7 @@ public class SearchServlet extends HttpServlet {
     			+ "id IN "
     			+ "(SELECT movie_id FROM stars_in_movies WHERE star_id IN "
     			+ "(SELECT id FROM stars WHERE concat(first_name, ' ', last_name) "
-    					+ "LIKE ?))) ");    	
+    					+ "LIKE ?))) ");
     	
     	//ensure all fields not empty
     	if ((title == null || title.trim().isEmpty()) && 

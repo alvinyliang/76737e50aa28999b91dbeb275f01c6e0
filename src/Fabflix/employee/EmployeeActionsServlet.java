@@ -66,7 +66,33 @@ public class EmployeeActionsServlet extends HttpServlet{
     			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
     			Connection conn = DriverManager.getConnection(dbConn.DB_URL, dbConn.DB_USERNAME, dbConn.DB_PASSWORD);
     			//Call stored procedure
-    			CallableStatement cStmt = conn.prepareCall("{call addMovie(?, ?)}");
+    			CallableStatement cStmt = conn.prepareCall("{call add_movie(?, ?, ?, ?, ?, ?)}");
+    			
+    			
+        		String title = request.getParameter("title");
+        		int year = Integer.parseInt(request.getParameter("year"));
+        		String director = request.getParameter("director");
+        		
+        		String star_first_name = request.getParameter("first_name");
+        		String star_last_name = request.getParameter("last_name");
+        		String genre = request.getParameter("genre");
+        		
+        		if (star_first_name.trim() == null){
+        			star_first_name = "";
+        		}
+        		if (star_last_name.trim() == null){
+        			star_last_name = "";
+        		}
+        		
+ 
+        		cStmt.setString(1, title);
+				cStmt.setInt(2, year);
+				cStmt.setString(3, director);
+				cStmt.setString(4, star_first_name);
+				cStmt.setString(5, star_last_name);
+				cStmt.setString(6, genre);
+        		
+    			
     		    boolean hadResults = cStmt.execute();
     	        conn.close();
     		} catch (Exception e) {

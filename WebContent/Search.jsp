@@ -37,11 +37,20 @@ if (session.getAttribute("authenticated") == null) {
 					<input type="text" placeholder="Search by movie title" class="form-control" name="movie_title" id="search_movie_title" aria-describedby="basic-addon1">
 					<input type="text" placeholder="Search by year" class="form-control" name="year" id="search_movie_year" aria-describedby="basic-addon1">
 					<input type="text" placeholder="Search by director" class="form-control" name="director" id="search_movie_director" aria-describedby="basic-addon1">
-					<input type="text" placeholder="Search by star" class="form-control" name="star" id="search_movie_star" aria-describedby="basic-addon1">	  
+					<input type="text" placeholder="Search by star" class="form-control" name="star" id="search_movie_star" aria-describedby="basic-addon1">	
+
+
+					
 		    </div>
-		    
+
 
 		 	</form>
+				<input list="hosting-plan" type="text" placeholder="Search by auto complete" class="form-control" name="auto_complete" id="auto_complete">
+
+			
+			
+			
+					 	
         </div>
     </div>	  
     
@@ -120,7 +129,9 @@ th.option{
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
 	 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
-		
+	  	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	 	
 		<script type="text/javascript">
 
 			
@@ -136,13 +147,14 @@ th.option{
 				var tablehead_html = '';
 				var numPage;
 				
-				var title = 
+				var title;
 				
 				$.ajax({
 					type: "GET",
 					datatype: "json",
 					url: "./Search",
 					data: {"title": $('input[name="movie_title"]').val(),
+							"auto_complete": $('input[name="auto_complete"]').val(),
 							"year": $('input[name="year"]').val(),
 							"director": $('input[name="director"]').val(),
 							"star": $('input[name="star"]').val(),
@@ -161,13 +173,13 @@ th.option{
 								 "<tr>" +
 								 "<th scope='row'>"
 							 	+ "<td class='align-middle'>" + item.id + "</td>"
-								+ "<td class='align-middle'>" + "<a href='Movie?movieId=" + item.id + "'>" + item.title +  "</a></td>"
+								+ "<td class='align-middle' >" + "<a href='Movie?movieId=" + item.id + "' onmouseover='mouseOver(" + item.id +  ")' id='" + item.id +  "'>" + item.title +  "</a></td>"
 							 	+ "<td class='align-middle'>" + item.year + "</td>"
 							 	+ "<td class='align-middle'>" + item.director +  "</td>"
 							 	+ "<td class='align-middle'>";
 							 	
 		            		 	jQuery.each(item.stars, function(index, star) {
-		            		 		html += "<a href='Star?starId=" + star.id + "'>" + star.firstName + " " + star.lastName + " </a><br>";
+		            		 		html += "<a href='Star?starId=" + star.id + "'>" + star.firstName + " " + star.lastName + " </a><br>"; 
 		            		 	});
 								 html += "</td>";
 								 
@@ -239,7 +251,9 @@ th.option{
 			}
 			
 		
-		
+			function mouseOver(id) {
+			    document.getElementById(id).style.color = "red";
+			}
 		
 			function getPage(page_num, sort, order){
 		        searchMovie(page_num, sort, order);
@@ -258,6 +272,13 @@ th.option{
 					    }
 					});
 				  
+				  $("#auto_complete").on("keyup", function(e) {
+					        searchMovie(1, "title", 'asc');
+
+					});
+				  
+
+			        
 				  $("#selectLimit").change(function () { 
 						searchMovie(1, 'title', 'asc');
 					  });
