@@ -10,7 +10,7 @@ View the demo at https://zotflix.com
     - jstl-1.2 https://mvnrepository.com/artifact/javax.servlet/jstl/1.2
     - javax.json 1.0.4 https://mvnrepository.com/artifact/org.glassfish/javax.json/1.0.4
   - Under Eclipse "Problems" tab, change project JRE path to match current Java Version. Current JRE is set to version _111.
-  -Set the database information in db_config.properties at WebContent/WEB-INF/db_config.properties
+  - Set the database information in db_config.properties at WebContent/WEB-INF/db_config.properties
   
 ## Project Dependencies
   - Tomcat v8.5
@@ -40,3 +40,17 @@ View the demo at https://zotflix.com
   - Implemented Employee Dashboard
   - Implemented stored procedures for inserting new movie/star
   - Implemented XML parser
+  - Implemented Fuzzy search
+  	- Based on edit distance
+  	- Include three functions: 
+  		- ed : integer ed(string s1, string s1):
+  			- returns the edit distance between s1 and s2. 
+  			- The function assumes that the strings have the same case.
+		- edth : boolean edth(string s1, string s1, integer th)
+			- returns true if the edit distance between s1 and s2 is smaller or equal than th. 
+			- The function assumes that the strings have the same case.
+			- This function might be slightly faster than ed as it can stop as soon as the edit distance goes above the threshold.
+ 		- edrec : boolean edrec(string s, string rec, integer th)
+ 			- returns true if there is a token in rec that has an edit distance from s smaller or equal to th. 
+ 			- The string in rec is tokenized using the following separators: " " (white space), "," (comma), and "." (dot).
+ 			- The function assumes that the query string is in lower case.
