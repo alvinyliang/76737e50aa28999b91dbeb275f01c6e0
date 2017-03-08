@@ -19,7 +19,6 @@ View the demo at https://zotflix.com
   - Autocompletion Search
   - Auto popup window for each movie
   - Android App
-  - Fuzzy Search
   
 ## Completed:
   - Implemented search
