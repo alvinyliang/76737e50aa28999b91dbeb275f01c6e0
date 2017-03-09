@@ -128,10 +128,15 @@ public class SearchServlet extends HttpServlet {
             session.setAttribute("year", year);
             session.setAttribute("director", director);
             session.setAttribute("star", star);
-			
+            session.setAttribute("auto_complete", auto_complete_text);
 
-        	ArrayList<Movie> movieList = querySearchParam(dbQ, conn, title, director, star, year, pageId, sort, order);
-        	if (auto_complete_text != null){
+
+        	ArrayList<Movie> movieList = querySearchParam(dbQ, conn, title, director, star, year, pageId, sort, order);	        	
+        	System.out.println("Reuqet received");
+
+        	if (auto_complete_text != null && !auto_complete_text.trim().isEmpty()){
+            	System.out.println("I got in");
+
 	        	String[] auto_complete_parts = auto_complete_text.split(" ");
 	        	 
 	        	

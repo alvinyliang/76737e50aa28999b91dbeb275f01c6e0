@@ -72,6 +72,8 @@ if (session.getAttribute("authenticated") == null) {
     </div>   
     
   	<style>
+  	
+  	
   	table {
   width: 100%;
 }
@@ -87,6 +89,8 @@ th.director, th.staring, th.genres {
 th.option{
 	width: 10%;
 }
+  	.popover{width:auto!important; max-width: none}
+
   	</style>
   
 	
@@ -129,8 +133,7 @@ th.option{
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
 	 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
-	  	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-	 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
 	 	
 		<script type="text/javascript">
 
@@ -171,10 +174,13 @@ th.option{
 	
 							 html += 
 								 "<tr>" +
-								 "<th scope='row'>"
+								 "<th scope='row' >"
 							 	+ "<td class='align-middle'>" + item.id + "</td>"
-								+ "<td class='align-middle' >" + "<a href='Movie?movieId=" + item.id + "' onmouseover='mouseOver(" + item.id +  ")' id='" + item.id +  "'>" + item.title +  "</a></td>"
-							 	+ "<td class='align-middle'>" + item.year + "</td>"
+								+ "<td class='align-middle'>" + "<a href='Movie?movieId=" + item.id + "' id='" + item.id + "' title='" + item.title +
+								"' onmouseover='mouseOver(" + item.id +  ")'  data-toggle='popover' data-html='true' data-trigger='manual' >" + item.title +  "</a> </td>"
+							 	
+										
+								+ "<td class='align-middle'>" + item.year + "</td>"
 							 	+ "<td class='align-middle'>" + item.director +  "</td>"
 							 	+ "<td class='align-middle'>";
 							 	
@@ -251,21 +257,73 @@ th.option{
 			}
 			
 		
-			function mouseOver(id) {
-			    document.getElementById(id).style.color = "red";
-			}
-		
+
 			function getPage(page_num, sort, order){
 		        searchMovie(page_num, sort, order);
-			}		
+			}	
+			
+			function mouseOver(id) {
+				var c;
+				var popover = $('#' + id).popover({
+				    trigger: 'manual',
+				    placement: 'right',
+				    html: true
+				}).hover(function() {
+				    $.ajax({
+			        	  type: "GET",
+						  url: "./Movie",
+						  data: {"movieId": id},				        
+						  success: function (html) {
+			            	popover.attr('data-content', html);	
+
+				        }
+				    });
+				}).on("mouseenter", function () {
+			        var _this = '#' + id;
+			        
+			        
+			        $('#' + id).popover("show");
+			        $('#' + id).siblings(".popover").on("mouseleave", function () {
+			            $(_this).popover('hide');
+			        });
+			    }).on("mouseleave", function () {
+			        var _this = '#' + id;
+			        setTimeout(function () {
+			            if (!$(".popover:hover").length) {
+			                $(_this).popover("hide");
+			            }
+			        }, 100);
+			    });
+				
 
 
+				
+			  
+	       }
+
+
+			
 			$(document).ready(function () {
+			
+
+			
+				
 				$(document).ajaxStart(function() {
 				    $(document.body).css({'cursor' : 'wait'});
 				}).ajaxStop(function() {
 				    $(document.body).css({'cursor' : 'default'});
-				});					  
+				});	
+				
+
+				    
+							
+				$(document).click(function(){
+				     $('[data-toggle="popover"]').popover('hide');
+				     $(".popover").popover('hide');
+
+
+				});	
+				
 				  $("#search_movie_title, #search_movie_year, #search_movie_director, #search_movie_star").on("keyup", function(e) {
 					    if(e.which == 13) {
 					        searchMovie(1, "title", 'asc');
