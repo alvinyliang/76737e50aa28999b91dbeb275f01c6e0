@@ -16,9 +16,9 @@ View the demo at https://zotflix.com
   - Tomcat v8.5
   
 ## To do:
-  - Autocompletion Search
-  - Auto popup window for each movie
-  - Android App
+  - Implement connection pooling
+  - Setup MySQL replication
+  
   
 ## Completed:
   - Implemented search
@@ -39,6 +39,9 @@ View the demo at https://zotflix.com
   - Implemented Employee Dashboard
   - Implemented stored procedures for inserting new movie/star
   - Implemented XML parser
+  - Implemented Autocompletion Search
+  - Implemented Auto popup window for each movie
+  - Created Android App
   - Implemented Fuzzy search
   	- Based on edit distance
   	- Include three functions: 
