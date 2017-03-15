@@ -21,6 +21,10 @@
 	<error-page>
         <location>/ErrorPages/error.jsp</location>
     </error-page>
+  <filter>
+    <filter-name>SearchFilter</filter-name>
+    <filter-class>Fabflix.filters.SearchFilter</filter-class>
+  </filter>
   <servlet>
     <servlet-name>LoginServlet</servlet-name>
     <servlet-class>Fabflix.LoginServlet</servlet-class>
@@ -108,8 +112,13 @@
   	<servlet-class>XMLParsers.XMLParserReportServlet</servlet-class>
   </servlet>
   
-  
-  
+
+
+
+<filter-mapping>
+   <filter-name>SearchFilter</filter-name>
+   <url-pattern>/Search</url-pattern>
+</filter-mapping>
   <servlet-mapping>
     <servlet-name>LoginServlet</servlet-name>
     <url-pattern>/Login</url-pattern>
