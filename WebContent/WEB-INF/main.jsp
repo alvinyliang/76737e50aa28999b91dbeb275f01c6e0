@@ -32,8 +32,6 @@
 						<h4>Hello, ${name}.</h4>
 						<br>
 						<br>
-						
-						<h4>Zotflix is where you can find movies worth watching.</h4>
 
 						<div class="row">
 							<div class="mx-auto" style="width: 800px">
