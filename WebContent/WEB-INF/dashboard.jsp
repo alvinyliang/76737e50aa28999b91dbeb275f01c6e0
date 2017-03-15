@@ -133,18 +133,7 @@
 													<input class="form-control" type="text" name="director" required>
 												</div>
 											</div>											
-											<div class="form-group row">
-												<label class="col-2 col-form-label">Banner Url</label>
-												<div class="col-10">
-													<input class="form-control" type="url" name="banner_url">
-												</div>
-											</div>
-											<div class="form-group row">
-												<label class="col-2 col-form-label">Trailer Url</label>
-												<div class="col-10">
-													<input class="form-control" type="url" name="trailer_url">
-												</div>
-											</div>
+
 											<div class="form-group row">
 												<label class="col-2 col-form-label">Genre</label>
 												<div class="col-10">
@@ -165,18 +154,8 @@
 													<input class="form-control" type="text" name="last_name" required>
 												</div>
 											</div>
-											<div class="form-group row">
-												<label class="col-2 col-form-label">Date of Birth</label>
-												<div class="col-10">
-													<input class="form-control" type="date" name="dob">
-												</div>
-											</div>
-											<div class="form-group row">
-												<label class="col-2 col-form-label">Photo Url</label>
-												<div class="col-10">
-													<input class="form-control" type="url" name="photo_url">
-												</div>
-											</div>								
+
+							
 											<button id="addMovie" class="btn btn-primary" onsubmit='return false;'>Add Movie</button>
 									  </form>
 							      </div>
