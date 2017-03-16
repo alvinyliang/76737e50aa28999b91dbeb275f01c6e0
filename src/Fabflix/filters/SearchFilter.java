@@ -10,6 +10,8 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
+import Logger.PerformanceLogger;
+
 public class SearchFilter implements Filter {
 
 	@Override
@@ -21,15 +23,22 @@ public class SearchFilter implements Filter {
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
+		
+//		Map<String, String[]> parameters = request.getParameterMap();
+//		for(String parameter : parameters.keySet()) {
+//			System.out.print(parameter+": "+request.getParameter(parameter)+". ");
+//		}
+		String config = request.getParameter("testConfig");
+		String auto_cmp = request.getParameter("auto_complete");
+		String title = request.getParameter("title");
+		
 		long startTime = System.nanoTime();
 		/////////////////////////////////
 		/// ** part to be measured ** ///
 		
-		Map<String, String[]> parameters = request.getParameterMap();
-		for(String parameter : parameters.keySet()) {
-			System.out.print(parameter+": "+request.getParameter(parameter)+". ");
-		}
-		chain.doFilter(request,response);
+		
+		
+		chain.doFilter(request, response);
 		
 		
 		
@@ -37,8 +46,12 @@ public class SearchFilter implements Filter {
 		/////////////////////////////////
 		long endTime = System.nanoTime();
 		long elapsedTime = endTime - startTime;
+//		System.out.println("\nSearch Servlet Time: "+ ((double) elapsedTime/1000000)+" sec");
 		
-		System.out.println("\nJS Time: "+ ((double) elapsedTime/1000000000)+" sec");
+		
+		PerformanceLogger.log("../../../WebContent/logs/TestLog.log", 
+				elapsedTime, "TS", config, auto_cmp, title);
+		
 
 	}
 
@@ -48,4 +61,7 @@ public class SearchFilter implements Filter {
 
 	}
 
+	
+	
+	
 }

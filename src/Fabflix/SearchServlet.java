@@ -16,15 +16,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import Logger.PerformanceLogger;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.Map;
 
 public class SearchServlet extends HttpServlet {
 
     static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
     int queryLimit = 10;    
     static final String DEBUG = "OFF";
+    long elapsedTime = 0;
     
     
     private JsonObject buildMovieListJson(ArrayList<Movie> movieList, int totalPages, int pageId) {
@@ -94,6 +98,13 @@ public class SearchServlet extends HttpServlet {
         HttpSession session = request.getSession(true);
         
         try{
+        	long startTime = System.nanoTime();
+        	long endTime = System.nanoTime();
+    		
+        	startTime = System.nanoTime();
+        	/////////////////////////////////
+    		/// ** part to be measured ** ///
+        	
             InputStream input = getServletContext().getResourceAsStream("/WEB-INF/db_config.properties");
             DBConnection dbConn = new DBConnection(input);
             Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
@@ -101,7 +112,12 @@ public class SearchServlet extends HttpServlet {
             
         	DatabaseQueries dbQ = new DatabaseQueries(conn);
             
+    		/// ** part to be measured ** ///
+    		/////////////////////////////////
+        	endTime = System.nanoTime();
+        	elapsedTime += endTime - startTime;
 
+        	
 	        //get params	
 			String title = request.getParameter("title");
 			String director = request.getParameter("director");
@@ -117,8 +133,22 @@ public class SearchServlet extends HttpServlet {
 			 
 			int pageId = getPageId(request);
 			
-        	//execute table results and count query
+        	
+			startTime = System.nanoTime();
+        	/////////////////////////////////
+    		/// ** part to be measured ** ///
+			
+			
+			//execute table results and count query
 			int countResults = querySearchParamCount(conn, title, director, star, year);
+
+    		/// ** part to be measured ** ///
+    		/////////////////////////////////
+        	endTime = System.nanoTime();
+        	elapsedTime += endTime - startTime;
+        	
+        	
+			
 			int totalPages = (int) Math.ceil( (double) countResults / (double) queryLimit);
 			
 			session.setAttribute("countResults", countResults);
@@ -130,15 +160,29 @@ public class SearchServlet extends HttpServlet {
             session.setAttribute("star", star);
             session.setAttribute("auto_complete", auto_complete_text);
 
+            startTime = System.nanoTime();
+        	/////////////////////////////////
+    		/// ** part to be measured ** ///
+			
 
-        	ArrayList<Movie> movieList = querySearchParam(dbQ, conn, title, director, star, year, pageId, sort, order);	        	
-        	System.out.println("Reuqet received");
-
+        	ArrayList<Movie> movieList = querySearchParam(dbQ, conn, title, director, star, year, pageId, sort, order);	
+        	
+        	/// ** part to be measured ** ///
+    		/////////////////////////////////
+        	endTime = System.nanoTime();
+        	elapsedTime += endTime - startTime;
+        	
+        	
+        	System.out.println("Requet received");
+        	
+        	String[] auto_complete_parts = auto_complete_text.split(" ");
+        	
+        	
+    		
         	if (auto_complete_text != null && !auto_complete_text.trim().isEmpty()){
             	System.out.println("I got in");
 
-	        	String[] auto_complete_parts = auto_complete_text.split(" ");
-	        	 
+	        	
 	        	
 	        	//TODO: full text matching
 	        	//	SELECT movieId FROM movies WHERE MATCH (title) AGAINST ('+graduate -michigan' IN BOOLEAN MODE)
@@ -154,15 +198,33 @@ public class SearchServlet extends HttpServlet {
 	        		}
 	        	}
 	        	
+	        	
+	    		
+	        	startTime = System.nanoTime();
+	        	/////////////////////////////////
+	    		/// ** part to be measured ** ///
+				
+	        	
 	        	String matchQuery = "SELECT * FROM movies WHERE MATCH (title) AGAINST ('" + match_against + "' IN BOOLEAN MODE)";
 	        	System.out.println(matchQuery);
 	        	PreparedStatement stmt = conn.prepareStatement(matchQuery);
 	        	ResultSet rs = stmt.executeQuery();
 	        	movieList = getSearchParamResults(rs, dbQ);
+
+	        	/// ** part to be measured ** ///
+	    		/////////////////////////////////
+	        	endTime = System.nanoTime();
+	        	elapsedTime += endTime - startTime;
+	        	
         	}
-        	
+
+    		
         	response.setContentType("application/json;charset=utf-8");
         	
+        	PerformanceLogger.log("../../../WebContent/logs/TestLog.log", 
+    				elapsedTime,"TJ", "null", auto_complete_text, title);
+        	
+        	elapsedTime = 0;
 	        out.print(buildMovieListJson(movieList, totalPages, pageId));
 	        out.flush();
 	        return;
@@ -179,6 +241,11 @@ public class SearchServlet extends HttpServlet {
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	doPost(request, response);
+    }
+    
+    @Override
+    protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	doPost(request, response);
     }
     
