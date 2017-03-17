@@ -29,6 +29,7 @@ public class SearchServlet extends HttpServlet {
     int queryLimit = 10;    
     static final String DEBUG = "OFF";
     long elapsedTime = 0;
+    int numQ = 0;
     
     
     private JsonObject buildMovieListJson(ArrayList<Movie> movieList, int totalPages, int pageId) {
@@ -210,11 +211,12 @@ public class SearchServlet extends HttpServlet {
 	        	PreparedStatement stmt = conn.prepareStatement(matchQuery);
 	        	ResultSet rs = stmt.executeQuery();
 	        	movieList = getSearchParamResults(rs, dbQ);
-
+	        	
 	        	/// ** part to be measured ** ///
 	    		/////////////////////////////////
 	        	endTime = System.nanoTime();
 	        	elapsedTime += endTime - startTime;
+	        	numQ++;
 	        	
         	}
 
@@ -222,9 +224,10 @@ public class SearchServlet extends HttpServlet {
         	response.setContentType("application/json;charset=utf-8");
         	
         	PerformanceLogger.log("../../../WebContent/logs/TestLog.log", 
-    				elapsedTime,"TJ", "null", auto_complete_text, title);
+    				elapsedTime,numQ, "TJ", request.getParameter("config"), auto_complete_text, title);
         	
         	elapsedTime = 0;
+        	numQ = 0;
 	        out.print(buildMovieListJson(movieList, totalPages, pageId));
 	        out.flush();
 	        return;
@@ -315,7 +318,7 @@ public class SearchServlet extends HttpServlet {
         rs.next();
         int itemCount = rs.getInt(1);
         rs.close();
-        
+        numQ++;
         return itemCount;
 		
     }
@@ -369,6 +372,7 @@ public class SearchServlet extends HttpServlet {
 		}
 		
     	ResultSet rs = stmt.executeQuery();
+    	numQ++;
     	return getSearchParamResults(rs, dbQ);
     }
     
@@ -387,8 +391,9 @@ public class SearchServlet extends HttpServlet {
         	
         	String banner = rs.getString(5);
         	movie.stars = dbQ.queryStars(movie.id);
+        	numQ++;
         	movie.genres = dbQ.queryGenres(movie.id);
-        	
+        	numQ++;
         	//check for valid banner link
 //        	if (!validURL(banner)){
 //        		banner = no_profile;

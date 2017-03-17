@@ -50,7 +50,7 @@ public class SearchFilter implements Filter {
 		
 		
 		PerformanceLogger.log("../../../WebContent/logs/TestLog.log", 
-				elapsedTime, "TS", config, auto_cmp, title);
+				elapsedTime, 0, "TS", config, auto_cmp, title);
 		
 
 	}
