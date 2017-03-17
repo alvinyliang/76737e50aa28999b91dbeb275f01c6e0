@@ -7,9 +7,9 @@ public class PerformanceLogger {
 //	static private FileHandler fileHandler;
 //    static private SimpleFormatter formatter;
 	
-	static public void log(String pattern, long time, String type, String config, String auto_cmp, String title){
+	static public void log(String pattern, long time, int numQ, String type, String config, String auto_cmp, String title){
 		writeLog("C:/1 school works/workspace/Zotflix/WebContent/logs/TestLog.log", 
-				setMessage(time, type, config, auto_cmp, title));
+				setMessage(time, numQ, type, config, auto_cmp, title));
 	}
 	
     static private void writeLog(String pattern, String[] msgs){
@@ -49,14 +49,15 @@ public class PerformanceLogger {
     	}
     }
     
-    static private String[] setMessage(long time, String type, String config, String auto_cmp, String title){
-		String[] result = new String[5];
+    static private String[] setMessage(long time, int numQ, String type, String config, String auto_cmp, String title){
+		String[] result = new String[6];
 		// has to follow the format <type>:<
 		result[0] = "type:"+type;
 		result[1] = "config:"+config;
 		result[2] = "auto_cmp:"+ auto_cmp;
 		result[3] = "title:"+title;
-		result[4] = "time:" + Double.toString((double) time/1000000);
+		result[4] = "numQ:" + Integer.toString(numQ);
+		result[5] = "time:" + Double.toString((double) time/1000000);
 		
 		
 		
