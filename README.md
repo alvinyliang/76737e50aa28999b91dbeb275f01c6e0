@@ -58,6 +58,7 @@ View the demo at https://zotflix.com
  - Implemented PerformanceLogger to log the execution time and other informations include:
  	- type: 'TS' (execution time of search servlet) or 'TJ' (execution time of JDBC) 
  	- config: test plan id
- 	- auto_cmp, title: parameters required for search servlet   
- 	
+ 	- auto_cmp, title: parameters required for search servlet 
+ 	- Fabflix/reports/log to access the log  
+ - Fabflix/jmeter_report.html to access the jmeter report
  	 

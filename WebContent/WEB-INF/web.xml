@@ -115,6 +115,10 @@
   	<servlet-name>XMLParserReportServlet</servlet-name>
   	<servlet-class>XMLParsers.XMLParserReportServlet</servlet-class>
   </servlet>
+    <servlet>
+  	<servlet-name>LogServlet</servlet-name>
+  	<servlet-class>Logger.LogServlet</servlet-class>
+  </servlet>
   
 
 
@@ -211,6 +215,10 @@
   <servlet-mapping>
   	<servlet-name>XMLParserReportServlet</servlet-name>
   	<url-pattern>/reports/XMLParserReport</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>LogServlet</servlet-name>
+  	<url-pattern>/reports/log</url-pattern>
   </servlet-mapping>
   
   

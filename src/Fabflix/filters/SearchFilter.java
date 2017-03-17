@@ -9,6 +9,7 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
 
 import Logger.PerformanceLogger;
 
@@ -48,9 +49,10 @@ public class SearchFilter implements Filter {
 		long elapsedTime = endTime - startTime;
 //		System.out.println("\nSearch Servlet Time: "+ ((double) elapsedTime/1000000)+" sec");
 		
+		String rootPath = ((HttpServletRequest) request).getServletContext().getRealPath("/");
 		
-		PerformanceLogger.log("../../../WebContent/logs/TestLog.log", 
-				elapsedTime, 0, "TS", config, auto_cmp, title);
+    	PerformanceLogger.log(rootPath + "/logs/TestLog.log", 
+    			elapsedTime, 0, "TS", config, auto_cmp, title);
 		
 
 	}
