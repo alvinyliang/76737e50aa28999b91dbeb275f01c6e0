@@ -24,11 +24,11 @@ public class SearchFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
 		
-//		Map<String, String[]> parameters = request.getParameterMap();
-//		for(String parameter : parameters.keySet()) {
-//			System.out.print(parameter+": "+request.getParameter(parameter)+". ");
-//		}
-		String config = request.getParameter("testConfig");
+		Map<String, String[]> parameters = request.getParameterMap();
+		for(String parameter : parameters.keySet()) {
+			System.out.print(parameter+"="+request.getParameter(parameter)+"&");
+		}
+		String config = request.getParameter("config");
 		String auto_cmp = request.getParameter("auto_complete");
 		String title = request.getParameter("title");
 		
