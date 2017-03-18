@@ -135,7 +135,8 @@ public class BrowseTitleServlet extends HttpServlet {
         InputStream input = getServletContext().getResourceAsStream("/WEB-INF/db_config.properties");
         DBConnection dbConn = new DBConnection(input);
         try {
-	        Connection conn = DriverManager.getConnection(dbConn.DB_URL, dbConn.DB_USERNAME, dbConn.DB_PASSWORD);       
+        	Connection conn = dbConn.getConnection();
+        	//Connection conn = DriverManager.getConnection(dbConn.DB_URL, dbConn.DB_USERNAME, dbConn.DB_PASSWORD);       
 	        DatabaseQueries query = new DatabaseQueries(conn);
 	        rows = query.getTotalTitleRows(titleChar);
 	        conn.close();
@@ -205,7 +206,8 @@ public class BrowseTitleServlet extends HttpServlet {
         ArrayList<Star> starList = new ArrayList<Star>();
         try {
 	        Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-        	conn = DriverManager.getConnection(dbConn.DB_URL, dbConn.DB_USERNAME, dbConn.DB_PASSWORD);       
+	        conn = dbConn.getConnection();
+	        //conn = DriverManager.getConnection(dbConn.DB_URL, dbConn.DB_USERNAME, dbConn.DB_PASSWORD);       
     	    stmt = conn.prepareStatement("SELECT * FROM stars_in_movies join stars ON stars_in_movies.star_id = stars.id WHERE movie_id = ?");
     	    stmt.setInt(1, movieId);
     
@@ -236,7 +238,8 @@ public class BrowseTitleServlet extends HttpServlet {
         ArrayList<Movie> movieList = new ArrayList<Movie>();
         try {
 	        Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-        	conn = DriverManager.getConnection(dbConn.DB_URL, dbConn.DB_USERNAME, dbConn.DB_PASSWORD);       
+	        conn = dbConn.getConnection();
+	        //conn = DriverManager.getConnection(dbConn.DB_URL, dbConn.DB_USERNAME, dbConn.DB_PASSWORD);       
         	DatabaseQueries dbQ = new DatabaseQueries(conn);
     	    stmt = conn.prepareStatement("select * from movies where substring(movies.title from 1 for 1) = ? "
     	    		+ "order by movies."+ sort + " " + order + " limit " + count + " offset " + count*(page-1) + ";");	//change order 

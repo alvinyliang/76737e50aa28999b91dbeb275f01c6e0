@@ -37,7 +37,8 @@ public class SaveOrderServlet extends HttpServlet{
 	            InputStream input = getServletContext().getResourceAsStream("/WEB-INF/db_config.properties");
 	            DBConnection dbConn = new DBConnection(input);
 	            Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-	        	Connection conn = DriverManager.getConnection(dbConn.DB_URL, dbConn.DB_USERNAME, dbConn.DB_PASSWORD);
+	            Connection conn = dbConn.getConnection();
+	            //Connection conn = DriverManager.getConnection(dbConn.DB_URL, dbConn.DB_USERNAME, dbConn.DB_PASSWORD);
 	            
 	        	DatabaseQueries dbQ = new DatabaseQueries(conn);
 

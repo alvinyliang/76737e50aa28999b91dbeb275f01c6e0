@@ -31,7 +31,8 @@ public class BrowseMenuServlet extends HttpServlet {
         
         try {
 	        Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-        	conn = DriverManager.getConnection(dbConn.DB_URL, dbConn.DB_USERNAME, dbConn.DB_PASSWORD);
+	        conn = dbConn.getConnection();
+	        //conn = DriverManager.getConnection(dbConn.DB_URL, dbConn.DB_USERNAME, dbConn.DB_PASSWORD);
         	
         	//New statement ignores movies that are in the genre list but no movies for it exist
         	stmt = conn.prepareStatement("SELECT distinct name from genres join genres_in_movies on genres.id = genres_in_movies.genre_id order by genres.name;");

@@ -97,7 +97,8 @@ public class SearchServlet extends HttpServlet {
             InputStream input = getServletContext().getResourceAsStream("/WEB-INF/db_config.properties");
             DBConnection dbConn = new DBConnection(input);
             Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-        	conn = DriverManager.getConnection(dbConn.DB_URL, dbConn.DB_USERNAME, dbConn.DB_PASSWORD);
+            conn = dbConn.getConnection();
+            //conn = DriverManager.getConnection(dbConn.DB_URL, dbConn.DB_USERNAME, dbConn.DB_PASSWORD);
             
         	DatabaseQueries dbQ = new DatabaseQueries(conn);
             
