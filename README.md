@@ -19,7 +19,6 @@ View the demo at https://zotflix.com
   - Implement connection pooling
   - Setup MySQL replication
   
-  
 ## Completed:
   - Implemented search
   - Implemented substring matching and partial matching (SQL queries with LIKE and ILIKE)
@@ -56,3 +55,10 @@ View the demo at https://zotflix.com
  			- returns true if there is a token in rec that has an edit distance from s smaller or equal to th. 
  			- The string in rec is tokenized using the following separators: " " (white space), "," (comma), and "." (dot).
  			- The function assumes that the query string is in lower case.
+ - Implemented PerformanceLogger to log the execution time and other informations include:
+ 	- type: 'TS' (execution time of search servlet) or 'TJ' (execution time of JDBC) 
+ 	- config: test plan id
+ 	- auto_cmp, title: parameters required for search servlet 
+ 	- Fabflix/reports/log to access the log  
+ - Fabflix/jmeter_report.html to access the jmeter report
+ 	 
