@@ -61,6 +61,4 @@ View the demo at https://zotflix.com
  	- auto_cmp, title: parameters required for search servlet 
  	- Fabflix/reports/log to access the log  
  - Fabflix/jmeter_report.html to access the jmeter report
- 	- add query time=<h>[%3A<m>[%3A<s>]] to specify the earliest time of output log
- 	- add query config=<test id> to specify the test id of output log
  	 
