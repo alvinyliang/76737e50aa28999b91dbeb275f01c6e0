@@ -21,7 +21,7 @@ public class UpdateCartServlet extends HttpServlet{
         Movie movie = new Movie();
         try {
 			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-			conn = dbConn.getConnection();
+			Connection conn = dbConn.getConnection();
 			//Connection conn = DriverManager.getConnection(dbConn.DB_URL, dbConn.DB_USERNAME, dbConn.DB_PASSWORD);
 	        DatabaseQueries queries = new DatabaseQueries(conn);
 	        movie = queries.getSimpleMovieDetails(movieId);
