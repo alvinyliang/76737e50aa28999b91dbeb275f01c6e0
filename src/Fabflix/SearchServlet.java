@@ -224,7 +224,7 @@ public class SearchServlet extends HttpServlet {
         	response.setContentType("application/json;charset=utf-8");
         	String rootPath = getServletContext().getRealPath("/");
 			
-        	PerformanceLogger.log(rootPath + "/logs/TestLog.log", 
+        	PerformanceLogger.log(rootPath + "logs/TestLog.log", 
     				elapsedTime,numQ, "TJ", request.getParameter("config"), auto_complete_text, title);
         	
         	elapsedTime = 0;
