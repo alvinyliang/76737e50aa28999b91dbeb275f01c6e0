@@ -1,16 +1,30 @@
 package Logger;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.logging.*;
 
 public class PerformanceLogger {
 //	static private FileHandler fileHandler;
 //    static private SimpleFormatter formatter;
+	static private Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	
 	static public void log(String pattern, long time, int numQ, String type, String config, String auto_cmp, String title){
 
-		writeLog(pattern, 
-				setMessage(time, numQ, type, config, auto_cmp, title));
+//		writeLog(pattern, 
+//				setMessage(time, numQ, type, config, auto_cmp, title));
+		
+		
+//	    try {
+//	    	BufferedWriter writer = new BufferedWriter(new FileWriter(pattern, true));
+//			writer.append("The first line");
+//			writer.close();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+	    
 	}
 	
     static synchronized private void writeLog(String pattern, String[] msgs){
@@ -22,7 +36,7 @@ public class PerformanceLogger {
 //            	rootLogger.removeHandler(handlers[0]);
 //            }
             
-    		Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+//    		Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
             
 //            
 //            Handler consoleHandler = new ConsoleHandler();
@@ -35,8 +49,8 @@ public class PerformanceLogger {
         	
         	FileHandler fileHandler = new FileHandler(pattern, true);
         	fileHandler.setFormatter(formatter);
-        	logger.addHandler(fileHandler);
-            
+//        	logger.addHandler(fileHandler);
+//            
 	        
 	        
 	        

@@ -51,7 +51,7 @@ public class SearchFilter implements Filter {
 		
 		String rootPath = ((HttpServletRequest) request).getServletContext().getRealPath("/");
 
-    	PerformanceLogger.log(rootPath + "logs/TestLog.log", 
+    	PerformanceLogger.log(rootPath + "/logs/TestLog.log", 
     			elapsedTime, 0, "TS", config, auto_cmp, title);
 		
 
