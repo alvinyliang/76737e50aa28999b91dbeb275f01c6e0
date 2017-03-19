@@ -117,9 +117,15 @@
     <servlet-name>LogServlet</servlet-name>
     <servlet-class>Logger.LogServlet</servlet-class>
   </servlet>
+  
+  
   <filter-mapping>
     <filter-name>SearchFilter</filter-name>
     <url-pattern>/Search</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>SearchFilter</filter-name>
+    <url-pattern>/TestStatement</url-pattern>
   </filter-mapping>
   <filter-mapping>
     <filter-name>AuthenticationFilter</filter-name>

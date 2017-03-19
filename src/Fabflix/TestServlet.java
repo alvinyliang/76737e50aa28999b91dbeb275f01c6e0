@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import Logger.PerformanceLogger;
+
 import java.sql.*;
 
 public class TestServlet extends HttpServlet {
@@ -31,19 +33,26 @@ public class TestServlet extends HttpServlet {
         Connection conn;
         
         try {
-	        Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+        	long startTime = System.nanoTime();
+        	long endTime = System.nanoTime();
+    		
+        	startTime = System.nanoTime();
+         	/////////////////////////////////
+     		/// ** part to be measured ** ///
+ 			
+        	Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
 	        conn = dbConn.getConnection();
 
 	        //Normal Statement
-	        //Statement stmt = conn.createStatement();
-	        //String SQL = "SELECT * from movies where title = '" + title + "';";
-			//ResultSet rs = stmt.executeQuery(SQL);
+	        Statement stmt = conn.createStatement();
+	        String SQL = "SELECT * from movies where title = '" + title + "';";
+			ResultSet rs = stmt.executeQuery(SQL);
 			
 			//Prepared Statement
-			PreparedStatement stmt = conn.prepareStatement("SELECT * from movies where title = ?");
-			stmt.setString(1, title);
-			ResultSet rs = stmt.executeQuery();
-			
+//			PreparedStatement stmt = conn.prepareStatement("SELECT * from movies where title = ?");
+//			stmt.setString(1, title);
+//			ResultSet rs = stmt.executeQuery();
+//			
 			String message = "";
 	        while (rs.next()){
 	        	String dbtitle = rs.getString("title");
@@ -53,6 +62,15 @@ public class TestServlet extends HttpServlet {
 	        }
 			request.setAttribute("message", message);
 			request.getRequestDispatcher("Statement.jsp").forward(request,response);
+			/// ** part to be measured ** ///
+    		/////////////////////////////////
+        	endTime = System.nanoTime();
+        	Long elapsedTime = endTime - startTime;
+        	
+        	String rootPath = getServletContext().getRealPath("/");
+			
+        	PerformanceLogger.log(rootPath + "/logs/TestLog.log", 
+    				elapsedTime,1, "TJ", request.getParameter("config"), "", title);
 
         }
         catch (SQLException ex) {

@@ -8,7 +8,7 @@ public class PerformanceLogger {
 //    static private SimpleFormatter formatter;
 	
 	static public void log(String pattern, long time, int numQ, String type, String config, String auto_cmp, String title){
-		writeLog("C:/1 school works/workspace/Zotflix/WebContent/logs/TestLog.log", 
+		writeLog(pattern, 
 				setMessage(time, numQ, type, config, auto_cmp, title));
 	}
 	
