@@ -8,32 +8,41 @@ public class PerformanceLogger {
 //    static private SimpleFormatter formatter;
 	
 	static public void log(String pattern, long time, int numQ, String type, String config, String auto_cmp, String title){
+<<<<<<< HEAD
+=======
+		System.out.println("log:" + pattern);
+>>>>>>> refs/remotes/origin/No-ConnectionPool
 		writeLog(pattern, 
 				setMessage(time, numQ, type, config, auto_cmp, title));
 	}
 	
-    static private void writeLog(String pattern, String[] msgs){
+    static synchronized private void writeLog(String pattern, String[] msgs){
     	try{
-	        // get the global logger to configure it
-	        Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	
-	        // suppress the logging output to the console
+	                // suppress the logging output to the console
 //	        Logger rootLogger = Logger.getLogger("");
 //	        Handler[] handlers = rootLogger.getHandlers();
 //            if (handlers[0] instanceof ConsoleHandler) {
 //            	rootLogger.removeHandler(handlers[0]);
 //            }
             
+    		Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
             
-            logger.setLevel(Level.INFO);
 //            
 //            Handler consoleHandler = new ConsoleHandler();
 //            logger.addHandler(consoleHandler);
-            FileHandler fileHandler = new FileHandler(pattern, true);
-	        System.out.println();
-            SimpleFormatter formatter = new SimpleFormatter();
-	        fileHandler.setFormatter(formatter);
-	        logger.addHandler(fileHandler);
+    		SimpleFormatter formatter = new SimpleFormatter();
+    		
+        	logger.setLevel(Level.INFO);
+//        	System.out.println("emmmm filehandler");
+        	
+        	
+        	FileHandler fileHandler = new FileHandler(pattern, true);
+        	fileHandler.setFormatter(formatter);
+        	logger.addHandler(fileHandler);
+            
+	        
+	        
+	        
 	        
 	        String msg = "";
 	        for (String m: msgs){
@@ -42,7 +51,8 @@ public class PerformanceLogger {
 	        }
 	        
 	        logger.info(msg);
-	       
+	        fileHandler.close();
+	        
     	} catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException("Problems with creating the log files");
