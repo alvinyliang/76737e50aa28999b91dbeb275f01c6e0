@@ -8,10 +8,7 @@ public class PerformanceLogger {
 //    static private SimpleFormatter formatter;
 	
 	static public void log(String pattern, long time, int numQ, String type, String config, String auto_cmp, String title){
-<<<<<<< HEAD
-=======
-		System.out.println("log:" + pattern);
->>>>>>> refs/remotes/origin/No-ConnectionPool
+
 		writeLog(pattern, 
 				setMessage(time, numQ, type, config, auto_cmp, title));
 	}
