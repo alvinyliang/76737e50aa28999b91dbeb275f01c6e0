@@ -1,9 +1,7 @@
 View the demo at https://zotflix.com
 
 ## When cloning the project:
-  - Ensure MySQL Service is running on local machine.
-  - Configure WebContent/WEB-INF/db_config.properties
-  
+  - Configure database credentials WebContent/WEB-INF/db_config.properties (use AWS database)
   - Add External Jar -> MySQL Connector/J 6.0.5 to project buid path
   - Create /lib directory under /WEB-INF and include the following files
     - mysql-connector-java-6.0.5 https://mvnrepository.com/artifact/mysql/mysql-connector-java/6.0.5
@@ -12,12 +10,11 @@ View the demo at https://zotflix.com
   - Under Eclipse "Problems" tab, change project JRE path to match current Java Version. Current JRE is set to version _111.
   - Set the database information in db_config.properties at WebContent/WEB-INF/db_config.properties
   
-## Project Dependencies
+## Project Requirements
   - Tomcat v8.5
   
 ## To do:
-  - Implement connection pooling
-  - Setup MySQL replication
+  - All Done!
   
 ## Completed:
   - Implemented search
@@ -55,6 +52,8 @@ View the demo at https://zotflix.com
  			- returns true if there is a token in rec that has an edit distance from s smaller or equal to th. 
  			- The string in rec is tokenized using the following separators: " " (white space), "," (comma), and "." (dot).
  			- The function assumes that the query string is in lower case.
+ - Implemented connection pooling
+ - Implemented MySQL replication
  - Implemented PerformanceLogger to log the execution time and other informations include:
  	- type: 'TS' (execution time of search servlet) or 'TJ' (execution time of JDBC) 
  	- config: test plan id
