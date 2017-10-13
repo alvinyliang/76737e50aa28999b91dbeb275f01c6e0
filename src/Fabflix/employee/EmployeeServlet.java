@@ -54,7 +54,8 @@ public class EmployeeServlet extends HttpServlet{
         
         try {
         	Class.forName("com.mysql.cj.jdbc.Driver");
-        	conn = DriverManager.getConnection(dbConn.DB_URL, dbConn.DB_USERNAME, dbConn.DB_PASSWORD);
+        	conn = dbConn.getConnection();
+        	//conn = DriverManager.getConnection(dbConn.DB_URL, dbConn.DB_USERNAME, dbConn.DB_PASSWORD);
         	stmt = conn.prepareStatement("show tables;");
         	ResultSet rs = stmt.executeQuery();
         	
@@ -82,7 +83,8 @@ public class EmployeeServlet extends HttpServlet{
         
         try {
         	Class.forName("com.mysql.cj.jdbc.Driver");
-        	conn = DriverManager.getConnection(dbConn.DB_URL, dbConn.DB_USERNAME, dbConn.DB_PASSWORD);
+        	conn = dbConn.getConnection();
+        	//conn = DriverManager.getConnection(dbConn.DB_URL, dbConn.DB_USERNAME, dbConn.DB_PASSWORD);
         	stmt = conn.prepareStatement("SELECT column_name, column_type FROM INFORMATION_SCHEMA.columns where table_name = ?");
         	stmt.setString(1, tableName);
         	ResultSet rs = stmt.executeQuery();

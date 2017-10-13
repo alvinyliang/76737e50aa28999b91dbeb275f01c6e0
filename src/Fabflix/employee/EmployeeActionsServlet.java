@@ -47,7 +47,8 @@ public class EmployeeActionsServlet extends HttpServlet{
     			
     			
     			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-    			Connection conn = DriverManager.getConnection(dbConn.DB_URL, dbConn.DB_USERNAME, dbConn.DB_PASSWORD);
+    			//Connection conn = DriverManager.getConnection(dbConn.DB_URL, dbConn.DB_USERNAME, dbConn.DB_PASSWORD);
+    			Connection conn = dbConn.getConnection();
 	        	PreparedStatement stmt = conn.prepareStatement("INSERT into stars (first_name, last_name, dob, photo_url) VALUES (?, ?, ?, ?)");
 				stmt.setString(1, firstName);
 				stmt.setString(2, lastName);

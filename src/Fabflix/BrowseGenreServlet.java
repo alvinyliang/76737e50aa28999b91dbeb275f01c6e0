@@ -151,7 +151,8 @@ public class BrowseGenreServlet extends HttpServlet {
         InputStream input = getServletContext().getResourceAsStream("/WEB-INF/db_config.properties");
         DBConnection dbConn = new DBConnection(input);
         try {
-        Connection conn = DriverManager.getConnection(dbConn.DB_URL, dbConn.DB_USERNAME, dbConn.DB_PASSWORD);       
+        	Connection conn = dbConn.getConnection();
+        	//Connection conn = DriverManager.getConnection(dbConn.DB_URL, dbConn.DB_USERNAME, dbConn.DB_PASSWORD);       
         DatabaseQueries query = new DatabaseQueries(conn);
         rows = query.getTotalGenreRows(genre);
         conn.close();
@@ -221,7 +222,8 @@ public class BrowseGenreServlet extends HttpServlet {
         ArrayList<Star> starList = new ArrayList<Star>();
         try {
 	        Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-        	conn = DriverManager.getConnection(dbConn.DB_URL, dbConn.DB_USERNAME, dbConn.DB_PASSWORD);       
+	        conn = dbConn.getConnection();
+	        //conn = DriverManager.getConnection(dbConn.DB_URL, dbConn.DB_USERNAME, dbConn.DB_PASSWORD);       
     	    stmt = conn.prepareStatement("SELECT * FROM stars_in_movies join stars ON stars_in_movies.star_id = stars.id WHERE movie_id = ?");
     	    stmt.setInt(1, movieId);
     
@@ -252,7 +254,8 @@ public class BrowseGenreServlet extends HttpServlet {
         ArrayList<Movie> movieList = new ArrayList<Movie>();
         try {
 	        Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-        	conn = DriverManager.getConnection(dbConn.DB_URL, dbConn.DB_USERNAME, dbConn.DB_PASSWORD);       
+	        conn = dbConn.getConnection();
+	        //conn = DriverManager.getConnection(dbConn.DB_URL, dbConn.DB_USERNAME, dbConn.DB_PASSWORD);       
             stmt = conn.prepareStatement("SELECT * FROM genres_in_movies join movies join genres on genres_in_movies.movie_id = movies.id and genres_in_movies.genre_id = genres.id WHERE name = ? order by " + 
             		sort + " " + order + " limit " + count + " offset " + count*(page-1) + ";");
             stmt.setString(1, genre);

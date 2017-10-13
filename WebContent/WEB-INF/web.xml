@@ -10,17 +10,25 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
-	<error-page>
-    	<error-code>404</error-code>
-		<location>/ErrorPages/404.jsp</location>
-	</error-page>
-	<error-page>
-    	<error-code>401</error-code>
-		<location>/ErrorPages/401.jsp</location>
-	</error-page>
-	<error-page>
-        <location>/ErrorPages/error.jsp</location>
-    </error-page>
+  <error-page>
+    <error-code>404</error-code>
+    <location>/ErrorPages/404.jsp</location>
+  </error-page>
+  <error-page>
+    <error-code>401</error-code>
+    <location>/ErrorPages/401.jsp</location>
+  </error-page>
+  <error-page>
+    <location>/ErrorPages/error.jsp</location>
+  </error-page>
+  <filter>
+    <filter-name>SearchFilter</filter-name>
+    <filter-class>Fabflix.filters.SearchFilter</filter-class>
+  </filter>
+  <filter>
+    <filter-name>AuthenticationFilter</filter-name>
+    <filter-class>Fabflix.filters.AuthenticationFilter</filter-class>
+  </filter>
   <servlet>
     <servlet-name>LoginServlet</servlet-name>
     <servlet-class>Fabflix.LoginServlet</servlet-class>
@@ -61,55 +69,68 @@
     <servlet-name>CartServlet</servlet-name>
     <servlet-class>Fabflix.CartServlet</servlet-class>
   </servlet>
-  
   <servlet>
-  <servlet-name>UpdateCartServlet</servlet-name>
+    <servlet-name>UpdateCartServlet</servlet-name>
     <servlet-class>Fabflix.UpdateCartServlet</servlet-class>
   </servlet>
   <servlet>
-  <servlet-name>CheckoutServlet</servlet-name>
+    <servlet-name>CheckoutServlet</servlet-name>
     <servlet-class>Fabflix.CheckoutServlet</servlet-class>
   </servlet>
   <servlet>
-  <servlet-name>SaveOrderServlet</servlet-name>
+    <servlet-name>SaveOrderServlet</servlet-name>
     <servlet-class>Fabflix.SaveOrderServlet</servlet-class>
   </servlet>
-  
   <servlet>
-  	<servlet-name>ReportServlet</servlet-name>
+    <servlet-name>ReportServlet</servlet-name>
     <servlet-class>Fabflix.ReportServlet</servlet-class>
-  </servlet>  
-  <servlet>
-  	<servlet-name>ReadMeServlet</servlet-name>
-  	<servlet-class>Fabflix.ReadMeServlet</servlet-class>
   </servlet>
-
   <servlet>
-  	<servlet-name>EmployeeActionsServlet</servlet-name>
-  	<servlet-class>Fabflix.employee.EmployeeActionsServlet</servlet-class>
+    <servlet-name>ReadMeServlet</servlet-name>
+    <servlet-class>Fabflix.ReadMeServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>EmployeeActionsServlet</servlet-name>
+    <servlet-class>Fabflix.employee.EmployeeActionsServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>EmployeeLoginServlet</servlet-name>
+    <servlet-class>Fabflix.employee.EmployeeLoginServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>TestServlet</servlet-name>
+    <servlet-class>Fabflix.TestServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>EmployeeServlet</servlet-name>
+    <servlet-class>Fabflix.employee.EmployeeServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>XMLParserServlet</servlet-name>
+    <servlet-class>XMLParsers.XMLParserServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>XMLParserReportServlet</servlet-name>
+    <servlet-class>XMLParsers.XMLParserReportServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>LogServlet</servlet-name>
+    <servlet-class>Logger.LogServlet</servlet-class>
   </servlet>
   
-  <servlet>
-  	<servlet-name>EmployeeLoginServlet</servlet-name>
-  	<servlet-class>Fabflix.employee.EmployeeLoginServlet</servlet-class>
-  </servlet>
- 
-  <servlet>
-  	<servlet-name>EmployeeServlet</servlet-name>
-  	<servlet-class>Fabflix.employee.EmployeeServlet</servlet-class>
-  </servlet>
   
-  <servlet>
-  	<servlet-name>XMLParserServlet</servlet-name>
-  	<servlet-class>XMLParsers.XMLParserServlet</servlet-class>
-  </servlet>
-  <servlet>
-  	<servlet-name>XMLParserReportServlet</servlet-name>
-  	<servlet-class>XMLParsers.XMLParserReportServlet</servlet-class>
-  </servlet>
-  
-  
-  
+  <filter-mapping>
+    <filter-name>SearchFilter</filter-name>
+    <url-pattern>/Search</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>SearchFilter</filter-name>
+    <url-pattern>/TestStatement</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>AuthenticationFilter</filter-name>
+    <url-pattern>/Search.jsp</url-pattern>
+  </filter-mapping>
   <servlet-mapping>
     <servlet-name>LoginServlet</servlet-name>
     <url-pattern>/Login</url-pattern>
@@ -146,8 +167,8 @@
     <servlet-name>StarServlet</servlet-name>
     <url-pattern>/Star</url-pattern>
   </servlet-mapping>
-   <servlet-mapping>
-  <servlet-name>CheckoutServlet</servlet-name>
+  <servlet-mapping>
+    <servlet-name>CheckoutServlet</servlet-name>
     <url-pattern>/Checkout</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
@@ -158,43 +179,44 @@
     <servlet-name>CartServlet</servlet-name>
     <url-pattern>/Cart</url-pattern>
   </servlet-mapping>
-   <servlet-mapping>
-   <servlet-name>UpdateCartServlet</servlet-name>
+  <servlet-mapping>
+    <servlet-name>UpdateCartServlet</servlet-name>
     <url-pattern>/UpdateCart</url-pattern>
-  </servlet-mapping>  
-   <servlet-mapping>
-   <servlet-name>ReportServlet</servlet-name>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ReportServlet</servlet-name>
     <url-pattern>/reports/like_predicate</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-  	<servlet-name>ReadMeServlet</servlet-name>
-  	<url-pattern>/reports/readme</url-pattern>
-  </servlet-mapping>
-  
-  <servlet-mapping>
-  	<servlet-name>EmployeeActionsServlet</servlet-name>
-  	<url-pattern>/_dashboard/Actions</url-pattern>
-  </servlet-mapping>
-  
-  <servlet-mapping>
-  	<servlet-name>EmployeeLoginServlet</servlet-name>
-  	<url-pattern>/_dashboard/Login</url-pattern>
-  </servlet-mapping>
-
-  <servlet-mapping>
-  	<servlet-name>EmployeeServlet</servlet-name>
-  	<url-pattern>/_dashboard</url-pattern>
-  </servlet-mapping> 
-  
-  
-  <servlet-mapping>
-  	<servlet-name>XMLParserServlet</servlet-name>
-  	<url-pattern>/XMLParser</url-pattern>
+    <servlet-name>ReadMeServlet</servlet-name>
+    <url-pattern>/reports/readme</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-  	<servlet-name>XMLParserReportServlet</servlet-name>
-  	<url-pattern>/reports/XMLParserReport</url-pattern>
+    <servlet-name>EmployeeActionsServlet</servlet-name>
+    <url-pattern>/_dashboard/Actions</url-pattern>
   </servlet-mapping>
-  
-  
+  <servlet-mapping>
+    <servlet-name>EmployeeLoginServlet</servlet-name>
+    <url-pattern>/_dashboard/Login</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>EmployeeServlet</servlet-name>
+    <url-pattern>/_dashboard</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>XMLParserServlet</servlet-name>
+    <url-pattern>/XMLParser</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>XMLParserReportServlet</servlet-name>
+    <url-pattern>/reports/XMLParserReport</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>LogServlet</servlet-name>
+    <url-pattern>/reports/log</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>TestServlet</servlet-name>
+    <url-pattern>/TestStatement</url-pattern>
+  </servlet-mapping>
 </web-app>

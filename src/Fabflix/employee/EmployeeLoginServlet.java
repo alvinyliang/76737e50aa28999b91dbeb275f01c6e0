@@ -43,7 +43,8 @@ public class EmployeeLoginServlet extends HttpServlet {
         	
         	if (valid){
 	        	Class.forName("com.mysql.cj.jdbc.Driver");
-	        	conn = DriverManager.getConnection(dbConn.DB_URL, dbConn.DB_USERNAME, dbConn.DB_PASSWORD);
+	        	conn = dbConn.getConnection();
+	        	//conn = DriverManager.getConnection(dbConn.DB_URL, dbConn.DB_USERNAME, dbConn.DB_PASSWORD);
 	        	stmt = conn.prepareStatement("SELECT * FROM employees WHERE email = ? AND password = ?");
 				stmt.setString(1, username);
 				stmt.setString(2, password);
